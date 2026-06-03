@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/pmuguda/cookiecutter-eo-llm/actions/workflows/ci.yml/badge.svg)](https://github.com/pmuguda/cookiecutter-eo-llm/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-github%20pages-blue?logo=readthedocs&logoColor=white)](https://pmuguda.github.io/cookiecutter-eo-llm/)
-[![Coverage](https://codecov.io/gh/pmuguda/cookiecutter-eo-llm/branch/main/graph/badge.svg)](https://codecov.io/gh/pmuguda/cookiecutter-eo-llm)
+[![Coverage](https://pmuguda.github.io/cookiecutter-eo-llm/badges/coverage.svg)](https://pmuguda.github.io/cookiecutter-eo-llm/)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](https://github.com/pmuguda/cookiecutter-eo-llm)
 [![License](https://img.shields.io/github/license/pmuguda/cookiecutter-eo-llm)](LICENSE)
 
