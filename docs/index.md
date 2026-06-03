@@ -30,7 +30,7 @@ my-eo-package/
 ├── src/my_eo_package/       ← importable package (snake_case)
 │   ├── logger.py            ← get_logger(__name__) for every module
 │   ├── workflows/           ← abstract base + concrete implementations
-│   ├── config/              ← Pydantic v2 models + YAML tag loaders
+│   ├── config/              ← SourceModel / ComputeParamsModel / DestinationModel
 │   └── main.py              ← typer CLI + run() entry point
 ├── .llm/                    ← single source of truth for LLM context
 ├── knowledge_base/          ← living architecture docs
@@ -63,15 +63,3 @@ uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm
 - **Single source of truth** — `.llm/` drives both CLAUDE.md and AGENTS.md
 - **Conventional Commits** — feat/fix/chore with SemVer mapping
 
----
-
-<div style="text-align:center;margin-top:2rem">
-  <a class="kofi-btn" href="https://ko-fi.com/pavan_muguda" target="_blank" rel="noopener">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M4 8h13v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8z"/>
-      <path d="M17 9h2.5a2.5 2.5 0 0 1 0 5H17"/>
-      <path d="M7 3v2M11 3v2"/>
-    </svg>
-    If this saved you time, buy me a coffee ☕
-  </a>
-</div>
