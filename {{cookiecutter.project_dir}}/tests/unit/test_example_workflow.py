@@ -1,34 +1,49 @@
 import pytest
 
-from {{cookiecutter.project_slug}}.config.models import WorkflowConfig
+from {{cookiecutter.project_slug}}.config.models import (
+    ComputeParamsModel,
+    DestinationModel,
+    SourceModel,
+    WorkflowConfigModel,
+)
 from {{cookiecutter.project_slug}}.workflows.example import ExampleWorkflow
 
 
-def make_config(parameters: dict) -> WorkflowConfig:  # type: ignore[type-arg]
-    return WorkflowConfig(name="test", type="ExampleWorkflow", parameters=parameters)
+def make_config(
+    input_path: str = "data/input.tif",
+    output_path: str = "data/output.tif",
+    crs: str = "EPSG:4326",
+) -> WorkflowConfigModel:
+    return WorkflowConfigModel(
+        name="test",
+        type="ExampleWorkflow",
+        source=SourceModel(input_path=input_path, crs=crs),
+        compute_params=ComputeParamsModel(),
+        destination=DestinationModel(output_path=output_path),
+    )
 
 
 @pytest.mark.parametrize(
-    "parameters",
+    "input_path,output_path,crs",
     [
-        {"input_path": "a.tif", "output_path": "b.tif", "crs": "EPSG:4326"},
-        {"input_path": "x.tif", "output_path": "y.tif", "crs": "EPSG:32632"},
+        ("data/input.tif", "data/output.tif", "EPSG:4326"),
+        ("stack/slc.zarr", "result/coh.tif", "EPSG:32632"),
     ],
 )
-def test_example_workflow_run_succeeds(parameters: dict) -> None:  # type: ignore[type-arg]
-    workflow = ExampleWorkflow(make_config(parameters))
+def test_example_workflow_run_succeeds(
+    input_path: str, output_path: str, crs: str
+) -> None:
+    workflow = ExampleWorkflow(make_config(input_path, output_path, crs))
     workflow.run()
 
 
-def test_example_workflow_validate_raises_on_missing_crs() -> None:
-    config = make_config({"input_path": "a.tif", "output_path": "b.tif"})
-    workflow = ExampleWorkflow(config)
-    with pytest.raises(ValueError, match="crs"):
+def test_example_workflow_validate_raises_on_missing_input_extension() -> None:
+    workflow = ExampleWorkflow(make_config(input_path="data/no-extension"))
+    with pytest.raises(ValueError, match="input_path"):
         workflow.validate()
 
 
-def test_example_workflow_validate_raises_on_missing_input() -> None:
-    config = make_config({"output_path": "b.tif", "crs": "EPSG:4326"})
-    workflow = ExampleWorkflow(config)
-    with pytest.raises(ValueError, match="input_path"):
+def test_example_workflow_validate_raises_on_missing_output_extension() -> None:
+    workflow = ExampleWorkflow(make_config(output_path="data/no-extension"))
+    with pytest.raises(ValueError, match="output_path"):
         workflow.validate()

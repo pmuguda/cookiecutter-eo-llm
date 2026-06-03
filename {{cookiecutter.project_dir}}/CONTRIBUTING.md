@@ -13,9 +13,12 @@ Then refactor. Always small steps — never implement without a red test.
 
 ## Adding a new workflow
 
-1. Subclass `Workflow` in `src/{{cookiecutter.project_slug}}/workflows/`
-2. Implement `run(self) -> None` and `validate(self) -> None`
-3. Register a YAML tag in `config/models.py`
+1. Define `MySource(SourceModel)`, `MyComputeParams(ComputeParamsModel)`,
+   `MyDestination(DestinationModel)` with typed fields in a new file under
+   `src/{{cookiecutter.project_slug}}/workflows/`
+2. Subclass `Workflow`, re-validate config sections in `__init__`,
+   implement `run()` and `validate()`
+3. Register the class in `WORKFLOW_REGISTRY` in `main.py`
 4. Add unit tests in `tests/unit/`
 5. Update `knowledge_base/workflows.md`
 

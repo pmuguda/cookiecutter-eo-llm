@@ -1,43 +1,60 @@
 # Adding a Workflow
 
-Every new processing step in a generated project is a `Workflow` subclass.
-The pattern is always the same four steps.
+Every processing step is a `Workflow` subclass. The pattern is always the same
+five steps.
+
+---
+
+## Config model design
+
+The template provides three empty base models in `config/models.py`:
+
+```python
+class SourceModel(BaseModel):        # input paths, loaders, input settings
+    model_config = ConfigDict(extra="allow")
+
+class ComputeParamsModel(BaseModel): # algorithm params, transform options
+    model_config = ConfigDict(extra="allow")
+
+class DestinationModel(BaseModel):   # output paths, exporters, output settings
+    model_config = ConfigDict(extra="allow")
+```
+
+Each concrete workflow subclasses all three and adds its own typed fields.
 
 ---
 
 ## Step 1 — Write a failing test
 
-Before writing any implementation, write the test:
-
 ```python
 # tests/unit/test_sbas_workflow.py
 import pytest
-from my_eo_package.config.models import WorkflowConfig
+from pathlib import Path
+from my_eo_package.config.models import (
+    SourceModel, ComputeParamsModel, DestinationModel, WorkflowConfigModel,
+)
 from my_eo_package.workflows.sbas import SBASWorkflow
 
 
-def make_config() -> WorkflowConfig:
-    return WorkflowConfig(
+def make_config() -> WorkflowConfigModel:
+    return WorkflowConfigModel(
         name="test-sbas",
         type="SBASWorkflow",
-        parameters={
-            "input_stack": "data/slc_stack.zarr",
-            "output_path": "data/velocity.tif",
-            "crs": "EPSG:32632",
-            "max_temporal_baseline_days": 30,
-        },
+        source=SourceModel(input_stack="data/slc.zarr", crs="EPSG:32632"),
+        compute_params=ComputeParamsModel(max_baseline_days=30),
+        destination=DestinationModel(output_path="data/velocity.tif"),
     )
 
 
 def test_sbas_run_succeeds() -> None:
-    workflow = SBASWorkflow(make_config())
-    workflow.run()
+    SBASWorkflow(make_config()).run()
 
 
 def test_sbas_validate_raises_on_missing_crs() -> None:
-    config = WorkflowConfig(
-        name="test", type="SBASWorkflow",
-        parameters={"input_stack": "a.zarr", "output_path": "b.tif"},
+    config = WorkflowConfigModel(
+        name="t", type="SBASWorkflow",
+        source=SourceModel(input_stack="a.zarr"),
+        destination=DestinationModel(output_path="b.tif"),
     )
     with pytest.raises(ValueError, match="crs"):
         SBASWorkflow(config).validate()
@@ -51,29 +68,51 @@ just test-unit
 
 ---
 
-## Step 2 — Implement the subclass
+## Step 2 — Implement the workflow
 
 Create `src/my_eo_package/workflows/sbas.py`:
 
 ```python
-from my_eo_package.config.models import WorkflowConfig
+from pathlib import Path
+from my_eo_package.config.models import (
+    SourceModel, ComputeParamsModel, DestinationModel, WorkflowConfigModel,
+)
+from my_eo_package.logger import get_logger
 from my_eo_package.workflows.base import Workflow
+
+_log = get_logger(__name__)
+
+
+class SBASSource(SourceModel):
+    input_stack: Path
+    crs: str
+
+
+class SBASComputeParams(ComputeParamsModel):
+    max_baseline_days: int = 30
+
+
+class SBASDestination(DestinationModel):
+    output_path: Path
+    overwrite: bool = False
 
 
 class SBASWorkflow(Workflow):
-    def __init__(self, config: WorkflowConfig) -> None:
+    def __init__(self, config: WorkflowConfigModel) -> None:
         super().__init__(config)
+        self.source = SBASSource.model_validate(config.source.model_dump())
+        self.compute = SBASComputeParams.model_validate(config.compute_params.model_dump())
+        self.destination = SBASDestination.model_validate(config.destination.model_dump())
 
     def validate(self) -> None:
-        required = {"input_stack", "output_path", "crs"}
-        missing = required - self.config.parameters.keys()
-        if missing:
-            raise ValueError(f"Missing required parameters: {missing}")
+        if not self.source.crs:
+            raise ValueError("source.crs is required")
 
     def run(self) -> None:
         self.validate()
-        # implement processing here
-        print(f"SBAS: {self.config.parameters['input_stack']} → {self.config.parameters['output_path']}")
+        _log.info("stack:    %s", self.source.input_stack)
+        _log.info("crs:      %s", self.source.crs)
+        _log.info("output:   %s", self.destination.output_path)
 ```
 
 Run pytest — it should pass (green):
@@ -84,20 +123,7 @@ just test-unit
 
 ---
 
-## Step 3 — Register the YAML tag
-
-In `src/my_eo_package/config/models.py`, add one constructor inside `register_yaml_tags()`:
-
-```python
-def register_yaml_tags() -> None:
-    def workflow_constructor(loader, node):
-        return loader.construct_mapping(node, deep=True)
-
-    yaml.add_constructor("!workflow", workflow_constructor, Loader=yaml.SafeLoader)
-    yaml.add_constructor("!sbas", workflow_constructor, Loader=yaml.SafeLoader)  # ← add this
-```
-
-And register the class in `main.py`:
+## Step 3 — Register in main.py
 
 ```python
 from my_eo_package.workflows.sbas import SBASWorkflow
@@ -110,31 +136,36 @@ WORKFLOW_REGISTRY: dict[str, type] = {
 
 ---
 
-## Step 4 — Add a config file and update knowledge_base
+## Step 4 — Add a config file
 
 Create `config/sbas_workflow.yaml`:
 
 ```yaml
-workflow: !sbas
-  name: sbas-velocity
-  type: SBASWorkflow
-  parameters:
-    input_stack: data/slc_stack.zarr
-    output_path: data/velocity.tif
-    crs: EPSG:32632
-    max_temporal_baseline_days: 30
+name: sbas-velocity
+type: SBASWorkflow
+source:
+  input_stack: data/slc_stack.zarr
+  crs: EPSG:32632
+compute_params:
+  max_baseline_days: 30
+destination:
+  output_path: data/velocity.tif
+  overwrite: false
 ```
 
-Update `knowledge_base/workflows.md` — add an entry for `SBASWorkflow`:
+---
+
+## Step 5 — Update knowledge_base
+
+Add an entry to `knowledge_base/workflows.md`:
 
 ```markdown
 ## SBASWorkflow
 
-- **Purpose**: SBAS InSAR velocity estimation from an SLC stack.
-- **Config type**: `SBASWorkflow`
-- **Required parameters**: `input_stack`, `output_path`, `crs`, `max_temporal_baseline_days`
-- **Outputs**: velocity GeoTIFF in target CRS
-- **Added**: 2024-07-01
+- **Purpose**: SBAS InSAR velocity from an SLC stack.
+- **Source**: `input_stack` (zarr), `crs`
+- **Compute**: `max_baseline_days` (int, default 30)
+- **Destination**: `output_path`, `overwrite`
 ```
 
 Run the workflow:
@@ -147,9 +178,10 @@ just run config/sbas_workflow.yaml
 
 ## Summary
 
-| Step | Action | Rule |
-|------|--------|------|
-| 1 | Write failing test | TDD: red first |
-| 2 | Subclass `Workflow`, implement `run()` + `validate()` | SOLID: one responsibility |
-| 3 | Register YAML tag + add to `WORKFLOW_REGISTRY` | Open-closed: extend, don't modify |
-| 4 | Update `knowledge_base/workflows.md` | Living docs contract |
+| Step | Action |
+|------|--------|
+| 1 | Failing test — TDD red |
+| 2 | Subclass `SourceModel`, `ComputeParamsModel`, `DestinationModel` + `Workflow` |
+| 3 | Register in `WORKFLOW_REGISTRY` |
+| 4 | Add YAML config |
+| 5 | Update `knowledge_base/workflows.md` |

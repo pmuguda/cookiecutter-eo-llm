@@ -2,7 +2,7 @@ from pathlib import Path
 
 import typer
 
-from {{cookiecutter.project_slug}}.config.models import WorkflowConfig, register_yaml_tags
+from {{cookiecutter.project_slug}}.config.models import WorkflowConfigModel
 from {{cookiecutter.project_slug}}.logger import get_logger
 from {{cookiecutter.project_slug}}.workflows.example import ExampleWorkflow
 
@@ -15,9 +15,8 @@ WORKFLOW_REGISTRY: dict[str, type] = {
 
 
 def run(config_path: Path) -> None:
-    register_yaml_tags()
-    config = WorkflowConfig.from_yaml(config_path)
-    _log.info("running %s", config.name)
+    config = WorkflowConfigModel.from_yaml(config_path)
+    _log.info("workflow: %s (%s)", config.name, config.type)
     workflow_class = WORKFLOW_REGISTRY[config.type]
     workflow = workflow_class(config)
     workflow.validate()

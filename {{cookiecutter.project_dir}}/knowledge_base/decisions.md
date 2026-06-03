@@ -12,10 +12,18 @@ Pydantic v2 provides field validation, coercion, and clear error messages
 out of the box. Dataclasses require manual validators. YAML loading errors
 surface as `ValidationError` with field-level detail.
 
-## YAML tags over a registry dict
+## Plain YAML over custom tags
 
-`!workflow` constructors live in PyYAML itself — no separate mapping to maintain.
-Adding a workflow = adding one `yaml.add_constructor` call. No dict to update.
+`!workflow` custom tags were removed. `yaml.safe_load()` + `WorkflowConfigModel.model_validate()`
+is simpler, dependency-free, and easier to test. Dispatch happens via `WORKFLOW_REGISTRY`
+in `main.py` — no PyYAML magic needed.
+
+## Empty base models over a flat parameters dict
+
+`SourceModel`, `ComputeParamsModel`, `DestinationModel` are empty bases with `extra="allow"`.
+This enforces the source / compute / destination separation at the schema level while
+leaving field definitions to each concrete workflow. The base models are re-validated
+into concrete subclasses inside `Workflow.__init__`, giving full mypy coverage per workflow.
 
 ## typer over argparse/click
 

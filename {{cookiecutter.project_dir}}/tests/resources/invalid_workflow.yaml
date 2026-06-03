@@ -1,4 +1,6 @@
-workflow: !workflow
-  type: ExampleWorkflow
-  parameters:
-    input_path: data/input.tif
+type: ExampleWorkflow
+source:
+  crs: EPSG:4326
+compute_params: {}
+destination:
+  output_path: data/output.tif

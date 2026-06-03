@@ -1,7 +1,5 @@
 from pathlib import Path
-from unittest.mock import patch, MagicMock
-
-import pytest
+from unittest.mock import MagicMock, patch
 
 from {{cookiecutter.project_slug}}.main import run
 
@@ -9,13 +7,14 @@ from {{cookiecutter.project_slug}}.main import run
 def test_run_calls_workflow_validate_and_run(tmp_path: Path) -> None:
     config_file = tmp_path / "workflow.yaml"
     config_file.write_text(
-        "workflow: !workflow\n"
-        "  name: test\n"
-        "  type: ExampleWorkflow\n"
-        "  parameters:\n"
-        "    input_path: a.tif\n"
-        "    output_path: b.tif\n"
-        "    crs: EPSG:4326\n"
+        "name: test\n"
+        "type: ExampleWorkflow\n"
+        "source:\n"
+        "  input_path: a.tif\n"
+        "  crs: EPSG:4326\n"
+        "compute_params: {}\n"
+        "destination:\n"
+        "  output_path: b.tif\n"
     )
     mock_instance = MagicMock()
     mock_class = MagicMock(return_value=mock_instance)

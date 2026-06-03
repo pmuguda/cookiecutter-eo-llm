@@ -1,28 +1,38 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any
 
 import yaml
-from pydantic import BaseModel
+from pydantic import BaseModel, ConfigDict, Field
 
 
-class WorkflowConfig(BaseModel):
+class SourceModel(BaseModel):
+    """Input specification. Subclass and add workflow-specific fields."""
+
+    model_config = ConfigDict(extra="allow")
+
+
+class ComputeParamsModel(BaseModel):
+    """Processing parameters. Subclass and add workflow-specific fields."""
+
+    model_config = ConfigDict(extra="allow")
+
+
+class DestinationModel(BaseModel):
+    """Output specification. Subclass and add workflow-specific fields."""
+
+    model_config = ConfigDict(extra="allow")
+
+
+class WorkflowConfigModel(BaseModel):
+    """Top-level workflow config. Validated from plain YAML — no custom tags."""
+
     name: str
     type: str
-    parameters: dict[str, Any]
+    source: SourceModel
+    compute_params: ComputeParamsModel = Field(default_factory=ComputeParamsModel)
+    destination: DestinationModel
 
     @classmethod
-    def from_yaml(cls, path: Path) -> WorkflowConfig:
-        raw = yaml.safe_load(path.read_text())
-        workflow_data = raw.get("workflow", raw)
-        return cls.model_validate(workflow_data)
-
-
-def register_yaml_tags() -> None:
-    def workflow_constructor(
-        loader: yaml.SafeLoader, node: yaml.MappingNode
-    ) -> dict[str, Any]:
-        return loader.construct_mapping(node, deep=True)
-
-    yaml.add_constructor("!workflow", workflow_constructor, Loader=yaml.SafeLoader)
+    def from_yaml(cls, path: Path) -> WorkflowConfigModel:
+        return cls.model_validate(yaml.safe_load(path.read_text()))
