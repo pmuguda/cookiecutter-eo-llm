@@ -7,7 +7,7 @@ requires-python = ">=3.10"
 keywords = [
     "cookiecutter", "eo", "sar", "remote-sensing",
     "llm", "claude", "codex", "agents", "template",
-    "geospatial", "python-package", "scaffolding"
+    "geospatial", "python-package", "scaffolding",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -15,7 +15,19 @@ classifiers = [
     "Topic :: Scientific/Engineering :: GIS",
 ]
 
+[project.urls]
+Homepage = "https://pmuguda.github.io/cookiecutter-eo-llm/"
+Repository = "https://github.com/pmuguda/cookiecutter-eo-llm"
+Issues = "https://github.com/pmuguda/cookiecutter-eo-llm/issues"
+
 [project.optional-dependencies]
+docs = [
+    "mkdocs>=1.6",
+    "mkdocs-material>=9.5",
+    "pymdown-extensions>=10.0",
+]
+
+[dependency-groups]
 dev = [
     "pytest>=8.0",
     "pytest-cov>=5.0",
@@ -27,6 +39,14 @@ dev = [
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 addopts = "-ra -q"
+
+[tool.coverage.run]
+source = ["hooks", "tests/helpers"]
+omit = ["tests/*"]
+
+[tool.coverage.report]
+show_missing = true
+skip_covered = false
 
 [tool.ruff]
 line-length = 100
