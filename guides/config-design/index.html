@@ -713,7 +713,7 @@
   <span class="md-ellipsis">
     
   
-    Adding a Workflow
+    Implementing Your Workflow
   
 
     
@@ -1110,22 +1110,20 @@ the obvious alternative.</p>
 <p>The simplest possible config model is a single class with a <code>parameters</code> dict:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>   <span class="c1"># ← everything in one bag</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>   <span class="c1"># ← everything in one bag</span>
 </code></pre></div>
 <p>YAML:
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-run</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoherenceWorkflow</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">parameters</span><span class="p">:</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">input_stack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/slc.zarr</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">crs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:32632</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">window_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/coherence.tif</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">parameters</span><span class="p">:</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="w">  </span><span class="nt">input_stack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/slc.zarr</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">crs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:32632</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">window_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/coherence.tif</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div></p>
-<p>This works for one workflow. It stops working as soon as you have more than one,
-because there is no schema. <code>parameters</code> is just a bag. Pydantic cannot validate
-the types. mypy cannot help you. Every workflow accesses fields like:</p>
+<p>This works initially, but there is no schema. <code>parameters</code> is just a bag.
+Pydantic cannot validate the types. mypy cannot help you. Every workflow
+accesses fields like:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;input_stack&quot;</span><span class="p">]</span>   <span class="c1"># str — not Path</span>
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;window_size&quot;</span><span class="p">]</span>   <span class="c1"># Any — could be str &quot;5&quot; or int 5</span>
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># is it bool or str &quot;false&quot;?</span>
@@ -1204,23 +1202,32 @@ at run time. A missing required field or a wrong type raises a <code>ValidationE
 immediately when the workflow is constructed — before <code>run()</code> is ever called.</p>
 <hr />
 <h2 id="why-plain-yaml-instead-of-custom-tags">Why plain YAML instead of custom tags</h2>
-<p>The previous design used a <code>!workflow</code> YAML tag:</p>
+<p>An earlier design used a <code>!workflow</code> custom PyYAML tag and a <code>type:</code> field
+for dispatching to the right workflow class:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">workflow</span><span class="p">:</span><span class="w"> </span><span class="kt">!workflow</span>
 <a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
-<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoherenceWorkflow</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoherenceWorkflow</span><span class="w">   </span><span class="c1"># ← dispatch key</span>
 <a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
 </code></pre></div>
-<p>This required registering a custom PyYAML constructor in <code>register_yaml_tags()</code>,
-calling it before every <code>from_yaml()</code>, and knowing that <code>!workflow</code> exists at all.
-It added complexity with no benefit — <code>type:</code> already identifies the workflow class,
-and <code>WORKFLOW_REGISTRY</code> in <code>main.py</code> already handles dispatch.</p>
-<p>The new design is three lines:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nd">@classmethod</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_yaml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowConfigModel</span><span class="p">:</span>
-<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
+<p>This required registering a PyYAML constructor, calling <code>register_yaml_tags()</code>
+before every <code>from_yaml()</code>, maintaining a <code>WORKFLOW_REGISTRY</code> dict in <code>main.py</code>,
+and knowing the <code>!workflow</code> tag existed at all.</p>
+<p>None of it was needed. Each package implements <strong>one workflow</strong>. <code>main.py</code>
+imports it directly — there is nothing to dispatch to:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># main.py</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.coherence</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoherenceWorkflow</span> <span class="k">as</span> <span class="n">Workflow</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">WorkflowConfigModel</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a>    <span class="n">workflow</span> <span class="o">=</span> <span class="n">Workflow</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>   <span class="c1"># direct, no lookup</span>
 </code></pre></div>
-<p>No tags. No constructors. No registration. The YAML is plain and reads
-like any other config file.</p>
+<p><code>from_yaml</code> is three lines:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_yaml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowConfigModel</span><span class="p">:</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
+</code></pre></div>
+<p>No tags. No constructors. No registration. No <code>type:</code> field in the YAML.
+The config file reads like any other config file.</p>
 <hr />
 <h2 id="before-and-after">Before and after</h2>
 <table>
@@ -1263,9 +1270,14 @@ like any other config file.</p>
 <td>grouped sections</td>
 </tr>
 <tr>
-<td>Custom YAML magic</td>
+<td>YAML loading</td>
 <td><code>!workflow</code> tag + <code>register_yaml_tags()</code></td>
 <td><code>yaml.safe_load()</code></td>
+</tr>
+<tr>
+<td>Dispatch</td>
+<td><code>WORKFLOW_REGISTRY[config.type]</code></td>
+<td>direct import in <code>main.py</code></td>
 </tr>
 </tbody>
 </table>

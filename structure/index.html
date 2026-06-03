@@ -674,10 +674,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#workflow-pattern" class="md-nav__link">
+  <a href="#one-package-one-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Workflow pattern
+        One package = one workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-model-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config model design
       
     </span>
   </a>
@@ -821,7 +832,7 @@
   <span class="md-ellipsis">
     
   
-    Adding a Workflow
+    Implementing Your Workflow
   
 
     
@@ -1030,10 +1041,21 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#workflow-pattern" class="md-nav__link">
+  <a href="#one-package-one-workflow" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Workflow pattern
+        One package = one workflow
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#config-model-design" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Config model design
       
     </span>
   </a>
@@ -1128,7 +1150,7 @@
 <a id="__codelineno-0-32" name="__codelineno-0-32" href="#__codelineno-0-32"></a>│       │   ├── base.py                 ← abstract Workflow(ABC)
 <a id="__codelineno-0-33" name="__codelineno-0-33" href="#__codelineno-0-33"></a>│       │   └── example.py             ← ExampleWorkflow
 <a id="__codelineno-0-34" name="__codelineno-0-34" href="#__codelineno-0-34"></a>│       └── config/
-<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│           └── models.py              ← WorkflowConfig + register_yaml_tags()
+<a id="__codelineno-0-35" name="__codelineno-0-35" href="#__codelineno-0-35"></a>│           └── models.py              ← SourceModel / ComputeParamsModel / DestinationModel / WorkflowConfigModel
 <a id="__codelineno-0-36" name="__codelineno-0-36" href="#__codelineno-0-36"></a>│
 <a id="__codelineno-0-37" name="__codelineno-0-37" href="#__codelineno-0-37"></a>├── tests/
 <a id="__codelineno-0-38" name="__codelineno-0-38" href="#__codelineno-0-38"></a>│   ├── conftest.py                     ← shared xarray fixture
@@ -1174,13 +1196,21 @@
 <li><strong><code>project_dir</code></strong> (<code>my-eo-package</code>) → filesystem, PyPI, CLI command  </li>
 <li><strong><code>project_slug</code></strong> (<code>my_eo_package</code>) → Python imports, <code>src/</code> subfolder</li>
 </ul>
-<h3 id="workflow-pattern">Workflow pattern</h3>
-<p>Every workflow is a class that subclasses <code>Workflow</code> and implements two methods:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Workflow</span><span class="p">(</span><span class="n">ABC</span><span class="p">):</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span> <span class="o">...</span>
+<h3 id="one-package-one-workflow">One package = one workflow</h3>
+<p>Each generated package is purpose-built for a single workflow. <code>main.py</code> imports
+the workflow class directly — no type dispatch, no registry.</p>
+<p>When you scaffold the project, rename <code>ExampleWorkflow</code> to your domain class and
+update the single import in <code>main.py</code>. That is the only change needed.</p>
+<h3 id="config-model-design">Config model design</h3>
+<p>The config splits into three typed sections:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-run</span><span class="w">        </span><span class="c1"># label for this run (used in logs)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">source</span><span class="p">:</span><span class="w">             </span><span class="c1"># inputs — paths, loaders, CRS</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">compute_params</span><span class="p">:</span><span class="w">     </span><span class="c1"># algorithm parameters</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">destination</span><span class="p">:</span><span class="w">        </span><span class="c1"># outputs — paths, format, overwrite flag</span>
 </code></pre></div>
-<p>Adding a new workflow requires exactly: one new file, one new YAML constructor. Nothing else changes.</p>
+<p>Each section maps to an empty base model (<code>SourceModel</code>, <code>ComputeParamsModel</code>,
+<code>DestinationModel</code>) that the concrete workflow subclasses with typed fields.
+See <a href="../guides/config-design/">Config Model Design</a> for the full rationale.</p>
 <h3 id="llm-as-single-source-of-truth">.llm/ as single source of truth</h3>
 <p>CLAUDE.md and AGENTS.md are both written from the same <code>.llm/</code> files at scaffold time.
 When the project evolves, update <code>.llm/</code> — then regenerate or manually sync both context files.</p>

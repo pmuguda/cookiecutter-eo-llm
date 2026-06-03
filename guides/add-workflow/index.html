@@ -29,7 +29,7 @@
     
     
       
-        <title>Adding a Workflow - cookiecutter-eo-llm</title>
+        <title>Implementing Your Workflow - cookiecutter-eo-llm</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#adding-a-workflow" class="md-skip">
+        <a href="#implementing-your-workflow" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Adding a Workflow
+              Implementing Your Workflow
             
           </span>
         </div>
@@ -722,7 +722,7 @@
   <span class="md-ellipsis">
     
   
-    Adding a Workflow
+    Implementing Your Workflow
   
 
     
@@ -740,7 +740,7 @@
   <span class="md-ellipsis">
     
   
-    Adding a Workflow
+    Implementing Your Workflow
   
 
     
@@ -766,10 +766,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#config-model-design" class="md-nav__link">
+  <a href="#the-config-yaml-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Config model design
+        The config YAML structure
       
     </span>
   </a>
@@ -777,10 +777,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-1-write-a-failing-test" class="md-nav__link">
+  <a href="#step-1-write-a-failing-test-first" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1 — Write a failing test
+        Step 1 — Write a failing test first
       
     </span>
   </a>
@@ -799,10 +799,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-register-in-mainpy" class="md-nav__link">
+  <a href="#step-3-update-mainpy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3 — Register in main.py
+        Step 3 — Update main.py
       
     </span>
   </a>
@@ -810,21 +810,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-add-a-config-file" class="md-nav__link">
+  <a href="#step-4-update-the-config-file-and-knowledge-base" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4 — Add a config file
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-update-knowledge_base" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 5 — Update knowledge_base
+        Step 4 — Update the config file and knowledge base
       
     </span>
   </a>
@@ -1023,10 +1012,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#config-model-design" class="md-nav__link">
+  <a href="#the-config-yaml-structure" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Config model design
+        The config YAML structure
       
     </span>
   </a>
@@ -1034,10 +1023,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-1-write-a-failing-test" class="md-nav__link">
+  <a href="#step-1-write-a-failing-test-first" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 1 — Write a failing test
+        Step 1 — Write a failing test first
       
     </span>
   </a>
@@ -1056,10 +1045,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-3-register-in-mainpy" class="md-nav__link">
+  <a href="#step-3-update-mainpy" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 3 — Register in main.py
+        Step 3 — Update main.py
       
     </span>
   </a>
@@ -1067,21 +1056,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#step-4-add-a-config-file" class="md-nav__link">
+  <a href="#step-4-update-the-config-file-and-knowledge-base" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Step 4 — Add a config file
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#step-5-update-knowledge_base" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Step 5 — Update knowledge_base
+        Step 4 — Update the config file and knowledge base
       
     </span>
   </a>
@@ -1124,141 +1102,145 @@
   
 
 
-<h1 id="adding-a-workflow">Adding a Workflow</h1>
-<p>Every processing step is a <code>Workflow</code> subclass. The pattern is always the same
-five steps.</p>
+<h1 id="implementing-your-workflow">Implementing Your Workflow</h1>
+<p>This package scaffolds around <strong>one workflow</strong>. <code>ExampleWorkflow</code> is the
+placeholder — replace it with your real implementation.</p>
 <hr />
-<h2 id="config-model-design">Config model design</h2>
-<p>The template provides three empty base models in <code>config/models.py</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">SourceModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>        <span class="c1"># input paths, loaders, input settings</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">ComputeParamsModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span> <span class="c1"># algorithm params, transform options</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">DestinationModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>   <span class="c1"># output paths, exporters, output settings</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span>
+<h2 id="the-config-yaml-structure">The config YAML structure</h2>
+<p>Every workflow reads from the same three-section config:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coherence-run-2024</span><span class="w">          </span><span class="c1"># label for this run — used in logs</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="nt">source</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="w">  </span><span class="nt">input_stack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/slc.zarr</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="w">  </span><span class="nt">crs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:32632</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nt">compute_params</span><span class="p">:</span><span class="w">                   </span><span class="c1"># omit entirely if not needed</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="w">  </span><span class="nt">window_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nt">destination</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="w">  </span><span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/coherence.tif</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
-<p>Each concrete workflow subclasses all three and adds its own typed fields.</p>
+<p>No <code>type:</code> field. The workflow class is fixed per package — <code>main.py</code> imports
+it directly.</p>
 <hr />
-<h2 id="step-1-write-a-failing-test">Step 1 — Write a failing test</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># tests/unit/test_sbas_workflow.py</span>
+<h2 id="step-1-write-a-failing-test-first">Step 1 — Write a failing test first</h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="c1"># tests/unit/test_coherence_workflow.py</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">import</span><span class="w"> </span><span class="nn">pytest</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.config.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">SourceModel</span><span class="p">,</span> <span class="n">ComputeParamsModel</span><span class="p">,</span> <span class="n">DestinationModel</span><span class="p">,</span> <span class="n">WorkflowConfigModel</span><span class="p">,</span>
 <a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="p">)</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.sbas</span><span class="w"> </span><span class="kn">import</span> <span class="n">SBASWorkflow</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.coherence</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoherenceWorkflow</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
 <a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">make_config</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">WorkflowConfigModel</span><span class="p">:</span>
 <a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="k">return</span> <span class="n">WorkflowConfigModel</span><span class="p">(</span>
-<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test-sbas&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;SBASWorkflow&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="n">source</span><span class="o">=</span><span class="n">SourceModel</span><span class="p">(</span><span class="n">input_stack</span><span class="o">=</span><span class="s2">&quot;data/slc.zarr&quot;</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:32632&quot;</span><span class="p">),</span>
-<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="n">compute_params</span><span class="o">=</span><span class="n">ComputeParamsModel</span><span class="p">(</span><span class="n">max_baseline_days</span><span class="o">=</span><span class="mi">30</span><span class="p">),</span>
-<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>        <span class="n">destination</span><span class="o">=</span><span class="n">DestinationModel</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;data/velocity.tif&quot;</span><span class="p">),</span>
-<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>    <span class="p">)</span>
+<a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;test&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="n">source</span><span class="o">=</span><span class="n">SourceModel</span><span class="p">(</span><span class="n">input_stack</span><span class="o">=</span><span class="s2">&quot;data/slc.zarr&quot;</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="s2">&quot;EPSG:32632&quot;</span><span class="p">),</span>
+<a id="__codelineno-1-14" name="__codelineno-1-14" href="#__codelineno-1-14"></a>        <span class="n">compute_params</span><span class="o">=</span><span class="n">ComputeParamsModel</span><span class="p">(</span><span class="n">window_size</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span>
+<a id="__codelineno-1-15" name="__codelineno-1-15" href="#__codelineno-1-15"></a>        <span class="n">destination</span><span class="o">=</span><span class="n">DestinationModel</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;data/coherence.tif&quot;</span><span class="p">),</span>
+<a id="__codelineno-1-16" name="__codelineno-1-16" href="#__codelineno-1-16"></a>    <span class="p">)</span>
+<a id="__codelineno-1-17" name="__codelineno-1-17" href="#__codelineno-1-17"></a>
 <a id="__codelineno-1-18" name="__codelineno-1-18" href="#__codelineno-1-18"></a>
-<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a>
-<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_sbas_run_succeeds</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>    <span class="n">SBASWorkflow</span><span class="p">(</span><span class="n">make_config</span><span class="p">())</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<a id="__codelineno-1-19" name="__codelineno-1-19" href="#__codelineno-1-19"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_coherence_run_succeeds</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-1-20" name="__codelineno-1-20" href="#__codelineno-1-20"></a>    <span class="n">CoherenceWorkflow</span><span class="p">(</span><span class="n">make_config</span><span class="p">())</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<a id="__codelineno-1-21" name="__codelineno-1-21" href="#__codelineno-1-21"></a>
 <a id="__codelineno-1-22" name="__codelineno-1-22" href="#__codelineno-1-22"></a>
-<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a>
-<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_sbas_validate_raises_on_missing_crs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">WorkflowConfigModel</span><span class="p">(</span>
-<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="s2">&quot;SBASWorkflow&quot;</span><span class="p">,</span>
-<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="n">source</span><span class="o">=</span><span class="n">SourceModel</span><span class="p">(</span><span class="n">input_stack</span><span class="o">=</span><span class="s2">&quot;a.zarr&quot;</span><span class="p">),</span>
-<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>        <span class="n">destination</span><span class="o">=</span><span class="n">DestinationModel</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;b.tif&quot;</span><span class="p">),</span>
-<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="p">)</span>
-<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;crs&quot;</span><span class="p">):</span>
-<a id="__codelineno-1-31" name="__codelineno-1-31" href="#__codelineno-1-31"></a>        <span class="n">SBASWorkflow</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+<a id="__codelineno-1-23" name="__codelineno-1-23" href="#__codelineno-1-23"></a><span class="k">def</span><span class="w"> </span><span class="nf">test_coherence_validate_raises_on_missing_crs</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-1-24" name="__codelineno-1-24" href="#__codelineno-1-24"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">WorkflowConfigModel</span><span class="p">(</span>
+<a id="__codelineno-1-25" name="__codelineno-1-25" href="#__codelineno-1-25"></a>        <span class="n">name</span><span class="o">=</span><span class="s2">&quot;t&quot;</span><span class="p">,</span>
+<a id="__codelineno-1-26" name="__codelineno-1-26" href="#__codelineno-1-26"></a>        <span class="n">source</span><span class="o">=</span><span class="n">SourceModel</span><span class="p">(</span><span class="n">input_stack</span><span class="o">=</span><span class="s2">&quot;a.zarr&quot;</span><span class="p">),</span>
+<a id="__codelineno-1-27" name="__codelineno-1-27" href="#__codelineno-1-27"></a>        <span class="n">destination</span><span class="o">=</span><span class="n">DestinationModel</span><span class="p">(</span><span class="n">output_path</span><span class="o">=</span><span class="s2">&quot;b.tif&quot;</span><span class="p">),</span>
+<a id="__codelineno-1-28" name="__codelineno-1-28" href="#__codelineno-1-28"></a>    <span class="p">)</span>
+<a id="__codelineno-1-29" name="__codelineno-1-29" href="#__codelineno-1-29"></a>    <span class="k">with</span> <span class="n">pytest</span><span class="o">.</span><span class="n">raises</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">,</span> <span class="n">match</span><span class="o">=</span><span class="s2">&quot;crs&quot;</span><span class="p">):</span>
+<a id="__codelineno-1-30" name="__codelineno-1-30" href="#__codelineno-1-30"></a>        <span class="n">CoherenceWorkflow</span><span class="p">(</span><span class="n">config</span><span class="p">)</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
 </code></pre></div>
-<p>Run pytest — it should fail (red):</p>
+<p>Run — should fail (red):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>just<span class="w"> </span>test-unit
 </code></pre></div>
 <hr />
 <h2 id="step-2-implement-the-workflow">Step 2 — Implement the workflow</h2>
-<p>Create <code>src/my_eo_package/workflows/sbas.py</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.config.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>    <span class="n">SourceModel</span><span class="p">,</span> <span class="n">ComputeParamsModel</span><span class="p">,</span> <span class="n">DestinationModel</span><span class="p">,</span> <span class="n">WorkflowConfigModel</span><span class="p">,</span>
-<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="p">)</span>
-<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
-<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Workflow</span>
-<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a>
-<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="n">_log</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<p>Rename <code>workflows/example.py</code> → <code>workflows/coherence.py</code> and replace:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># src/my_eo_package/workflows/coherence.py</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.config.models</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a>    <span class="n">SourceModel</span><span class="p">,</span> <span class="n">ComputeParamsModel</span><span class="p">,</span> <span class="n">DestinationModel</span><span class="p">,</span> <span class="n">WorkflowConfigModel</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="p">)</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_logger</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">Workflow</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="n">_log</span> <span class="o">=</span> <span class="n">get_logger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 <a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a>
-<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">SBASSource</span><span class="p">(</span><span class="n">SourceModel</span><span class="p">):</span>
-<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>    <span class="n">input_stack</span><span class="p">:</span> <span class="n">Path</span>
-<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span>
-<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceSource</span><span class="p">(</span><span class="n">SourceModel</span><span class="p">):</span>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a>    <span class="n">input_stack</span><span class="p">:</span> <span class="n">Path</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a>    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span>
 <a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
-<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="k">class</span><span class="w"> </span><span class="nc">SBASComputeParams</span><span class="p">(</span><span class="n">ComputeParamsModel</span><span class="p">):</span>
-<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a>    <span class="n">max_baseline_days</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>
-<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceComputeParams</span><span class="p">(</span><span class="n">ComputeParamsModel</span><span class="p">):</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a>    <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>
 <a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
-<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="k">class</span><span class="w"> </span><span class="nc">SBASDestination</span><span class="p">(</span><span class="n">DestinationModel</span><span class="p">):</span>
-<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a>    <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span>
-<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
-<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceDestination</span><span class="p">(</span><span class="n">DestinationModel</span><span class="p">):</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a>    <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
 <a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a>
-<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="k">class</span><span class="w"> </span><span class="nc">SBASWorkflow</span><span class="p">(</span><span class="n">Workflow</span><span class="p">):</span>
-<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">WorkflowConfigModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">SBASSource</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
-<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">compute</span> <span class="o">=</span> <span class="n">SBASComputeParams</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">compute_params</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
-<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">SBASDestination</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
-<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>
-<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">crs</span><span class="p">:</span>
-<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;source.crs is required&quot;</span><span class="p">)</span>
-<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>
-<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
-<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;stack:    </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">input_stack</span><span class="p">)</span>
-<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;crs:      </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
-<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;output:   </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceWorkflow</span><span class="p">(</span><span class="n">Workflow</span><span class="p">):</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">WorkflowConfigModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">CoherenceSource</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">compute</span> <span class="o">=</span> <span class="n">CoherenceComputeParams</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a>            <span class="n">config</span><span class="o">.</span><span class="n">compute_params</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a>        <span class="p">)</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">CoherenceDestination</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>            <span class="n">config</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">model_dump</span><span class="p">()</span>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a>        <span class="p">)</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">validate</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a>        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">crs</span><span class="p">:</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a>            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;source.crs is required&quot;</span><span class="p">)</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">validate</span><span class="p">()</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;stack:       </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">input_stack</span><span class="p">)</span>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a>        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;crs:         </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">crs</span><span class="p">)</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a>        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;window_size: </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">window_size</span><span class="p">)</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>        <span class="n">_log</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">&quot;output:      </span><span class="si">%s</span><span class="s2">&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">output_path</span><span class="p">)</span>
 </code></pre></div>
-<p>Run pytest — it should pass (green):</p>
+<p>Run — should pass (green):</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a>just<span class="w"> </span>test-unit
 </code></pre></div>
 <hr />
-<h2 id="step-3-register-in-mainpy">Step 3 — Register in main.py</h2>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.sbas</span><span class="w"> </span><span class="kn">import</span> <span class="n">SBASWorkflow</span>
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">WORKFLOW_REGISTRY</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">type</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
-<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>    <span class="s2">&quot;ExampleWorkflow&quot;</span><span class="p">:</span> <span class="n">ExampleWorkflow</span><span class="p">,</span>
-<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a>    <span class="s2">&quot;SBASWorkflow&quot;</span><span class="p">:</span> <span class="n">SBASWorkflow</span><span class="p">,</span>      <span class="c1"># ← add this</span>
-<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+<h2 id="step-3-update-mainpy">Step 3 — Update main.py</h2>
+<p>One line changes — the import:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1"># main.py  (before)</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.example</span><span class="w"> </span><span class="kn">import</span> <span class="n">ExampleWorkflow</span> <span class="k">as</span> <span class="n">Workflow</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="c1"># main.py  (after)</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.coherence</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoherenceWorkflow</span> <span class="k">as</span> <span class="n">Workflow</span>
 </code></pre></div>
+<p>Everything else in <code>main.py</code> stays the same.</p>
 <hr />
-<h2 id="step-4-add-a-config-file">Step 4 — Add a config file</h2>
-<p>Create <code>config/sbas_workflow.yaml</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">sbas-velocity</span>
-<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">SBASWorkflow</span>
-<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="nt">source</span><span class="p">:</span>
-<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">input_stack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/slc_stack.zarr</span>
-<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">  </span><span class="nt">crs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:32632</span>
-<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="nt">compute_params</span><span class="p">:</span>
-<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">  </span><span class="nt">max_baseline_days</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">30</span>
-<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="nt">destination</span><span class="p">:</span>
-<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/velocity.tif</span>
-<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+<h2 id="step-4-update-the-config-file-and-knowledge-base">Step 4 — Update the config file and knowledge base</h2>
+<p>Update <code>config/example_workflow.yaml</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">coherence-run</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="nt">source</span><span class="p">:</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">  </span><span class="nt">input_stack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/slc.zarr</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">  </span><span class="nt">crs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:32632</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="nt">compute_params</span><span class="p">:</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">  </span><span class="nt">window_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="nt">destination</span><span class="p">:</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">  </span><span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/coherence.tif</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
 </code></pre></div>
-<hr />
-<h2 id="step-5-update-knowledge_base">Step 5 — Update knowledge_base</h2>
-<p>Add an entry to <code>knowledge_base/workflows.md</code>:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gu">## SBASWorkflow</span>
+<p>Update <code>knowledge_base/workflows.md</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="gu">## CoherenceWorkflow</span>
 <a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>
-<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Purpose**</span>: SBAS InSAR velocity from an SLC stack.
-<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Source**</span>: <span class="sb">`input_stack`</span> (zarr), <span class="sb">`crs`</span>
-<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Compute**</span>: <span class="sb">`max_baseline_days`</span> (int, default 30)
-<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Destination**</span>: <span class="sb">`output_path`</span>, <span class="sb">`overwrite`</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Source**</span>: <span class="sb">`input_stack`</span> (zarr), <span class="sb">`crs`</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Compute**</span>: <span class="sb">`window_size`</span> (int, default 5)
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="k">-</span><span class="w"> </span><span class="gs">**Destination**</span>: <span class="sb">`output_path`</span>, <span class="sb">`overwrite`</span>
 </code></pre></div>
 <p>Run the workflow:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>just<span class="w"> </span>run<span class="w"> </span>config/sbas_workflow.yaml
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>just<span class="w"> </span>run<span class="w"> </span>config/example_workflow.yaml
 </code></pre></div>
 <hr />
 <h2 id="summary">Summary</h2>
@@ -1272,23 +1254,19 @@ five steps.</p>
 <tbody>
 <tr>
 <td>1</td>
-<td>Failing test — TDD red</td>
+<td>Write failing test</td>
 </tr>
 <tr>
 <td>2</td>
-<td>Subclass <code>SourceModel</code>, <code>ComputeParamsModel</code>, <code>DestinationModel</code> + <code>Workflow</code></td>
+<td>Rename <code>example.py</code>, implement concrete source / compute / destination models + workflow</td>
 </tr>
 <tr>
 <td>3</td>
-<td>Register in <code>WORKFLOW_REGISTRY</code></td>
+<td>Update the one import in <code>main.py</code></td>
 </tr>
 <tr>
 <td>4</td>
-<td>Add YAML config</td>
-</tr>
-<tr>
-<td>5</td>
-<td>Update <code>knowledge_base/workflows.md</code></td>
+<td>Update config YAML and <code>knowledge_base/workflows.md</code></td>
 </tr>
 </tbody>
 </table>
