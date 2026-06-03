@@ -47,7 +47,6 @@ EXPECTED_PATHS = [
     "docs/index.md",
     "docs/api/index.md",
     ".github/workflows/ci.yml",
-    ".github/workflows/publish.yml",
     ".gitlab-ci.yml",
 ]
 
@@ -95,3 +94,25 @@ def test_project_dir_in_pyproject_name(rendered: Path) -> None:
 def test_project_slug_in_pyproject_scripts(rendered: Path) -> None:
     content = (rendered / "pyproject.toml").read_text()
     assert "my_eo_package.main:app" in content
+
+
+def test_publish_yml_does_not_exist(rendered: Path) -> None:
+    assert not (rendered / ".github" / "workflows" / "publish.yml").exists()
+
+
+def test_github_ci_has_build_test_deploy_jobs(rendered: Path) -> None:
+    content = (rendered / ".github" / "workflows" / "ci.yml").read_text()
+    for job in ("build:", "test:", "deploy-docs:", "deploy-pypi:"):
+        assert job in content, f"Missing job: {job}"
+
+
+def test_gitlab_ci_has_three_stages(rendered: Path) -> None:
+    content = (rendered / ".gitlab-ci.yml").read_text()
+    for stage in ("build", "test", "deploy"):
+        assert stage in content, f"Missing stage: {stage}"
+
+
+def test_gitlab_ci_has_test_dev_and_test_release(rendered: Path) -> None:
+    content = (rendered / ".gitlab-ci.yml").read_text()
+    assert "test-dev:" in content
+    assert "test-release:" in content
