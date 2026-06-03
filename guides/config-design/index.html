@@ -12,13 +12,13 @@
         <meta name="author" content="Pavan Muguda Sanjeevamurthy">
       
       
-        <link rel="canonical" href="https://pmuguda.github.io/cookiecutter-eo-llm/guides/llm-context/">
+        <link rel="canonical" href="https://pmuguda.github.io/cookiecutter-eo-llm/guides/config-design/">
       
       
-        <link rel="prev" href="../config-design/">
+        <link rel="prev" href="../add-workflow/">
       
       
-        <link rel="next" href="../cicd/">
+        <link rel="next" href="../llm-context/">
       
       
         
@@ -29,7 +29,7 @@
     
     
       
-        <title>LLM Context Files - cookiecutter-eo-llm</title>
+        <title>Config Model Design - cookiecutter-eo-llm</title>
       
     
     
@@ -80,7 +80,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#llm-context-files" class="md-skip">
+        <a href="#config-model-design" class="md-skip">
           Skip to content
         </a>
       
@@ -113,7 +113,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              LLM Context Files
+              Config Model Design
             
           </span>
         </div>
@@ -731,34 +731,6 @@
                 
   
   
-  
-  
-    <li class="md-nav__item">
-      <a href="../config-design/" class="md-nav__link">
-        
-  
-  
-  <span class="md-ellipsis">
-    
-  
-    Config Model Design
-  
-
-    
-  </span>
-  
-  
-
-      </a>
-    </li>
-  
-
-              
-            
-              
-                
-  
-  
     
   
   
@@ -778,7 +750,7 @@
   <span class="md-ellipsis">
     
   
-    LLM Context Files
+    Config Model Design
   
 
     
@@ -796,7 +768,7 @@
   <span class="md-ellipsis">
     
   
-    LLM Context Files
+    Config Model Design
   
 
     
@@ -822,10 +794,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-llm-directory" class="md-nav__link">
+  <a href="#the-obvious-alternative-a-flat-dict" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The .llm/ directory
+        The obvious alternative: a flat dict
       
     </span>
   </a>
@@ -833,10 +805,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#claudemd" class="md-nav__link">
+  <a href="#why-three-base-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLAUDE.md
+        Why three base models
       
     </span>
   </a>
@@ -844,10 +816,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agentsmd" class="md-nav__link">
+  <a href="#why-extraallow-on-the-base-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AGENTS.md
+        Why extra="allow" on the base models
       
     </span>
   </a>
@@ -855,10 +827,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#primary_llm-flag" class="md-nav__link">
+  <a href="#why-re-validate-in-__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
-        primary_llm flag
+        Why re-validate in __init__
       
     </span>
   </a>
@@ -866,10 +838,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#keeping-context-lean" class="md-nav__link">
+  <a href="#why-plain-yaml-instead-of-custom-tags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Keeping context lean
+        Why plain YAML instead of custom tags
       
     </span>
   </a>
@@ -877,10 +849,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#updating-after-scaffold" class="md-nav__link">
+  <a href="#before-and-after" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Updating after scaffold
+        Before and after
       
     </span>
   </a>
@@ -891,6 +863,34 @@
   
 </nav>
       
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../llm-context/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LLM Context Files
+  
+
+    
+  </span>
+  
+  
+
+      </a>
     </li>
   
 
@@ -1012,10 +1012,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#the-llm-directory" class="md-nav__link">
+  <a href="#the-obvious-alternative-a-flat-dict" class="md-nav__link">
     <span class="md-ellipsis">
       
-        The .llm/ directory
+        The obvious alternative: a flat dict
       
     </span>
   </a>
@@ -1023,10 +1023,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#claudemd" class="md-nav__link">
+  <a href="#why-three-base-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        CLAUDE.md
+        Why three base models
       
     </span>
   </a>
@@ -1034,10 +1034,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#agentsmd" class="md-nav__link">
+  <a href="#why-extraallow-on-the-base-models" class="md-nav__link">
     <span class="md-ellipsis">
       
-        AGENTS.md
+        Why extra="allow" on the base models
       
     </span>
   </a>
@@ -1045,10 +1045,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#primary_llm-flag" class="md-nav__link">
+  <a href="#why-re-validate-in-__init__" class="md-nav__link">
     <span class="md-ellipsis">
       
-        primary_llm flag
+        Why re-validate in __init__
       
     </span>
   </a>
@@ -1056,10 +1056,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#keeping-context-lean" class="md-nav__link">
+  <a href="#why-plain-yaml-instead-of-custom-tags" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Keeping context lean
+        Why plain YAML instead of custom tags
       
     </span>
   </a>
@@ -1067,10 +1067,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#updating-after-scaffold" class="md-nav__link">
+  <a href="#before-and-after" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Updating after scaffold
+        Before and after
       
     </span>
   </a>
@@ -1094,7 +1094,7 @@
 
 
   
-    <a href="https://github.com/pmuguda/cookiecutter-eo-llm/edit/main/docs/guides/llm-context.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/pmuguda/cookiecutter-eo-llm/edit/main/docs/guides/config-design.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -1102,116 +1102,175 @@
   
 
 
-<h1 id="llm-context-files">LLM Context Files</h1>
-<p>The template generates token-efficient context files for Claude Code and OpenAI Codex.
-Both are rendered from the same <code>.llm/</code> source of truth at scaffold time.</p>
+<h1 id="config-model-design">Config Model Design</h1>
+<p>Why the config is structured the way it is — and why it's better than
+the obvious alternative.</p>
 <hr />
-<h2 id="the-llm-directory">The .llm/ directory</h2>
-<p>Four small files that define everything an LLM assistant needs to know:</p>
+<h2 id="the-obvious-alternative-a-flat-dict">The obvious alternative: a flat dict</h2>
+<p>The simplest possible config model is a single class with a <code>parameters</code> dict:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">WorkflowConfig</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="nb">type</span><span class="p">:</span> <span class="nb">str</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="n">parameters</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>   <span class="c1"># ← everything in one bag</span>
+</code></pre></div>
+<p>YAML:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-run</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoherenceWorkflow</span>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">parameters</span><span class="p">:</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="w">  </span><span class="nt">input_stack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/slc.zarr</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="w">  </span><span class="nt">crs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:32632</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="w">  </span><span class="nt">window_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="w">  </span><span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/coherence.tif</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div></p>
+<p>This works for one workflow. It stops working as soon as you have more than one,
+because there is no schema. <code>parameters</code> is just a bag. Pydantic cannot validate
+the types. mypy cannot help you. Every workflow accesses fields like:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;input_stack&quot;</span><span class="p">]</span>   <span class="c1"># str — not Path</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parameters</span><span class="p">[</span><span class="s2">&quot;window_size&quot;</span><span class="p">]</span>   <span class="c1"># Any — could be str &quot;5&quot; or int 5</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">parameters</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;overwrite&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>  <span class="c1"># is it bool or str &quot;false&quot;?</span>
+</code></pre></div>
+<p>Runtime surprises. No autocomplete. No type errors until the workflow runs.</p>
+<hr />
+<h2 id="why-three-base-models">Why three base models</h2>
+<p>EO workflows all follow the same shape regardless of algorithm:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>read something  →  transform it  →  write somewhere
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>    source            compute          destination
+</code></pre></div>
+<p>Splitting the config along these lines gives structure without forcing
+field definitions on anyone:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">SourceModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>        <span class="c1"># everything about inputs</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">ComputeParamsModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span> <span class="c1"># everything about the algorithm</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">DestinationModel</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>   <span class="c1"># everything about outputs</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a>    <span class="n">model_config</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span><span class="n">extra</span><span class="o">=</span><span class="s2">&quot;allow&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>YAML now has a clear shape every workflow follows:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nt">source</span><span class="p">:</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">  </span><span class="nt">input_stack</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/slc.zarr</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">  </span><span class="nt">crs</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">EPSG:32632</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="nt">compute_params</span><span class="p">:</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">  </span><span class="nt">window_size</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="nt">destination</span><span class="p">:</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="w">  </span><span class="nt">output_path</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">data/coherence.tif</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="w">  </span><span class="nt">overwrite</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">false</span>
+</code></pre></div>
+<p>A reader who has never seen this workflow before immediately knows where
+to look for the input path (source), the algorithm knob (compute_params),
+and the output path (destination). The flat dict gives no such signal.</p>
+<hr />
+<h2 id="why-extraallow-on-the-base-models">Why <code>extra="allow"</code> on the base models</h2>
+<p>The base models define <strong>no fields</strong>. They are empty contracts.
+<code>extra="allow"</code> means Pydantic stores whatever the YAML provides,
+without validating types.</p>
+<p>This keeps the base models stable. A new workflow can add fields
+to its concrete subclasses without touching <code>models.py</code>.</p>
+<p>At this stage, the data lives in <code>model_extra</code> — a plain dict — and
+is still untyped. That is intentional. The next step is where typing happens.</p>
+<hr />
+<h2 id="why-re-validate-in-__init__">Why re-validate in <code>__init__</code></h2>
+<p>Each concrete workflow subclasses the three base models and defines
+its own typed fields:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceSource</span><span class="p">(</span><span class="n">SourceModel</span><span class="p">):</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a>    <span class="n">input_stack</span><span class="p">:</span> <span class="n">Path</span>          <span class="c1"># ← str coerced to Path by Pydantic</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a>    <span class="n">crs</span><span class="p">:</span> <span class="nb">str</span>                   <span class="c1"># ← required, validated</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceComputeParams</span><span class="p">(</span><span class="n">ComputeParamsModel</span><span class="p">):</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a>    <span class="n">window_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">5</span>       <span class="c1"># ← default, type-checked</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceDestination</span><span class="p">(</span><span class="n">DestinationModel</span><span class="p">):</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a>    <span class="n">output_path</span><span class="p">:</span> <span class="n">Path</span>          <span class="c1"># ← str coerced to Path</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a>    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>    <span class="c1"># ← default, type-checked</span>
+</code></pre></div>
+<p>In <code>__init__</code>, the base model is re-validated into the concrete one:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">CoherenceWorkflow</span><span class="p">(</span><span class="n">Workflow</span><span class="p">):</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="n">WorkflowConfigModel</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">source</span> <span class="o">=</span> <span class="n">CoherenceSource</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">compute</span> <span class="o">=</span> <span class="n">CoherenceComputeParams</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">compute_params</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">destination</span> <span class="o">=</span> <span class="n">CoherenceDestination</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">config</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">model_dump</span><span class="p">())</span>
+</code></pre></div>
+<p>From this point on, every field access is fully typed:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="bp">self</span><span class="o">.</span><span class="n">source</span><span class="o">.</span><span class="n">input_stack</span>          <span class="c1"># Path — autocomplete works, mypy happy</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="bp">self</span><span class="o">.</span><span class="n">compute</span><span class="o">.</span><span class="n">window_size</span>         <span class="c1"># int  — not Any</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">output_path</span>     <span class="c1"># Path — not str</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="bp">self</span><span class="o">.</span><span class="n">destination</span><span class="o">.</span><span class="n">overwrite</span>       <span class="c1"># bool — not &quot;false&quot;</span>
+</code></pre></div>
+<p>Pydantic validates types and coerces values at <code>__init__</code> time, not
+at run time. A missing required field or a wrong type raises a <code>ValidationError</code>
+immediately when the workflow is constructed — before <code>run()</code> is ever called.</p>
+<hr />
+<h2 id="why-plain-yaml-instead-of-custom-tags">Why plain YAML instead of custom tags</h2>
+<p>The previous design used a <code>!workflow</code> YAML tag:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nt">workflow</span><span class="p">:</span><span class="w"> </span><span class="kt">!workflow</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">example</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">type</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">CoherenceWorkflow</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">  </span><span class="nt">parameters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">...</span>
+</code></pre></div>
+<p>This required registering a custom PyYAML constructor in <code>register_yaml_tags()</code>,
+calling it before every <code>from_yaml()</code>, and knowing that <code>!workflow</code> exists at all.
+It added complexity with no benefit — <code>type:</code> already identifies the workflow class,
+and <code>WORKFLOW_REGISTRY</code> in <code>main.py</code> already handles dispatch.</p>
+<p>The new design is three lines:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="nd">@classmethod</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">from_yaml</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">WorkflowConfigModel</span><span class="p">:</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>    <span class="k">return</span> <span class="bp">cls</span><span class="o">.</span><span class="n">model_validate</span><span class="p">(</span><span class="n">yaml</span><span class="o">.</span><span class="n">safe_load</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">read_text</span><span class="p">()))</span>
+</code></pre></div>
+<p>No tags. No constructors. No registration. The YAML is plain and reads
+like any other config file.</p>
+<hr />
+<h2 id="before-and-after">Before and after</h2>
 <table>
 <thead>
 <tr>
-<th>File</th>
-<th>Content</th>
-<th>Hard limit</th>
+<th></th>
+<th>Flat dict</th>
+<th>Three base models</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td><code>context.md</code></td>
-<td>Project identity: name, author, repo, Python version, license</td>
-<td>—</td>
+<td>Field names</td>
+<td>unconstrained</td>
+<td>grouped by source / compute / destination</td>
 </tr>
 <tr>
-<td><code>stack.md</code></td>
-<td>Toolchain, EO/SAR libraries, architecture summary, conventions</td>
-<td>—</td>
+<td>Types</td>
+<td><code>Any</code> at the config level</td>
+<td>typed in concrete subclass</td>
 </tr>
 <tr>
-<td><code>commands.md</code></td>
-<td>Every <code>just</code> command with a one-line description</td>
-<td>—</td>
+<td>mypy</td>
+<td>silent</td>
+<td>full coverage inside <code>__init__</code></td>
 </tr>
 <tr>
-<td><code>boundaries.md</code></td>
-<td>Three sections: Always / Ask first / Never</td>
-<td>—</td>
+<td>Validation timing</td>
+<td>at first field access</td>
+<td>at <code>__init__</code> call</td>
+</tr>
+<tr>
+<td>Adding a field</td>
+<td>edit dict anywhere</td>
+<td>add to subclass — base untouched</td>
+</tr>
+<tr>
+<td>YAML readability</td>
+<td>flat list of keys</td>
+<td>grouped sections</td>
+</tr>
+<tr>
+<td>Custom YAML magic</td>
+<td><code>!workflow</code> tag + <code>register_yaml_tags()</code></td>
+<td><code>yaml.safe_load()</code></td>
 </tr>
 </tbody>
 </table>
-<hr />
-<h2 id="claudemd">CLAUDE.md</h2>
-<p>Used by <a href="https://docs.anthropic.com/en/docs/claude-code/overview">Claude Code</a>.
-Loaded automatically when you open a project in Claude Code.</p>
-<p><strong>Structure:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gh"># Project name</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Short description.
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gu">## Development rules   ← project-specific TDD/SOLID rules</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gu">## Stack               ← from .llm/stack.md</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gu">## Commands            ← from .llm/commands.md</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gu">## Boundaries          ← from .llm/boundaries.md</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>---
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>Source of truth: .llm/  |  Keep this file under 200 lines
-</code></pre></div>
-<p>Hard limit: <strong>200 lines</strong>. Enforced by <code>test_claude_md_under_200_lines</code> in <code>tests/test_structure.py</code>.</p>
-<hr />
-<h2 id="agentsmd">AGENTS.md</h2>
-<p>Follows the <a href="https://github.com/agentprotocol/aaif">AAIF AGENTS.md specification</a>.
-Used by OpenAI Codex and other AGENTS.md-aware tools.</p>
-<p><strong>Structure:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gh"># AGENTS.md — Project name</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="gu">## Role          ← brief instruction to the agent</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="gu">## Project knowledge   ← from .llm/context.md + .llm/stack.md</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gu">## Commands      ← from .llm/commands.md</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="gu">## Code style    ← ruff/mypy/naming conventions</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="gu">## Boundaries    ← from .llm/boundaries.md</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="gu">## Git workflow  ← branch naming + Conventional Commits rules</span>
-</code></pre></div>
-<p>Hard limit: <strong>200 lines</strong>. Enforced by <code>test_agents_md_under_200_lines</code>.</p>
-<hr />
-<h2 id="primary_llm-flag">primary_llm flag</h2>
-<table>
-<thead>
-<tr>
-<th>Value</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>both</code> (default)</td>
-<td>CLAUDE.md + AGENTS.md generated</td>
-</tr>
-<tr>
-<td><code>claude</code></td>
-<td>AGENTS.md removed by post-gen hook</td>
-</tr>
-<tr>
-<td><code>codex</code></td>
-<td>CLAUDE.md removed by post-gen hook</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>.llm/</code> directory is <strong>always</strong> present — it is the source of truth.</p>
-<hr />
-<h2 id="keeping-context-lean">Keeping context lean</h2>
-<p>Context files have a token cost on every request. Keep them under 200 lines by:</p>
-<ul>
-<li>Describing patterns, not implementations</li>
-<li>Linking to <code>knowledge_base/</code> for deep detail</li>
-<li>Deleting stale information immediately</li>
-<li>Never auto-generating content — write every line by hand</li>
-</ul>
-<hr />
-<h2 id="updating-after-scaffold">Updating after scaffold</h2>
-<p>As the codebase evolves, update <code>.llm/</code> and then sync CLAUDE.md and AGENTS.md manually.
-A future release will add a <code>just sync-llm</code> command to automate this.</p>
-<p>For now: when you update <code>.llm/stack.md</code> or <code>.llm/boundaries.md</code>, copy the relevant
-sections into CLAUDE.md and AGENTS.md. The test suite will catch any files that exceed
-200 lines.</p>
+<p>The base models do less. Each workflow owns its own schema. The structure
+makes the intent readable before a single line of algorithm code is written.</p>
 
 
 
