@@ -1,12 +1,12 @@
 /* ── Signature gradient ────────────────────────────────────────────────────── */
 :root {
-  --gradient: linear-gradient(135deg, #00FF87 0%, #00C9FF 50%, #FF6B35 100%);
+  --gradient: linear-gradient(135deg, #4F46E5 0%, #9333EA 50%, #F43F5E 100%);
   --bg:       #0d1117;
   --surface:  #161b22;
   --border:   #30363d;
   --text:     #e6edf3;
   --muted:    #8b949e;
-  --accent:   #3fb950;
+  --accent:   #9333EA;
 }
 
 /* ── Dark background matching tools ───────────────────────────────────────── */
