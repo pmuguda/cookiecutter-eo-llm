@@ -1,0 +1,133 @@
+/* ── Signature gradient ────────────────────────────────────────────────────── */
+:root {
+  --gradient: linear-gradient(135deg, #00FF87 0%, #00C9FF 50%, #FF6B35 100%);
+  --bg:       #0d1117;
+  --surface:  #161b22;
+  --border:   #30363d;
+  --text:     #e6edf3;
+  --muted:    #8b949e;
+  --accent:   #3fb950;
+}
+
+/* ── Dark background matching tools ───────────────────────────────────────── */
+[data-md-color-scheme="slate"] {
+  --md-default-bg-color:        #0d1117;
+  --md-default-fg-color:        #e6edf3;
+  --md-default-fg-color--light: #8b949e;
+  --md-code-bg-color:           #161b22;
+  --md-code-fg-color:           #e6edf3;
+  --md-typeset-a-color:         #00C9FF;
+  --md-accent-fg-color:         #3fb950;
+  --md-primary-fg-color:        #0d1117;
+  --md-primary-bg-color:        #e6edf3;
+}
+
+/* ── Gradient text helper ─────────────────────────────────────────────────── */
+.gradient-text {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+.gradient-text:hover { opacity: .85; }
+
+/* ── Site title gradient ──────────────────────────────────────────────────── */
+.md-header__title {
+  background: var(--gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 800;
+}
+
+/* ── Ko-fi footer link ────────────────────────────────────────────────────── */
+.kofi-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: var(--gradient);
+  color: #000 !important;
+  font-weight: 700;
+  font-size: .75rem;
+  text-decoration: none !important;
+  transition: opacity .15s, transform .1s;
+  white-space: nowrap;
+}
+.kofi-link:hover {
+  opacity: .88;
+  transform: translateY(-1px);
+}
+
+/* ── Ko-fi button (inline in pages) ──────────────────────────────────────── */
+.kofi-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border-radius: 10px;
+  background: var(--gradient);
+  color: #000 !important;
+  font-weight: 700;
+  font-size: .875rem;
+  text-decoration: none !important;
+  transition: opacity .15s, transform .1s;
+}
+.kofi-btn:hover {
+  opacity: .88;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 20px rgba(0, 201, 255, .25);
+}
+
+/* ── Footer layout ────────────────────────────────────────────────────────── */
+.md-footer { background: #161b22; border-top: 1px solid #30363d; }
+.md-footer-meta { background: #0d1117; }
+.md-footer__inner { padding: 1rem; }
+
+/* ── Copyright area ───────────────────────────────────────────────────────── */
+.md-copyright {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: .5rem;
+  font-size: .7rem;
+  color: #8b949e;
+}
+
+/* ── Social icons — gradient on hover ────────────────────────────────────── */
+.md-social__link svg path { transition: fill .15s; }
+.md-social__link:hover svg { color: #00C9FF; }
+
+/* ── Header / nav bar ─────────────────────────────────────────────────────── */
+.md-header { background: #161b22; border-bottom: 1px solid #30363d; }
+.md-tabs   { background: #0d1117; border-bottom: 1px solid #30363d; }
+.md-tabs__link--active,
+.md-tabs__link:hover { color: #3fb950; }
+
+/* ── Admonition accent ────────────────────────────────────────────────────── */
+.md-typeset .admonition,
+.md-typeset details {
+  border-color: #30363d;
+  background: #161b22;
+}
+
+/* ── Code blocks ──────────────────────────────────────────────────────────── */
+.md-typeset pre > code { border: 1px solid #30363d; }
+
+/* ── Inline gradient badge (for use in md) ────────────────────────────────── */
+.badge-gradient {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 12px;
+  background: var(--gradient);
+  color: #000;
+  font-weight: 700;
+  font-size: .75rem;
+}
+
+/* ── Nav sidebar active item ─────────────────────────────────────────────── */
+.md-nav__link--active { color: #3fb950 !important; }
+.md-nav__link:hover   { color: #00C9FF; }
