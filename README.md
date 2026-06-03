@@ -1,4 +1,8 @@
-# cookiecutter-eo-llm
+<p align="center">
+  <img src="https://pmuguda.github.io/cookiecutter-eo-llm/assets/logo.svg" width="120" alt="cookiecutter-eo-llm logo"/>
+</p>
+
+<h1 align="center">cookiecutter-eo-llm</h1>
 
 [![CI](https://github.com/pmuguda/cookiecutter-eo-llm/actions/workflows/ci.yml/badge.svg)](https://github.com/pmuguda/cookiecutter-eo-llm/actions/workflows/ci.yml)
 [![Docs](https://img.shields.io/badge/docs-github%20pages-blue?logo=readthedocs&logoColor=white)](https://pmuguda.github.io/cookiecutter-eo-llm/)
