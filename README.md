@@ -5,6 +5,7 @@
 [![Coverage](https://pmuguda.github.io/cookiecutter-eo-llm/badges/coverage.svg)](https://pmuguda.github.io/cookiecutter-eo-llm/)
 [![Python](https://img.shields.io/badge/python-3.10%20%7C%203.11%20%7C%203.12-blue?logo=python&logoColor=white)](https://github.com/pmuguda/cookiecutter-eo-llm)
 [![License](https://img.shields.io/github/license/pmuguda/cookiecutter-eo-llm)](LICENSE)
+[![Buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/pavan_muguda)
 
 Cookiecutter template for **Earth Observation / SAR Python packages** with
 token-efficient, LLM-agnostic context files (CLAUDE.md, AGENTS.md) generated

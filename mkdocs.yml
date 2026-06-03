@@ -1,35 +1,55 @@
 site_name: cookiecutter-eo-llm
 site_description: Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files
 site_url: https://pmuguda.github.io/cookiecutter-eo-llm/
+site_author: Pavan Muguda Sanjeevamurthy
 repo_url: https://github.com/pmuguda/cookiecutter-eo-llm
 repo_name: pmuguda/cookiecutter-eo-llm
 edit_uri: edit/main/docs/
 
 theme:
   name: material
+  custom_dir: docs/overrides
   palette:
-    - scheme: default
-      primary: indigo
-      accent: deep-orange
-      toggle:
-        icon: material/brightness-7
-        name: Switch to dark mode
-    - scheme: slate
-      primary: indigo
-      accent: deep-orange
-      toggle:
-        icon: material/brightness-4
-        name: Switch to light mode
+    scheme: slate
+    primary: black
+    accent: teal
+  font:
+    text: Inter
+    code: JetBrains Mono
+  logo: assets/logo.svg
+  favicon: assets/logo.svg
   features:
     - navigation.tabs
     - navigation.sections
     - navigation.top
+    - navigation.instant
     - search.highlight
     - search.suggest
     - content.code.copy
     - content.action.edit
   icon:
     repo: fontawesome/brands/github
+
+extra_css:
+  - assets/style.css
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/pmuguda/cookiecutter-eo-llm
+      name: GitHub
+    - icon: fontawesome/solid/mug-hot
+      link: https://ko-fi.com/pavan_muguda
+      name: Buy me a coffee
+    - icon: fontawesome/solid/globe
+      link: https://pmuguda.github.io
+      name: Portfolio
+  generator: false
+
+copyright: >
+  Made by <a class="gradient-text" href="https://pmuguda.github.io" target="_blank" rel="noopener">Pavan Muguda Sanjeevamurthy</a>
+  &nbsp;·&nbsp;
+  <a class="kofi-link" href="https://ko-fi.com/pavan_muguda" target="_blank" rel="noopener">☕ Buy me a coffee</a>
 
 plugins:
   - search

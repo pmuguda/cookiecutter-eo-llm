@@ -1,12 +1,26 @@
 # cookiecutter-eo-llm
 
-**A Cookiecutter template for Earth Observation and SAR Python packages** — with token-efficient, LLM-agnostic context files generated from a single source of truth at scaffold time.
+**A Cookiecutter template for Earth Observation and SAR Python packages** — with
+token-efficient, LLM-agnostic context files (CLAUDE.md, AGENTS.md) generated from
+a single source of truth at scaffold time.
+
+<a class="kofi-btn" href="https://ko-fi.com/pavan_muguda" target="_blank" rel="noopener">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M4 8h13v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8z"/>
+    <path d="M17 9h2.5a2.5 2.5 0 0 1 0 5H17"/>
+    <path d="M7 3v2M11 3v2"/>
+  </svg>
+  Buy me a coffee
+</a>
 
 ---
 
 ## Why this template?
 
-EO/SAR packages share a common set of requirements: spatial-aware testing, strict type annotations, YAML-driven workflow configs, and increasingly — context files that keep AI coding assistants grounded in your architecture. This template bakes all of that in from day one.
+EO/SAR packages share a common set of requirements: spatial-aware testing, strict
+type annotations, YAML-driven workflow configs, and increasingly — context files
+that keep AI coding assistants grounded in your architecture.
+This template bakes all of that in from day one.
 
 | Problem | Solution |
 |---------|----------|
@@ -23,11 +37,12 @@ EO/SAR packages share a common set of requirements: spatial-aware testing, stric
 ```
 my-eo-package/
 ├── src/my_eo_package/       ← importable package (snake_case)
+│   ├── logger.py            ← get_logger(__name__) for every module
 │   ├── workflows/           ← abstract base + concrete implementations
 │   ├── config/              ← Pydantic v2 models + YAML tag loaders
 │   └── main.py              ← typer CLI + run() entry point
 ├── .llm/                    ← single source of truth for LLM context
-├── knowledge_base/          ← living architecture docs (update as you code)
+├── knowledge_base/          ← living architecture docs
 ├── tests/                   ← unit / integration / approval suites
 ├── CLAUDE.md                ← rendered from .llm/
 ├── AGENTS.md                ← rendered from .llm/
@@ -56,3 +71,16 @@ uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm
 - **Tokens are gold** — LLM context files stay lean and human-curated
 - **Single source of truth** — `.llm/` drives both CLAUDE.md and AGENTS.md
 - **Conventional Commits** — feat/fix/chore with SemVer mapping
+
+---
+
+<div style="text-align:center;margin-top:2rem">
+  <a class="kofi-btn" href="https://ko-fi.com/pavan_muguda" target="_blank" rel="noopener">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 8h13v5a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4V8z"/>
+      <path d="M17 9h2.5a2.5 2.5 0 0 1 0 5H17"/>
+      <path d="M7 3v2M11 3v2"/>
+    </svg>
+    If this saved you time, buy me a coffee ☕
+  </a>
+</div>
