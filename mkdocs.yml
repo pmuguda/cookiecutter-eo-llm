@@ -12,7 +12,7 @@ theme:
   palette:
     scheme: slate
     primary: black
-    accent: teal
+    accent: deep purple
   font:
     text: Inter
     code: JetBrains Mono
