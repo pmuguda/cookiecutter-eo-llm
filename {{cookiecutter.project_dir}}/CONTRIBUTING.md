@@ -58,5 +58,6 @@ Version bumps: `just bump <patch|minor|major>`
 - [ ] `just typecheck` passes
 - [ ] `just lint` passes
 - [ ] `knowledge_base/` updated if architecture changed
+- [ ] `docs/` updated if public API or architecture changed
 - [ ] Commit messages follow Conventional Commits
 - [ ] No LLM co-author footers in any commit

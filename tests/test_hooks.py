@@ -79,6 +79,37 @@ def test_remove_gitlab_ci_removes_file(project_dir: Path) -> None:
     assert not (project_dir / ".gitlab-ci.yml").exists()
 
 
+def test_configure_test_scheme_unit_removes_approval_and_hypothesis(
+    project_dir: Path,
+) -> None:
+    from hooks.post_gen_project import configure_test_scheme
+
+    configure_test_scheme(project_dir, project_dir / "pyproject.toml", "unit")
+    assert not (project_dir / "tests" / "approval").exists()
+    content = (project_dir / "pyproject.toml").read_text()
+    assert "hypothesis" not in content
+
+
+def test_configure_test_scheme_unit_and_approval_keeps_approval_removes_hypothesis(
+    project_dir: Path,
+) -> None:
+    from hooks.post_gen_project import configure_test_scheme
+
+    configure_test_scheme(project_dir, project_dir / "pyproject.toml", "unit_and_approval")
+    assert (project_dir / "tests" / "approval").exists()
+    content = (project_dir / "pyproject.toml").read_text()
+    assert "hypothesis" not in content
+
+
+def test_configure_test_scheme_full_keeps_everything(project_dir: Path) -> None:
+    from hooks.post_gen_project import configure_test_scheme
+
+    configure_test_scheme(project_dir, project_dir / "pyproject.toml", "full")
+    assert (project_dir / "tests" / "approval").exists()
+    content = (project_dir / "pyproject.toml").read_text()
+    assert "hypothesis" in content
+
+
 def test_init_git_creates_initial_commit(project_dir: Path) -> None:
     from hooks.post_gen_project import init_git
 

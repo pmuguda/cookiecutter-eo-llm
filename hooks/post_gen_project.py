@@ -37,6 +37,21 @@ def remove_mkdocs(project_dir: Path, pyproject_path: Path) -> None:
     pyproject_path.write_text("\n".join(filtered) + "\n")
 
 
+def configure_test_scheme(project_dir: Path, pyproject_path: Path, scheme: str) -> None:
+    """Configure the test suite based on the selected scheme.
+
+    unit               — unit tests only, no hypothesis, no approval tests
+    unit_and_approval  — unit + approval tests, no hypothesis
+    full               — keeps everything
+    """
+    if scheme == "unit":
+        remove_approval_tests(project_dir)
+        remove_hypothesis(pyproject_path)
+    elif scheme == "unit_and_approval":
+        remove_hypothesis(pyproject_path)
+    # "full" keeps everything
+
+
 def remove_github_actions(project_dir: Path) -> None:
     target = project_dir / ".github"
     if target.exists():
@@ -75,7 +90,7 @@ def print_next_steps(project_dir: str, project_slug: str) -> None:
     cd {project_dir}
     just setup        # install deps + pre-commit hooks
     just test         # run full test suite
-    just run config/example_workflow.yaml
+    just run config/config_{project_slug}.yml
 
 Update knowledge_base/ as the codebase evolves.
 """)
@@ -91,20 +106,18 @@ def main() -> None:
     elif primary_llm == "codex":
         remove_claude_md(project_dir)
 
-    if os.environ.get("COOKIECUTTER_INCLUDE_APPROVAL_TESTS", "y") == "n":
-        remove_approval_tests(project_dir)
-
-    if os.environ.get("COOKIECUTTER_INCLUDE_HYPOTHESIS", "y") == "n":
-        remove_hypothesis(pyproject_path)
-
     if os.environ.get("COOKIECUTTER_INCLUDE_MKDOCS", "y") == "n":
         remove_mkdocs(project_dir, pyproject_path)
 
-    if os.environ.get("COOKIECUTTER_INCLUDE_GITHUB_ACTIONS", "y") == "n":
-        remove_github_actions(project_dir)
-
-    if os.environ.get("COOKIECUTTER_INCLUDE_GITLAB_CI", "y") == "n":
+    ci_platform = os.environ.get("COOKIECUTTER_CI_PLATFORM", "github")
+    if ci_platform == "github":
         remove_gitlab_ci(project_dir)
+    elif ci_platform == "gitlab":
+        remove_github_actions(project_dir)
+    # "both" keeps both
+
+    test_scheme = os.environ.get("COOKIECUTTER_TEST_SCHEME", "full")
+    configure_test_scheme(project_dir, pyproject_path, test_scheme)
 
     init_git(project_dir)
     print_next_steps(project_dir.name, project_dir.name.replace("-", "_"))

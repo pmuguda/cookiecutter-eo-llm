@@ -7,7 +7,7 @@ from {{cookiecutter.project_slug}}.config.models import (
     WorkflowConfigModel,
 )
 from {{cookiecutter.project_slug}}.logger import get_logger
-from {{cookiecutter.project_slug}}.workflows.base import Workflow
+from {{cookiecutter.project_slug}}.workflow.base import Workflow
 
 _log = get_logger(__name__)
 

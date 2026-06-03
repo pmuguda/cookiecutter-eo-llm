@@ -7,6 +7,9 @@ on:
   pull_request:
     branches: [main]
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   # ── 1. BUILD ────────────────────────────────────────────────────────────────
   # Always runs. On tags: also builds the wheel and uploads it as an artifact.
@@ -17,7 +20,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
 
       - name: Set up Python
         run: uv python install 3.12
@@ -54,11 +57,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+{% if cookiecutter.python_requires == ">=3.12" %}
+        python-version: ["3.12"]
+{% elif cookiecutter.python_requires == ">=3.11" %}
+        python-version: ["3.11", "3.12"]
+{% else %}
         python-version: ["3.10", "3.11", "3.12"]
+{% endif %}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
 
       - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
         run: uv python install {% raw %}${{ matrix.python-version }}{% endraw %}
@@ -94,11 +103,17 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+{% if cookiecutter.python_requires == ">=3.12" %}
+        python-version: ["3.12"]
+{% elif cookiecutter.python_requires == ">=3.11" %}
+        python-version: ["3.11", "3.12"]
+{% else %}
         python-version: ["3.10", "3.11", "3.12"]
+{% endif %}
     steps:
       - uses: actions/checkout@v4
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
 
       - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
         run: uv python install {% raw %}${{ matrix.python-version }}{% endraw %}
@@ -142,7 +157,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
 
       - name: Install dependencies
         run: uv sync --dev --extra docs
@@ -174,7 +189,7 @@ jobs:
           name: dist
           path: dist/
 
-      - uses: astral-sh/setup-uv@v4
+      - uses: astral-sh/setup-uv@v5
 
       - name: Publish to PyPI
         run: uv publish dist/*

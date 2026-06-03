@@ -7,6 +7,15 @@ Write clean, typed, tested geospatial code.
 Follow TDD and SOLID principles at all times.
 Never add LLM attribution to commit messages or file headers.
 
+## Required knowledge
+
+Before writing code, read `knowledge_base/architecture.md` and `knowledge_base/workflows.md`.
+You need to understand:
+- The SourceModel / ComputeParamsModel / DestinationModel contract
+- How re-validation in `__init__` provides type safety
+- The CRS conventions used in this package
+- Pydantic v2 model_validate and model_dump patterns
+
 ## Project knowledge
 
 - **Project**: {{cookiecutter.project_name}}
@@ -59,7 +68,7 @@ just bump minor   just bump major   just build
 - Explicit CRS on every spatial operation
 - Type-annotate every public function argument and return value
 - TDD: failing test first, then implement, then refactor
-- Update knowledge_base/ when architecture changes
+- Update knowledge_base/ and docs/ when architecture or workflow changes
 - Conventional Commits on every commit message
 - No LLM co-author footers in any commit
 

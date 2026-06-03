@@ -7,8 +7,8 @@ src/{{cookiecutter.project_slug}}/
 ├── __init__.py
 ├── py.typed
 ├── logger.py    — get_logger(name) for consistent logging across modules
-├── main.py      — run(config_path) entry point + typer CLI
-├── workflows/
+├── main.py      — run(config) entry point + typer CLI
+├── workflow/
 │   ├── base.py      — abstract Workflow base class
 │   └── example.py   — concrete implementation showing the full pattern
 └── config/
@@ -63,7 +63,7 @@ and instantiates it directly — no registry, no dispatch.
 
 ## Workflow abstract class
 
-`Workflow` in `workflows/base.py` defines the contract:
+`Workflow` in `workflow/base.py` defines the contract:
 - `__init__(self, config: WorkflowConfigModel)` — receives validated config
 - `run(self) -> None` — execute the workflow
 - `validate(self) -> None` — validate inputs before running
@@ -99,7 +99,7 @@ class MyWorkflow(Workflow):
 
 The scaffold contains `ExampleWorkflow` as a placeholder. Replace it:
 
-1. Rename `workflows/example.py` to `workflows/<your_name>.py`
+1. Rename `workflow/example.py` to `workflow/<your_name>.py`
 2. Define `MySource`, `MyComputeParams`, `MyDestination` subclassing the base models
 3. Rename `ExampleWorkflow` → `MyWorkflow`, implement `run()` and `validate()`
 4. Update the import in `main.py` — one line changes

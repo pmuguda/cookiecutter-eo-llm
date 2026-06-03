@@ -16,7 +16,7 @@ uv add {{cookiecutter.project_dir}}
 ## Quick start
 
 ```bash
-{{cookiecutter.project_dir}} config/example_workflow.yaml
+{{cookiecutter.project_dir}} config/config_{{cookiecutter.project_slug}}.yml
 ```
 
 Or from Python:
@@ -25,7 +25,7 @@ Or from Python:
 from {{cookiecutter.project_slug}}.main import run
 from pathlib import Path
 
-run(Path("config/example_workflow.yaml"))
+run(Path("config/config_{{cookiecutter.project_slug}}.yml"))
 ```
 
 ## Configuration

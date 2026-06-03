@@ -1,6 +1,6 @@
 import pytest
 
-from {{cookiecutter.project_slug}}.workflows.base import Workflow
+from {{cookiecutter.project_slug}}.workflow.base import Workflow
 
 
 def test_workflow_cannot_be_instantiated_directly() -> None:

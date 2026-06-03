@@ -21,14 +21,14 @@ EXPECTED_PATHS = [
     "knowledge_base/workflows.md",
     "knowledge_base/decisions.md",
     "knowledge_base/changelog_context.md",
-    "config/example_workflow.yaml",
+    "config/config_my_eo_package.yml",
     "src/my_eo_package/__init__.py",
     "src/my_eo_package/py.typed",
     "src/my_eo_package/main.py",
     "src/my_eo_package/logger.py",
-    "src/my_eo_package/workflows/__init__.py",
-    "src/my_eo_package/workflows/base.py",
-    "src/my_eo_package/workflows/example.py",
+    "src/my_eo_package/workflow/__init__.py",
+    "src/my_eo_package/workflow/base.py",
+    "src/my_eo_package/workflow/example.py",
     "src/my_eo_package/config/__init__.py",
     "src/my_eo_package/config/models.py",
     "tests/conftest.py",
@@ -43,7 +43,7 @@ EXPECTED_PATHS = [
     "tests/integration/.gitkeep",
     "tests/approval/test_approval.py",
     "tests/approval/approved_files/.gitkeep",
-    "notebooks/00_exploration.ipynb",
+    "notebooks/00_my_eo_package_exploration.ipynb",
     "scripts/example_script.py",
     "docs/mkdocs.yml",
     "docs/index.md",
@@ -135,3 +135,27 @@ def test_gitlab_ci_deploy_uses_build_artifact(rendered: Path) -> None:
     content = (rendered / ".gitlab-ci.yml").read_text()
     assert "artifacts: true" in content
     assert "dist/*" in content
+
+
+def test_ci_platform_github_keeps_github_removes_gitlab(tmp_path: Path) -> None:
+    from tests.helpers.render import render_template
+
+    rendered = render_template(tmp_path, extra_context={"ci_platform": "github"})
+    assert (rendered / ".github" / "workflows" / "ci.yml").exists()
+    assert not (rendered / ".gitlab-ci.yml").exists()
+
+
+def test_ci_platform_gitlab_keeps_gitlab_removes_github(tmp_path: Path) -> None:
+    from tests.helpers.render import render_template
+
+    rendered = render_template(tmp_path, extra_context={"ci_platform": "gitlab"})
+    assert not (rendered / ".github").exists()
+    assert (rendered / ".gitlab-ci.yml").exists()
+
+
+def test_ci_platform_both_keeps_both(tmp_path: Path) -> None:
+    from tests.helpers.render import render_template
+
+    rendered = render_template(tmp_path, extra_context={"ci_platform": "both"})
+    assert (rendered / ".github" / "workflows" / "ci.yml").exists()
+    assert (rendered / ".gitlab-ci.yml").exists()

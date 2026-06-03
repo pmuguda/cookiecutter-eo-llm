@@ -6,7 +6,7 @@ stages:
 # ── shared base ─────────────────────────────────────────────────────────────────
 
 .base:
-  image: python:3.12-slim
+  image: python:{{ cookiecutter.python_requires | replace(">=", "") }}-slim
   before_script:
     - pip install uv --quiet
 

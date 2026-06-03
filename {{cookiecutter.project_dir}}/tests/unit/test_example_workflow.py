@@ -6,7 +6,7 @@ from {{cookiecutter.project_slug}}.config.models import (
     SourceModel,
     WorkflowConfigModel,
 )
-from {{cookiecutter.project_slug}}.workflows.example import ExampleWorkflow
+from {{cookiecutter.project_slug}}.workflow.example import ExampleWorkflow
 
 
 def make_config(

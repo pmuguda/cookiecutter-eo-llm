@@ -2,6 +2,15 @@
 
 {{cookiecutter.project_short_description}}
 
+## Required knowledge
+
+To contribute effectively, understand:
+- SAR/EO concepts relevant to this package (see knowledge_base/)
+- Pydantic v2: BaseModel, model_validate, ConfigDict, extra="allow"
+- Python ABC and abstractmethod patterns
+- Geospatial: CRS, EPSG codes, coordinate transforms
+- uv for dependency management — no pip
+
 ## Development rules
 
 - TDD: failing test → minimum code → refactor. Small steps always.
@@ -85,7 +94,7 @@ just run config/example.yaml   # run the workflow
 - Keep CLAUDE.md and AGENTS.md under 200 lines
 - TDD: failing test first, then implement, then refactor
 - SOLID: one responsibility per function and class
-- Update knowledge_base/ when architecture changes
+- Update knowledge_base/ and relevant docs/ whenever architecture, APIs, or workflows change
 - Conventional Commits on every commit message
 - No LLM co-author footers in any commit
 
