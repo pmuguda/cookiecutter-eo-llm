@@ -8,6 +8,9 @@ on:
     branches: [main]
 
 jobs:
+  # ── 1. BUILD ────────────────────────────────────────────────────────────────
+  # Always runs. On tags: also builds the wheel and uploads it as an artifact.
+  # On plain commits: lint + typecheck only (fast fail gate).
   build:
     name: build
     runs-on: ubuntu-latest
@@ -28,10 +31,26 @@ jobs:
       - name: Type check
         run: uv run mypy src/
 
-  test:
-    name: test (py{% raw %}${{ matrix.python-version }}{% endraw %})
+      - name: Build wheel
+        if: {% raw %}${{ startsWith(github.ref, 'refs/tags/v') }}{% endraw %}
+        run: uv build
+
+      - name: Upload wheel
+        if: {% raw %}${{ startsWith(github.ref, 'refs/tags/v') }}{% endraw %}
+        uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist/
+          retention-days: 7
+
+  # ── 2. TEST ─────────────────────────────────────────────────────────────────
+  # test-dev  → runs on every non-tag push / PR (development workflow)
+  # test-release → runs on tags only (release validation)
+  test-dev:
+    name: test-dev (py{% raw %}${{ matrix.python-version }}{% endraw %})
     runs-on: ubuntu-latest
     needs: build
+    if: {% raw %}${{ !startsWith(github.ref, 'refs/tags/v') }}{% endraw %}
     strategy:
       fail-fast: false
       matrix:
@@ -67,11 +86,55 @@ jobs:
           path: coverage.svg
           retention-days: 7
 
+  test-release:
+    name: test-release (py{% raw %}${{ matrix.python-version }}{% endraw %})
+    runs-on: ubuntu-latest
+    needs: build
+    if: {% raw %}${{ startsWith(github.ref, 'refs/tags/v') }}{% endraw %}
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: astral-sh/setup-uv@v4
+
+      - name: Set up Python {% raw %}${{ matrix.python-version }}{% endraw %}
+        run: uv python install {% raw %}${{ matrix.python-version }}{% endraw %}
+
+      - name: Install dependencies
+        run: uv sync --dev --python {% raw %}${{ matrix.python-version }}{% endraw %}
+
+      - name: Run tests
+        run: |
+          uv run python -m pytest \
+            --cov=src/{{cookiecutter.project_slug}} \
+            --cov-report=xml \
+            -q
+
+      - name: Generate coverage badge
+        if: {% raw %}${{ matrix.python-version == '3.12' }}{% endraw %}
+        run: uv run genbadge coverage --input-file coverage.xml --output-file coverage.svg --local
+
+      - name: Upload coverage badge
+        if: {% raw %}${{ matrix.python-version == '3.12' }}{% endraw %}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-badge
+          path: coverage.svg
+          retention-days: 7
+
+  # ── 3. DEPLOY ────────────────────────────────────────────────────────────────
+  # deploy-docs  → on main push (after test-dev) OR on tag (after test-release)
+  # deploy-pypi  → on tag only, publishes the wheel built in the build job
   deploy-docs:
     name: deploy docs
     runs-on: ubuntu-latest
-    needs: test
-    if: {% raw %}${{ github.ref == 'refs/heads/main' }}{% endraw %}
+    needs:
+      - test-dev
+      - test-release
+    if: {% raw %}${{ always() && !failure() && !cancelled() && (github.ref == 'refs/heads/main' || startsWith(github.ref, 'refs/tags/v')) }}{% endraw %}
     permissions:
       contents: write
     steps:
@@ -101,17 +164,17 @@ jobs:
   deploy-pypi:
     name: deploy pypi
     runs-on: ubuntu-latest
-    needs: test
+    needs: test-release
     if: {% raw %}${{ startsWith(github.ref, 'refs/tags/v') }}{% endraw %}
     permissions:
       id-token: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          name: dist
+          path: dist/
 
       - uses: astral-sh/setup-uv@v4
 
-      - name: Build
-        run: uv build
-
       - name: Publish to PyPI
-        run: uv publish
+        run: uv publish dist/*

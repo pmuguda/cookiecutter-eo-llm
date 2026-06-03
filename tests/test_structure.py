@@ -100,10 +100,21 @@ def test_publish_yml_does_not_exist(rendered: Path) -> None:
     assert not (rendered / ".github" / "workflows" / "publish.yml").exists()
 
 
-def test_github_ci_has_build_test_deploy_jobs(rendered: Path) -> None:
+def test_github_ci_has_all_jobs(rendered: Path) -> None:
     content = (rendered / ".github" / "workflows" / "ci.yml").read_text()
-    for job in ("build:", "test:", "deploy-docs:", "deploy-pypi:"):
+    for job in ("build:", "test-dev:", "test-release:", "deploy-docs:", "deploy-pypi:"):
         assert job in content, f"Missing job: {job}"
+
+
+def test_github_ci_test_dev_not_on_tags(rendered: Path) -> None:
+    content = (rendered / ".github" / "workflows" / "ci.yml").read_text()
+    assert "!startsWith(github.ref, 'refs/tags/v')" in content
+
+
+def test_github_ci_deploy_pypi_uses_dist_artifact(rendered: Path) -> None:
+    content = (rendered / ".github" / "workflows" / "ci.yml").read_text()
+    assert "name: dist" in content
+    assert "uv publish dist/*" in content
 
 
 def test_gitlab_ci_has_three_stages(rendered: Path) -> None:
@@ -116,3 +127,9 @@ def test_gitlab_ci_has_test_dev_and_test_release(rendered: Path) -> None:
     content = (rendered / ".gitlab-ci.yml").read_text()
     assert "test-dev:" in content
     assert "test-release:" in content
+
+
+def test_gitlab_ci_deploy_uses_build_artifact(rendered: Path) -> None:
+    content = (rendered / ".gitlab-ci.yml").read_text()
+    assert "artifacts: true" in content
+    assert "dist/*" in content

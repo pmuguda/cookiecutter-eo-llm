@@ -3,14 +3,17 @@ stages:
   - test
   - deploy
 
-# ── shared base ────────────────────────────────────────────────────────────────
+# ── shared base ─────────────────────────────────────────────────────────────────
 
 .base:
   image: python:3.12-slim
   before_script:
     - pip install uv --quiet
 
-# ── build ──────────────────────────────────────────────────────────────────────
+# ── 1. BUILD ────────────────────────────────────────────────────────────────────
+# Always runs.
+# On tags: also runs `uv build` and exposes dist/ as a job artifact.
+# On plain commits: lint + typecheck only.
 
 build:
   extends: .base
@@ -19,12 +22,24 @@ build:
     - uv sync --dev
     - uv run ruff check src/ tests/
     - uv run mypy src/
+    - |
+      if [ -n "$CI_COMMIT_TAG" ]; then
+        uv build
+      fi
+  artifacts:
+    paths:
+      - dist/
+    when: on_success
+    expire_in: 1 week
 
-# ── test ───────────────────────────────────────────────────────────────────────
+# ── 2. TEST ─────────────────────────────────────────────────────────────────────
+# test-dev     → non-tag commits  (development workflow)
+# test-release → tags only        (release validation, stricter)
 
 .test-template:
   extends: .base
   stage: test
+  needs: [build]
   coverage: '/^TOTAL.+?(\d+\%)$/'
   artifacts:
     when: on_failure
@@ -55,7 +70,7 @@ test-dev:
 test-release:
   extends: .test-template
   script:
-    - uv sync
+    - uv sync --dev
     - uv run python -m pytest
         --cov=src/{{cookiecutter.project_slug}}
         --cov-report=xml
@@ -64,7 +79,10 @@ test-release:
     - if: $CI_COMMIT_TAG
       when: always
 
-# ── deploy ─────────────────────────────────────────────────────────────────────
+# ── 3. DEPLOY ───────────────────────────────────────────────────────────────────
+# deploy-docs        → default branch only, after test-dev
+# deploy-pypi-gitlab → tag only, after test-release, uses wheel from build job
+# deploy-pypi-public → tag only, manual gate (publish to PyPI.org)
 
 deploy-docs:
   extends: .base
@@ -83,13 +101,16 @@ deploy-docs:
 deploy-pypi-gitlab:
   extends: .base
   stage: deploy
-  needs: [test-release]
+  needs:
+    - job: build
+      artifacts: true
+    - job: test-release
   script:
-    - uv build
     - uv publish
         --publish-url ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/pypi
         --username gitlab-ci-token
         --password ${CI_JOB_TOKEN}
+        dist/*
   rules:
     - if: $CI_COMMIT_TAG
       when: on_success
@@ -97,10 +118,12 @@ deploy-pypi-gitlab:
 deploy-pypi-public:
   extends: .base
   stage: deploy
-  needs: [test-release]
+  needs:
+    - job: build
+      artifacts: true
+    - job: test-release
   script:
-    - uv build
-    - uv publish
+    - uv publish dist/*
   rules:
     - if: $CI_COMMIT_TAG
       when: manual
