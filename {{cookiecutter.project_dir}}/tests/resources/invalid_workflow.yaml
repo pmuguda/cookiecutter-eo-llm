@@ -1,0 +1,4 @@
+workflow: !workflow
+  type: ExampleWorkflow
+  parameters:
+    input_path: data/input.tif

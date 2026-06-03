@@ -1,0 +1,14 @@
+site_name: {{cookiecutter.project_name}}
+site_description: {{cookiecutter.project_short_description}}
+repo_url: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}
+theme:
+  name: material
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          paths: [src]
+nav:
+  - Home: index.md
+  - API: api/index.md

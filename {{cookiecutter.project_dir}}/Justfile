@@ -1,0 +1,50 @@
+default:
+    @just --list
+
+setup:
+    uv sync --dev
+    pre-commit install
+
+lint:
+    uv run ruff check src/ tests/
+
+format:
+    uv run ruff format src/ tests/
+
+typecheck:
+    uv run mypy src/
+
+check: lint typecheck
+
+test:
+    uv run pytest
+
+test-unit:
+    uv run pytest tests/unit/
+
+test-integration:
+    uv run pytest tests/integration/
+
+test-approval:
+    uv run pytest tests/approval/
+
+test-cov:
+    uv run pytest --cov=src/{{cookiecutter.project_slug}} --cov-report=html
+
+docs:
+    uv run mkdocs serve
+
+docs-build:
+    uv run mkdocs build
+
+bump part:
+    uv run bump-my-version bump {{ "{{" }}part{{ "}}" }}
+
+build:
+    uv build
+
+publish:
+    uv publish
+
+run config:
+    uv run {{cookiecutter.project_dir}} {{ "{{" }}config{{ "}}" }}
