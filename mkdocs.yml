@@ -79,6 +79,7 @@ nav:
       - Hooks: hooks.md
   - Guides:
       - Adding a Workflow: guides/add-workflow.md
+      - Config Model Design: guides/config-design.md
       - LLM Context Files: guides/llm-context.md
       - CI/CD: guides/cicd.md
   - Contributing: contributing.md
