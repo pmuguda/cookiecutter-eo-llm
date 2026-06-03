@@ -43,13 +43,17 @@ jobs:
             --cov-report=term-missing \
             -q
 
-      - name: Upload coverage to Codecov
+      - name: Generate coverage badge
         if: matrix.python-version == '3.12'
-        uses: codecov/codecov-action@v4
+        run: uv run genbadge coverage --input-file coverage.xml --output-file coverage.svg --local
+
+      - name: Upload coverage badge
+        if: matrix.python-version == '3.12'
+        uses: actions/upload-artifact@v4
         with:
-          files: coverage.xml
-          fail_ci_if_error: false
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: coverage-badge
+          path: coverage.svg
+          retention-days: 7
 
   docs:
     name: build docs
