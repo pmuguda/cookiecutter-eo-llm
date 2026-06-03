@@ -16,8 +16,8 @@ theme:
   font:
     text: Inter
     code: JetBrains Mono
-  logo: assets/logo.svg
-  favicon: assets/logo.svg
+  logo: assets/icon.svg
+  favicon: assets/icon.svg
   features:
     - navigation.tabs
     - navigation.sections

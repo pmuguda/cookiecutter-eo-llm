@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://pmuguda.github.io/cookiecutter-eo-llm/assets/logo.svg" width="120" alt="cookiecutter-eo-llm logo"/>
+  <img src="https://pmuguda.github.io/cookiecutter-eo-llm/assets/icon.svg" width="120" alt="cookiecutter-eo-llm logo"/>
 </p>
 
 <h1 align="center">cookiecutter-eo-llm</h1>
