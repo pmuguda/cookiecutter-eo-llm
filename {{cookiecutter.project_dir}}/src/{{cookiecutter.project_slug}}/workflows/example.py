@@ -1,5 +1,8 @@
 from {{cookiecutter.project_slug}}.config.models import WorkflowConfig
+from {{cookiecutter.project_slug}}.logger import get_logger
 from {{cookiecutter.project_slug}}.workflows.base import Workflow
+
+_log = get_logger(__name__)
 
 
 class ExampleWorkflow(Workflow):
@@ -14,6 +17,6 @@ class ExampleWorkflow(Workflow):
 
     def run(self) -> None:
         self.validate()
-        print(f"input:  {self.config.parameters['input_path']}")
-        print(f"output: {self.config.parameters['output_path']}")
-        print(f"crs:    {self.config.parameters['crs']}")
+        _log.info("input:  %s", self.config.parameters["input_path"])
+        _log.info("output: %s", self.config.parameters["output_path"])
+        _log.info("crs:    %s", self.config.parameters["crs"])
