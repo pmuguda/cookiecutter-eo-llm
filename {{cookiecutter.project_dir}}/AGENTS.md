@@ -28,10 +28,12 @@ Never add LLM attribution to commit messages or file headers.
 
 ### Architecture
 
+- One package = one workflow — imported directly in main.py, no registry
 - Abstract Workflow base in workflows/base.py
-- Concrete workflows: subclass + implement run() and validate()
-- YAML configs auto-instantiate Workflow subclasses via YAML tags
-- main.py: run(config_path) + typer CLI
+- Concrete workflow: subclass SourceModel / ComputeParamsModel / DestinationModel,
+  subclass Workflow, implement run() and validate()
+- Plain YAML config: name / source / compute_params / destination — no custom tags
+- main.py: WorkflowConfigModel.from_yaml() → Workflow → validate → run
 
 ## Commands
 

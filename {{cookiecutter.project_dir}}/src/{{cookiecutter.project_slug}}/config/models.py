@@ -28,7 +28,6 @@ class WorkflowConfigModel(BaseModel):
     """Top-level workflow config. Validated from plain YAML — no custom tags."""
 
     name: str
-    type: str
     source: SourceModel
     compute_params: ComputeParamsModel = Field(default_factory=ComputeParamsModel)
     destination: DestinationModel

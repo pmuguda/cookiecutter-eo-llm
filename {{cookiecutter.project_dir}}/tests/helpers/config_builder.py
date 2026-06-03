@@ -15,7 +15,6 @@ def build_example_config(
 ) -> WorkflowConfigModel:
     return WorkflowConfigModel(
         name="test-example",
-        type="ExampleWorkflow",
         source=SourceModel(input_path=input_path, crs=crs),
         compute_params=ComputeParamsModel(),
         destination=DestinationModel(output_path=output_path),

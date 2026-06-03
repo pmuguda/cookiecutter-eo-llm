@@ -11,16 +11,18 @@ just setup
 Write a failing test first. Then write the minimum code to make it pass.
 Then refactor. Always small steps — never implement without a red test.
 
-## Adding a new workflow
+## Implementing the workflow
 
-1. Define `MySource(SourceModel)`, `MyComputeParams(ComputeParamsModel)`,
-   `MyDestination(DestinationModel)` with typed fields in a new file under
-   `src/{{cookiecutter.project_slug}}/workflows/`
-2. Subclass `Workflow`, re-validate config sections in `__init__`,
-   implement `run()` and `validate()`
-3. Register the class in `WORKFLOW_REGISTRY` in `main.py`
-4. Add unit tests in `tests/unit/`
-5. Update `knowledge_base/workflows.md`
+This package is built around **one workflow**. `ExampleWorkflow` is the scaffold
+placeholder — replace it with your real implementation:
+
+1. Rename `workflows/example.py` and its classes to match your domain
+2. Define `MySource(SourceModel)`, `MyComputeParams(ComputeParamsModel)`,
+   `MyDestination(DestinationModel)` with typed fields
+3. Implement `run()` and `validate()`
+4. Update the single import in `main.py`
+5. Add unit tests in `tests/unit/`
+6. Update `knowledge_base/workflows.md`
 
 ## Updating knowledge_base/
 

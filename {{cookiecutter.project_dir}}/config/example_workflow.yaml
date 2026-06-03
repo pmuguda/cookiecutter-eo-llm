@@ -1,5 +1,4 @@
 name: example
-type: ExampleWorkflow
 source:
   input_path: data/input.tif
   crs: EPSG:32632

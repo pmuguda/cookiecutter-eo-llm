@@ -47,17 +47,19 @@ No custom YAML tags. Plain `yaml.safe_load()` feeds Pydantic validation.
 ## Workflow config YAML structure
 
 ```yaml
-name: my-run                  # human-readable label (used in logs)
-type: MyWorkflow              # maps to WORKFLOW_REGISTRY key in main.py
+name: my-run          # human-readable label used in logs
 source:
   input_path: data/input.tif
   crs: EPSG:32632
-compute_params:               # omit entirely if the workflow needs none
+compute_params:       # omit entirely if the workflow needs no parameters
   resampling: bilinear
 destination:
   output_path: data/output.tif
   overwrite: false
 ```
+
+No `type:` field. This package implements **one workflow**. `main.py` imports
+and instantiates it directly — no registry, no dispatch.
 
 ## Workflow abstract class
 
@@ -93,11 +95,13 @@ class MyWorkflow(Workflow):
         self.destination = MyDestination.model_validate(config.destination.model_dump())
 ```
 
-## How to add a new workflow
+## Customising the workflow
 
-1. Create `src/{{cookiecutter.project_slug}}/workflows/<name>.py`
+The scaffold contains `ExampleWorkflow` as a placeholder. Replace it:
+
+1. Rename `workflows/example.py` to `workflows/<your_name>.py`
 2. Define `MySource`, `MyComputeParams`, `MyDestination` subclassing the base models
-3. Subclass `Workflow`, implement `run()` and `validate()`
-4. Register in `WORKFLOW_REGISTRY` in `main.py`
-5. Add tests in `tests/unit/test_<name>_workflow.py`
+3. Rename `ExampleWorkflow` → `MyWorkflow`, implement `run()` and `validate()`
+4. Update the import in `main.py` — one line changes
+5. Add tests in `tests/unit/test_<your_name>_workflow.py`
 6. Update `knowledge_base/workflows.md`

@@ -8,7 +8,6 @@ def test_run_calls_workflow_validate_and_run(tmp_path: Path) -> None:
     config_file = tmp_path / "workflow.yaml"
     config_file.write_text(
         "name: test\n"
-        "type: ExampleWorkflow\n"
         "source:\n"
         "  input_path: a.tif\n"
         "  crs: EPSG:4326\n"
@@ -19,7 +18,7 @@ def test_run_calls_workflow_validate_and_run(tmp_path: Path) -> None:
     mock_instance = MagicMock()
     mock_class = MagicMock(return_value=mock_instance)
 
-    with patch("{{cookiecutter.project_slug}}.main.WORKFLOW_REGISTRY", {"ExampleWorkflow": mock_class}):
+    with patch("{{cookiecutter.project_slug}}.main.Workflow", mock_class):
         run(config_file)
 
     mock_class.assert_called_once()

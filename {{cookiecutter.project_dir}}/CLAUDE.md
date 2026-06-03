@@ -8,7 +8,7 @@
 - SOLID: one responsibility per function and class.
 - No comments — rename and simplify instead.
 - Type-annotate every argument and return value. mypy strict must pass.
-- New workflow: subclass Workflow, implement run() + validate(), register YAML tag.
+- One package = one workflow. Rename ExampleWorkflow; update the import in main.py.
 - Update knowledge_base/ whenever architecture changes.
 - Conventional Commits on every commit — see .llm/boundaries.md.
 - Never add LLM co-author footers to commits.
@@ -30,15 +30,16 @@
 - pyproj, shapely, geopandas — CRS and vector ops
 - pydantic>=2.7 — config validation
 - typer — CLI
-- pyyaml + jinja2 — config loading and YAML tags
+- pyyaml — plain YAML loading, no custom tags
 
 ### Architecture
 
+- One workflow per package — imported directly in main.py
 - Workflow base class (abstract) in workflows/base.py
-- Concrete workflows: subclass Workflow, implement run() and validate()
-- YAML configs in config/ — one file per workflow run
-- YAML tags auto-instantiate the correct Workflow subclass
-- main.py: run(config_path) function + typer CLI
+- Concrete workflow: subclass Workflow, subclass SourceModel /
+  ComputeParamsModel / DestinationModel, implement run() and validate()
+- Plain YAML config — name / source / compute_params / destination
+- main.py: WorkflowConfigModel.from_yaml() → Workflow → validate → run
 - knowledge_base/ updated whenever architecture changes
 
 ### Conventions
@@ -71,7 +72,7 @@ just bump minor                # 0.1.0 → 0.2.0  (feat: commits)
 just bump major                # 0.1.0 → 1.0.0  (BREAKING CHANGE)
 just build                     # build distribution
 just publish                   # publish to PyPI
-just run config/example.yaml   # run a workflow
+just run config/example.yaml   # run the workflow
 ```
 
 ## Boundaries
@@ -85,7 +86,6 @@ just run config/example.yaml   # run a workflow
 - TDD: failing test first, then implement, then refactor
 - SOLID: one responsibility per function and class
 - Update knowledge_base/ when architecture changes
-- New workflow = subclass + YAML tag only — nothing else changes
 - Conventional Commits on every commit message
 - No LLM co-author footers in any commit
 

@@ -14,14 +14,15 @@
 - pyproj, shapely, geopandas     — CRS and vector ops
 - pydantic>=2.7                  — config validation
 - typer                          — CLI
-- pyyaml + jinja2                — config loading and YAML tags
+- pyyaml                          — plain YAML loading, no custom tags
 - scipy                          — signal processing
 
 ## Architecture
 - Workflow base class (abstract) in workflows/base.py
-- Concrete workflows: subclass Workflow, implement run() and validate()
+- One workflow per package — imported directly in main.py, no registry
+- Concrete workflow: subclass SourceModel / ComputeParamsModel / DestinationModel
 - YAML configs in config/ — one file per workflow run
-- YAML tags auto-instantiate the correct Workflow subclass
+- Plain YAML: name / source / compute_params / destination — no custom tags
 - main.py: run(config_path) function + typer CLI
 - knowledge_base/ updated whenever architecture changes
 
