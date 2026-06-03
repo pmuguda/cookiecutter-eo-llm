@@ -1,39 +1,50 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">
   <defs>
-    <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#4F46E5"/>
-      <stop offset="50%"  stop-color="#9333EA"/>
-      <stop offset="100%" stop-color="#F43F5E"/>
-    </linearGradient>
-    <clipPath id="c"><circle cx="20" cy="24" r="12"/></clipPath>
+    <clipPath id="earth">
+      <circle cx="20" cy="22" r="10"/>
+    </clipPath>
   </defs>
 
-  <!-- Background tile -->
-  <rect width="40" height="40" rx="9" fill="url(#g)"/>
+  <!-- Deep space background -->
+  <rect width="40" height="40" rx="8" fill="#0a0e1a"/>
 
-  <!-- Earth globe (white base) -->
-  <circle cx="20" cy="24" r="12" fill="rgba(255,255,255,0.15)" stroke="rgba(255,255,255,0.9)" stroke-width="1.2"/>
+  <!-- Orbit ring — behind earth (dim) -->
+  <ellipse cx="20" cy="22" rx="15" ry="6.5"
+           fill="none" stroke="white" stroke-width="1.1"
+           stroke-dasharray="2.2 1.6" opacity="0.3"
+           transform="rotate(-28, 20, 22)"/>
 
-  <!-- Land masses (white) clipped to globe -->
-  <g clip-path="url(#c)" fill="white" opacity="0.85">
-    <ellipse cx="17" cy="25" rx="3"   ry="5"/>
-    <ellipse cx="25" cy="21" rx="4"   ry="2.5"/>
-    <ellipse cx="12" cy="22" rx="1.8" ry="3.5"/>
-    <ellipse cx="23" cy="30" rx="2.5" ry="1.5"/>
+  <!-- Earth: flat blue -->
+  <circle cx="20" cy="22" r="10" fill="#1e40af"/>
+
+  <!-- Land masses (clipped to earth) — flat green, no gradient -->
+  <g clip-path="url(#earth)" fill="#16a34a" opacity="0.88">
+    <!-- Africa / Europe -->
+    <ellipse cx="17"  cy="23"  rx="2.4" ry="4.3"/>
+    <!-- Asia -->
+    <ellipse cx="24"  cy="18.5" rx="3.8" ry="2.5"/>
+    <!-- Americas -->
+    <ellipse cx="11"  cy="21"  rx="1.6" ry="3.3"/>
+    <!-- Australia -->
+    <ellipse cx="25.5" cy="27" rx="1.8" ry="1.4"/>
   </g>
 
-  <!-- Cookie cutter ring on top of globe -->
-  <circle cx="20" cy="16" r="7"
-          fill="none"
-          stroke="white" stroke-width="1.6"
-          stroke-dasharray="2.8 1.6"
-          opacity="0.95"/>
+  <!-- Orbit ring — in front of earth (bright), same path drawn on top -->
+  <ellipse cx="20" cy="22" rx="15" ry="6.5"
+           fill="none" stroke="white" stroke-width="1.1"
+           stroke-dasharray="2.2 1.6" opacity="0.82"
+           transform="rotate(-28, 20, 22)"/>
 
-  <!-- Cutter handle -->
-  <rect x="15.5" y="3" width="9" height="4" rx="1.8"
-        fill="white" opacity="0.95"/>
-
-  <!-- Cutter legs -->
-  <line x1="17.5" y1="7" x2="15" y2="9.5" stroke="white" stroke-width="1.3" opacity="0.85"/>
-  <line x1="22.5" y1="7" x2="25" y2="9.5" stroke="white" stroke-width="1.3" opacity="0.85"/>
+  <!-- Satellite — top-right of orbit, clear of earth -->
+  <!-- Body -->
+  <rect x="25.5" y="9.5" width="5.5" height="2.6" rx="0.5" fill="white"/>
+  <!-- Solar panel left -->
+  <rect x="21.8" y="10.2" width="3.3" height="1.2" rx="0.3" fill="#93c5fd"/>
+  <!-- Solar panel right -->
+  <rect x="31"   y="10.2" width="3.3" height="1.2" rx="0.3" fill="#93c5fd"/>
+  <!-- Antenna -->
+  <line x1="28.2" y1="9.5" x2="28.2" y2="7.5"
+        stroke="white" stroke-width="0.65"/>
+  <circle cx="28.2" cy="7.1" r="0.85"
+          fill="none" stroke="white" stroke-width="0.6"/>
 </svg>
