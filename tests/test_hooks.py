@@ -1,3 +1,4 @@
+import subprocess
 from pathlib import Path
 
 import pytest
@@ -76,3 +77,33 @@ def test_remove_gitlab_ci_removes_file(project_dir: Path) -> None:
 
     remove_gitlab_ci(project_dir)
     assert not (project_dir / ".gitlab-ci.yml").exists()
+
+
+def test_init_git_creates_initial_commit(project_dir: Path) -> None:
+    from hooks.post_gen_project import init_git
+
+    init_git(project_dir)
+    result = subprocess.run(
+        ["git", "log", "--oneline"],
+        cwd=project_dir,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0
+    assert "chore: initial scaffold from cookiecutter-eo-llm" in result.stdout
+
+
+def test_init_git_succeeds_without_global_git_config(tmp_path: Path) -> None:
+    from hooks.post_gen_project import init_git
+
+    project = tmp_path / "no-git-config"
+    project.mkdir()
+    (project / "README.md").write_text("hello")
+    init_git(project)
+    result = subprocess.run(
+        ["git", "log", "--oneline"],
+        cwd=project,
+        capture_output=True,
+        text=True,
+    )
+    assert "chore: initial scaffold" in result.stdout

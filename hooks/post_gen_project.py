@@ -51,6 +51,14 @@ def remove_gitlab_ci(project_dir: Path) -> None:
 
 def init_git(project_dir: Path) -> None:
     subprocess.run(["git", "init"], cwd=project_dir, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "scaffold@cookiecutter-eo-llm"],
+        cwd=project_dir, check=True, capture_output=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "cookiecutter-eo-llm"],
+        cwd=project_dir, check=True, capture_output=True,
+    )
     subprocess.run(["git", "add", "."], cwd=project_dir, check=True, capture_output=True)
     subprocess.run(
         ["git", "commit", "-m", "chore: initial scaffold from cookiecutter-eo-llm"],
