@@ -37,7 +37,7 @@ my-eo-package/                          ← project_dir (kebab-case)
 │       │   ├── base.py                 ← abstract Workflow(ABC)
 │       │   └── example.py             ← ExampleWorkflow
 │       └── config/
-│           └── models.py              ← WorkflowConfig + register_yaml_tags()
+│           └── models.py              ← SourceModel / ComputeParamsModel / DestinationModel / WorkflowConfigModel
 │
 ├── tests/
 │   ├── conftest.py                     ← shared xarray fixture
@@ -87,17 +87,28 @@ The two cookiecutter variables enforce a deliberate split:
 - **`project_dir`** (`my-eo-package`) → filesystem, PyPI, CLI command  
 - **`project_slug`** (`my_eo_package`) → Python imports, `src/` subfolder
 
-### Workflow pattern
+### One package = one workflow
 
-Every workflow is a class that subclasses `Workflow` and implements two methods:
+Each generated package is purpose-built for a single workflow. `main.py` imports
+the workflow class directly — no type dispatch, no registry.
 
-```python
-class Workflow(ABC):
-    def run(self) -> None: ...
-    def validate(self) -> None: ...
+When you scaffold the project, rename `ExampleWorkflow` to your domain class and
+update the single import in `main.py`. That is the only change needed.
+
+### Config model design
+
+The config splits into three typed sections:
+
+```yaml
+name: my-run        # label for this run (used in logs)
+source:             # inputs — paths, loaders, CRS
+compute_params:     # algorithm parameters
+destination:        # outputs — paths, format, overwrite flag
 ```
 
-Adding a new workflow requires exactly: one new file, one new YAML constructor. Nothing else changes.
+Each section maps to an empty base model (`SourceModel`, `ComputeParamsModel`,
+`DestinationModel`) that the concrete workflow subclasses with typed fields.
+See [Config Model Design](guides/config-design.md) for the full rationale.
 
 ### .llm/ as single source of truth
 

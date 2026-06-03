@@ -12,14 +12,12 @@ The simplest possible config model is a single class with a `parameters` dict:
 ```python
 class WorkflowConfig(BaseModel):
     name: str
-    type: str
     parameters: dict[str, Any]   # ← everything in one bag
 ```
 
 YAML:
 ```yaml
 name: my-run
-type: CoherenceWorkflow
 parameters:
   input_stack: data/slc.zarr
   crs: EPSG:32632
@@ -28,9 +26,9 @@ parameters:
   overwrite: false
 ```
 
-This works for one workflow. It stops working as soon as you have more than one,
-because there is no schema. `parameters` is just a bag. Pydantic cannot validate
-the types. mypy cannot help you. Every workflow accesses fields like:
+This works initially, but there is no schema. `parameters` is just a bag.
+Pydantic cannot validate the types. mypy cannot help you. Every workflow
+accesses fields like:
 
 ```python
 self.config.parameters["input_stack"]   # str — not Path
@@ -144,21 +142,33 @@ immediately when the workflow is constructed — before `run()` is ever called.
 
 ## Why plain YAML instead of custom tags
 
-The previous design used a `!workflow` YAML tag:
+An earlier design used a `!workflow` custom PyYAML tag and a `type:` field
+for dispatching to the right workflow class:
 
 ```yaml
 workflow: !workflow
   name: example
-  type: CoherenceWorkflow
+  type: CoherenceWorkflow   # ← dispatch key
   parameters: ...
 ```
 
-This required registering a custom PyYAML constructor in `register_yaml_tags()`,
-calling it before every `from_yaml()`, and knowing that `!workflow` exists at all.
-It added complexity with no benefit — `type:` already identifies the workflow class,
-and `WORKFLOW_REGISTRY` in `main.py` already handles dispatch.
+This required registering a PyYAML constructor, calling `register_yaml_tags()`
+before every `from_yaml()`, maintaining a `WORKFLOW_REGISTRY` dict in `main.py`,
+and knowing the `!workflow` tag existed at all.
 
-The new design is three lines:
+None of it was needed. Each package implements **one workflow**. `main.py`
+imports it directly — there is nothing to dispatch to:
+
+```python
+# main.py
+from my_eo_package.workflows.coherence import CoherenceWorkflow as Workflow
+
+def run(config_path: Path) -> None:
+    config = WorkflowConfigModel.from_yaml(config_path)
+    workflow = Workflow(config)   # direct, no lookup
+```
+
+`from_yaml` is three lines:
 
 ```python
 @classmethod
@@ -166,8 +176,8 @@ def from_yaml(cls, path: Path) -> WorkflowConfigModel:
     return cls.model_validate(yaml.safe_load(path.read_text()))
 ```
 
-No tags. No constructors. No registration. The YAML is plain and reads
-like any other config file.
+No tags. No constructors. No registration. No `type:` field in the YAML.
+The config file reads like any other config file.
 
 ---
 
@@ -181,7 +191,8 @@ like any other config file.
 | Validation timing | at first field access | at `__init__` call |
 | Adding a field | edit dict anywhere | add to subclass — base untouched |
 | YAML readability | flat list of keys | grouped sections |
-| Custom YAML magic | `!workflow` tag + `register_yaml_tags()` | `yaml.safe_load()` |
+| YAML loading | `!workflow` tag + `register_yaml_tags()` | `yaml.safe_load()` |
+| Dispatch | `WORKFLOW_REGISTRY[config.type]` | direct import in `main.py` |
 
 The base models do less. Each workflow owns its own schema. The structure
 makes the intent readable before a single line of algorithm code is written.
