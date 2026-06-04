@@ -80,6 +80,7 @@ just bump minor   just bump major   just build
 - Type-annotate every public function argument and return value
 - TDD: failing test first, then implement, then refactor
 - Update knowledge_base/ and docs/ when architecture or workflow changes
+- Run `just update-context` near the end of coding sessions that change source, tests, config, docs, or workflow structure
 - Conventional Commits on every commit message
 - No LLM co-author footers in any commit
 

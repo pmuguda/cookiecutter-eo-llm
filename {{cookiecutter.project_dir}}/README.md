@@ -68,6 +68,7 @@ compute, and destination models.
 ```bash
 just setup
 just test
+just update-context
 ```
 
 ## Commands
@@ -84,6 +85,7 @@ just test
 | `just test-approval` | Approval/snapshot tests |
 | `just test-cov` | Coverage HTML report |
 | `just docs` | Serve docs locally |
+| `just update-context` | Refresh `knowledge_base/code_map.md` and `current_state.md` |
 | `just bump patch` | 0.1.0 → 0.1.1 |
 | `just bump minor` | 0.1.0 → 0.2.0 |
 | `just bump major` | 0.1.0 → 1.0.0 |

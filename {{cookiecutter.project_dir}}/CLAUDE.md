@@ -87,12 +87,13 @@ just test-approval             # approval / snapshot tests
 just test-cov                  # coverage HTML report
 just docs                      # mkdocs serve
 just docs-build                # build static docs
+just update-context            # refresh code_map/current_state for next LLM session
 just bump patch                # 0.1.0 → 0.1.1  (fix: commits)
 just bump minor                # 0.1.0 → 0.2.0  (feat: commits)
 just bump major                # 0.1.0 → 1.0.0  (BREAKING CHANGE)
 just build                     # build distribution
 just publish                   # publish to PyPI
-just run config/example.yaml   # run the workflow
+just run config/config_{{cookiecutter.project_slug}}.yml   # run the workflow
 ```
 
 ## Boundaries
@@ -106,6 +107,7 @@ just run config/example.yaml   # run the workflow
 - TDD: failing test first, then implement, then refactor
 - SOLID: one responsibility per function and class
 - Update knowledge_base/ and relevant docs/ whenever architecture, APIs, or workflows change
+- Run `just update-context` near the end of coding sessions that change source, tests, config, docs, or workflow structure
 - Conventional Commits on every commit message
 - No LLM co-author footers in any commit
 

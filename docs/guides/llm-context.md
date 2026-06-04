@@ -56,6 +56,24 @@ The updater is a stdlib-only Python script in `scripts/update_code_map.py`.
 It avoids third-party code-indexing executables while still giving Claude Code,
 Codex, and other agents a low-token starting point for new sessions.
 
+## Session lifecycle
+
+Use the context files as a start-and-finish loop:
+
+1. Start a Claude Code or Codex session.
+2. Read `AGENTS.md` or `CLAUDE.md`.
+3. Read `knowledge_base/current_state.md` and `knowledge_base/code_map.md`.
+4. Make changes TDD-style: test, implement, refactor.
+5. Update curated docs when meaning changes: `knowledge_base/`, `docs/`, `.llm/`,
+   `AGENTS.md`, or `CLAUDE.md`.
+6. Run `just update-context` near the end of the session.
+7. Run tests/checks before committing.
+
+`just update-context` is an end-of-session refresh. It should run after source,
+test, config, docs, or workflow structure changes so the next LLM session starts
+from an up-to-date compact map. It does not replace the curated docs; it only
+refreshes the cheap orientation layer.
+
 ---
 
 ## CLAUDE.md
