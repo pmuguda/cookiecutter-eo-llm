@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files">
+        <meta name="description" content="Production-minded EO/SAR Python package template with TDD workflows and LLM-ready context">
       
       
         <meta name="author" content="Pavan Muguda Sanjeevamurthy">
@@ -1094,21 +1094,19 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uvx<span class="w"> </span>cookiecutter<span class="w"> </span>gh:pmuguda/cookiecutter-eo-llm
 </code></pre></div>
 <p>You will be prompted for:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>full_name [Pavan Muguda Sanjeevamurthy]: Ada Lovelace
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>email [your@email.com]: ada@example.com
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>github_username [PavanMuguda]: alovelace
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>full_name [Chuck Norris]: Ada Lovelace
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>email [chuck@example.com]: ada@example.com
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>repository_owner [chucknorris]: alovelace
 <a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>project_name [My EO Package]: SAR Coherence Processor
 <a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>project_short_description [...]: Sentinel-1 InSAR coherence estimation pipeline.
 <a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>version [0.1.0]:
 <a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>python_requires [&gt;=3.10]:
 <a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>license [MIT]:
 <a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>primary_llm [both]:
-<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>include_approval_tests [y]:
-<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>include_hypothesis [y]:
-<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>include_mkdocs [y]:
-<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>include_github_actions [y]:
-<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>include_gitlab_ci [y]:
-<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>open_source [y]:
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>include_mkdocs [y]:
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>ci_platform [github]:
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>test_scheme [full]:
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>open_source [y]:
 </code></pre></div>
 <div class="admonition tip">
 <p class="admonition-title">Automated / CI usage</p>
@@ -1121,12 +1119,14 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>sar-coherence-processor
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a>just<span class="w"> </span>setup<span class="w">          </span><span class="c1"># uv sync --dev + pre-commit install</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>just<span class="w"> </span><span class="nb">test</span><span class="w">           </span><span class="c1"># full test suite</span>
-<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>just<span class="w"> </span>run<span class="w"> </span>config/example_workflow.yaml
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a>just<span class="w"> </span>update-context<span class="w"> </span><span class="c1"># refresh low-token LLM context</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a>just<span class="w"> </span>run<span class="w"> </span>config/config_sar_coherence_processor.yml
 </code></pre></div>
 <p>Expected output:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>input:  data/input.tif
-<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>output: data/output.tif
-<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>crs:    EPSG:4326
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a>source:    data/input.tif
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a>crs:       EPSG:32632
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a>output:    data/output.tif
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>overwrite: False
 </code></pre></div>
 <hr />
 <h2 id="verify-everything-is-wired">Verify everything is wired</h2>
@@ -1139,7 +1139,7 @@
 <li>Read <a href="../structure/"><code>knowledge_base/architecture.md</code></a> — understand the Workflow pattern</li>
 <li>Add your first real workflow → <a href="../guides/add-workflow/">Adding a workflow guide</a></li>
 <li>Update <code>.llm/</code> files as your architecture evolves</li>
-<li>Push to GitHub and watch CI run automatically</li>
+<li>Push to your selected Git platform and watch CI run automatically</li>
 </ol>
 
 

@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files">
+        <meta name="description" content="Production-minded EO/SAR Python package template with TDD workflows and LLM-ready context">
       
       
         <meta name="author" content="Pavan Muguda Sanjeevamurthy">
@@ -1050,22 +1050,21 @@ Versioning: <a href="https://semver.org/">Semantic Versioning</a></p>
 <h2 id="010-2026-06-04">[0.1.0] — 2026-06-04</h2>
 <h3 id="added">Added</h3>
 <ul>
-<li><code>cookiecutter.json</code> with 12 template variables including <code>primary_llm</code>, <code>include_approval_tests</code>, <code>include_hypothesis</code>, <code>include_mkdocs</code>, <code>include_github_actions</code>, <code>include_gitlab_ci</code></li>
+<li><code>cookiecutter.json</code> with template variables including <code>primary_llm</code>, <code>include_mkdocs</code>, <code>ci_platform</code>, and <code>test_scheme</code></li>
 <li><code>{{cookiecutter.project_dir}}/</code> template with full <code>src/</code> layout:</li>
 <li>Abstract <code>Workflow</code> base class with <code>run()</code> and <code>validate()</code> contract</li>
 <li><code>ExampleWorkflow</code> concrete implementation</li>
-<li><code>WorkflowConfig</code> Pydantic v2 model with <code>from_yaml()</code> and YAML tag registration</li>
-<li><code>typer</code> CLI wired to <code>run(config_path)</code></li>
-<li><code>.llm/</code> context files: <code>context.md</code>, <code>stack.md</code>, <code>commands.md</code>, <code>boundaries.md</code></li>
+<li><code>WorkflowConfigModel</code> Pydantic v2 model with <code>from_yaml()</code> and plain YAML loading</li>
+<li><code>typer</code> CLI wired to load a config path and pass <code>WorkflowConfigModel</code> into <code>run(config)</code></li>
+<li><code>.llm/</code> context files: <code>context.md</code>, <code>stack.md</code>, <code>commands.md</code>, <code>boundaries.md</code>, <code>skills.md</code></li>
 <li><code>CLAUDE.md</code> and <code>AGENTS.md</code> both rendered from <code>.llm/</code> — under 200 lines each</li>
 <li><code>knowledge_base/</code>: <code>architecture.md</code>, <code>workflows.md</code>, <code>decisions.md</code>, <code>changelog_context.md</code></li>
 <li><code>hooks/post_gen_project.py</code>: 7 single-responsibility functions + <code>main()</code> composer</li>
 <li><code>hooks/pre_prompt.py</code>: Python version validation</li>
-<li>GitHub Actions CI matrix (py3.10 / 3.11 / 3.12) + PyPI OIDC publish workflow</li>
-<li>GitLab CI with lint / test / publish stages</li>
+<li>Selectable GitHub Actions or GitLab CI with build, test, docs, and publish jobs</li>
 <li>Justfile with <code>setup</code>, <code>lint</code>, <code>format</code>, <code>typecheck</code>, <code>check</code>, <code>test</code>, <code>bump</code>, <code>build</code>, <code>publish</code>, <code>run</code></li>
 <li><code>pyproject.toml</code> with hatchling, bump-my-version, ruff, mypy strict</li>
-<li>Test suite: 69 tests — structure checks, hook unit tests, CLAUDE.md/AGENTS.md approval tests</li>
+<li>Test suite with structure checks, hook unit tests, CLAUDE.md/AGENTS.md approval tests</li>
 <li>Full MkDocs documentation site published on GitHub Pages</li>
 </ul>
 

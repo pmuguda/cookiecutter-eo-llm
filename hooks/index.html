@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files">
+        <meta name="description" content="Production-minded EO/SAR Python package template with TDD workflows and LLM-ready context">
       
       
         <meta name="author" content="Pavan Muguda Sanjeevamurthy">
@@ -758,6 +758,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#configure_test_schemeproject_dir-pyproject_path-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        configure_test_scheme(project_dir, pyproject_path, scheme)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#remove_mkdocsproject_dir-pyproject_path" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1191,6 +1202,17 @@
 </li>
         
           <li class="md-nav__item">
+  <a href="#configure_test_schemeproject_dir-pyproject_path-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        configure_test_scheme(project_dir, pyproject_path, scheme)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#remove_mkdocsproject_dir-pyproject_path" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1321,17 +1343,41 @@ The developer only needs Claude Code context; the OpenAI AGENTS spec is removed.
 <p>Deletes <code>CLAUDE.md</code> when <code>primary_llm == "codex"</code>.
 The developer only needs the AGENTS.md spec; the CLAUDE.md file is removed.</p>
 <h4 id="remove_approval_testsproject_dir"><code>remove_approval_tests(project_dir)</code></h4>
-<p>Removes <code>tests/approval/</code> when <code>include_approval_tests == "n"</code>.</p>
+<p>Removes <code>tests/approval/</code> when <code>test_scheme == "unit"</code>.</p>
 <h4 id="remove_hypothesispyproject_path"><code>remove_hypothesis(pyproject_path)</code></h4>
-<p>Strips the <code>hypothesis</code> line from <code>pyproject.toml</code> dev deps when
-<code>include_hypothesis == "n"</code>. All other deps are preserved.</p>
+<p>Strips the <code>hypothesis</code> line from <code>pyproject.toml</code> dev deps when the selected
+test scheme is <code>unit</code> or <code>unit_and_approval</code>. All other deps are preserved.</p>
+<h4 id="configure_test_schemeproject_dir-pyproject_path-scheme"><code>configure_test_scheme(project_dir, pyproject_path, scheme)</code></h4>
+<p>Applies the selected test scheme:</p>
+<table>
+<thead>
+<tr>
+<th>Scheme</th>
+<th>Result</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>unit</code></td>
+<td>unit tests only; removes approval tests and hypothesis</td>
+</tr>
+<tr>
+<td><code>unit_and_approval</code></td>
+<td>keeps approval tests; removes hypothesis</td>
+</tr>
+<tr>
+<td><code>full</code></td>
+<td>keeps unit tests, approval tests, and hypothesis</td>
+</tr>
+</tbody>
+</table>
 <h4 id="remove_mkdocsproject_dir-pyproject_path"><code>remove_mkdocs(project_dir, pyproject_path)</code></h4>
 <p>Removes <code>docs/</code> and all <code>mkdocs*</code> lines from <code>pyproject.toml</code> when
 <code>include_mkdocs == "n"</code>.</p>
 <h4 id="remove_github_actionsproject_dir"><code>remove_github_actions(project_dir)</code></h4>
-<p>Removes <code>.github/</code> when <code>include_github_actions == "n"</code>.</p>
+<p>Removes <code>.github/</code> when <code>ci_platform == "gitlab"</code>.</p>
 <h4 id="remove_gitlab_ciproject_dir"><code>remove_gitlab_ci(project_dir)</code></h4>
-<p>Removes <code>.gitlab-ci.yml</code> when <code>include_gitlab_ci == "n"</code>.</p>
+<p>Removes <code>.gitlab-ci.yml</code> when <code>ci_platform == "github"</code>.</p>
 <h4 id="init_gitproject_dir"><code>init_git(project_dir)</code></h4>
 <p>Runs <code>git init &amp;&amp; git add . &amp;&amp; git commit</code> with message:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>chore: initial scaffold from cookiecutter-eo-llm

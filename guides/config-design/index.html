@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files">
+        <meta name="description" content="Production-minded EO/SAR Python package template with TDD workflows and LLM-ready context">
       
       
         <meta name="author" content="Pavan Muguda Sanjeevamurthy">
@@ -1215,7 +1215,7 @@ and knowing the <code>!workflow</code> tag existed at all.</p>
 <p>None of it was needed. Each package implements <strong>one workflow</strong>. <code>main.py</code>
 imports it directly — there is nothing to dispatch to:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1"># main.py</span>
-<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflows.coherence</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoherenceWorkflow</span> <span class="k">as</span> <span class="n">Workflow</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">my_eo_package.workflow.coherence</span><span class="w"> </span><span class="kn">import</span> <span class="n">CoherenceWorkflow</span> <span class="k">as</span> <span class="n">Workflow</span>
 <a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a>
 <a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="n">config_path</span><span class="p">:</span> <span class="n">Path</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
 <a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a>    <span class="n">config</span> <span class="o">=</span> <span class="n">WorkflowConfigModel</span><span class="o">.</span><span class="n">from_yaml</span><span class="p">(</span><span class="n">config_path</span><span class="p">)</span>

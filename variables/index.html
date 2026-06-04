@@ -6,7 +6,7 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
-        <meta name="description" content="Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files">
+        <meta name="description" content="Production-minded EO/SAR Python package template with TDD workflows and LLM-ready context">
       
       
         <meta name="author" content="Pavan Muguda Sanjeevamurthy">
@@ -667,6 +667,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ci-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI platform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test scheme
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#feature-flags" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1045,6 +1067,28 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#ci-platform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CI platform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#test-scheme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Test scheme
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#feature-flags" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1096,19 +1140,19 @@
 <tbody>
 <tr>
 <td><code>full_name</code></td>
-<td><code>Pavan Muguda Sanjeevamurthy</code></td>
+<td><code>Chuck Norris</code></td>
 <td><code>Ada Lovelace</code></td>
 <td><code>pyproject.toml</code>, <code>CLAUDE.md</code>, <code>AGENTS.md</code></td>
 </tr>
 <tr>
 <td><code>email</code></td>
-<td><code>your@email.com</code></td>
+<td><code>chuck@example.com</code></td>
 <td><code>ada@example.com</code></td>
 <td><code>pyproject.toml</code>, <code>.llm/context.md</code></td>
 </tr>
 <tr>
-<td><code>github_username</code></td>
-<td><code>PavanMuguda</code></td>
+<td><code>repository_owner</code></td>
+<td><code>chucknorris</code></td>
 <td><code>alovelace</code></td>
 <td><code>pyproject.toml</code>, README badges, CI URLs</td>
 </tr>
@@ -1219,6 +1263,55 @@
 The hook only removes the rendered output file, not the source.</p>
 </div>
 <hr />
+<h2 id="ci-platform">CI platform</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Options</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>ci_platform</code></td>
+<td><code>github</code></td>
+<td><code>github</code> · <code>gitlab</code></td>
+<td>Keeps only the selected CI/CD platform</td>
+</tr>
+</tbody>
+</table>
+<p>The selected value also controls repository URLs and README pipeline badges.</p>
+<hr />
+<h2 id="test-scheme">Test scheme</h2>
+<table>
+<thead>
+<tr>
+<th>Variable</th>
+<th>Default</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>test_scheme</code></td>
+<td><code>full</code></td>
+<td>unit tests + approval tests + hypothesis</td>
+</tr>
+<tr>
+<td></td>
+<td><code>unit_and_approval</code></td>
+<td>unit tests + approval tests, no hypothesis</td>
+</tr>
+<tr>
+<td></td>
+<td><code>unit</code></td>
+<td>unit tests only, no approval tests or hypothesis</td>
+</tr>
+</tbody>
+</table>
+<hr />
 <h2 id="feature-flags">Feature flags</h2>
 <p>Each flag is <code>y</code> or <code>n</code>. The post-gen hook removes the corresponding files when <code>n</code>.</p>
 <table>
@@ -1231,29 +1324,9 @@ The hook only removes the rendered output file, not the source.</p>
 </thead>
 <tbody>
 <tr>
-<td><code>include_approval_tests</code></td>
-<td><code>y</code></td>
-<td><code>tests/approval/</code></td>
-</tr>
-<tr>
-<td><code>include_hypothesis</code></td>
-<td><code>y</code></td>
-<td><code>hypothesis</code> from <code>pyproject.toml</code> dev deps</td>
-</tr>
-<tr>
 <td><code>include_mkdocs</code></td>
 <td><code>y</code></td>
 <td><code>docs/</code> + mkdocs deps from <code>pyproject.toml</code></td>
-</tr>
-<tr>
-<td><code>include_github_actions</code></td>
-<td><code>y</code></td>
-<td><code>.github/</code></td>
-</tr>
-<tr>
-<td><code>include_gitlab_ci</code></td>
-<td><code>y</code></td>
-<td><code>.gitlab-ci.yml</code></td>
 </tr>
 <tr>
 <td><code>open_source</code></td>
