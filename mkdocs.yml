@@ -1,5 +1,5 @@
 site_name: cookiecutter-eo-llm
-site_description: Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files
+site_description: Production-minded EO/SAR Python package template with TDD workflows and LLM-ready context
 site_url: https://pmuguda.github.io/cookiecutter-eo-llm/
 site_author: Pavan Muguda Sanjeevamurthy
 repo_url: https://github.com/pmuguda/cookiecutter-eo-llm

@@ -114,8 +114,6 @@ def main() -> None:
         remove_gitlab_ci(project_dir)
     elif ci_platform == "gitlab":
         remove_github_actions(project_dir)
-    # "both" keeps both
-
     test_scheme = os.environ.get("COOKIECUTTER_TEST_SCHEME", "full")
     configure_test_scheme(project_dir, pyproject_path, test_scheme)
 

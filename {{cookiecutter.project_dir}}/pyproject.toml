@@ -39,9 +39,15 @@ docs = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}"
-Repository = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}"
-Issues = "https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}/issues"
+{% if cookiecutter.ci_platform == "github" -%}
+Homepage = "https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}"
+Repository = "https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}"
+Issues = "https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}/issues"
+{% else -%}
+Homepage = "https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}"
+Repository = "https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}"
+Issues = "https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}/-/issues"
+{% endif %}
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/{{cookiecutter.project_slug}}"]
@@ -52,14 +58,14 @@ addopts = "-ra -q --cov=src/{{cookiecutter.project_slug}} --cov-report=term-miss
 
 [tool.ruff]
 line-length = 100
-target-version = "py310"
+target-version = "py{{ cookiecutter.python_requires | replace('>=3.', '3') }}"
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "UP", "B", "SIM"]
 
 [tool.mypy]
 strict = true
-python_version = "3.10"
+python_version = "{{ cookiecutter.python_requires | replace('>=', '') }}"
 
 [tool.bumpversion]
 current_version = "{{cookiecutter.version}}"

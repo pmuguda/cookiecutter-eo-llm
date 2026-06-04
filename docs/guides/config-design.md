@@ -161,7 +161,7 @@ imports it directly — there is nothing to dispatch to:
 
 ```python
 # main.py
-from my_eo_package.workflows.coherence import CoherenceWorkflow as Workflow
+from my_eo_package.workflow.coherence import CoherenceWorkflow as Workflow
 
 def run(config_path: Path) -> None:
     config = WorkflowConfigModel.from_yaml(config_path)

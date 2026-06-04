@@ -1,6 +1,6 @@
 site_name: {{cookiecutter.project_name}}
 site_description: {{cookiecutter.project_short_description}}
-repo_url: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}
+repo_url: {% if cookiecutter.ci_platform == "github" %}https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}{% else %}https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}{% endif %}
 theme:
   name: material
 plugins:

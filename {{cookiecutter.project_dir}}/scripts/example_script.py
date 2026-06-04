@@ -5,7 +5,9 @@ from {{cookiecutter.project_slug}}.main import run
 
 
 def main() -> None:
-    config = WorkflowConfigModel.from_yaml(Path("config/config_{{cookiecutter.project_slug}}.yml"))
+    config = WorkflowConfigModel.from_yaml(
+        Path("config/config_{{cookiecutter.project_slug}}.yml")
+    )
     run(config)
 
 

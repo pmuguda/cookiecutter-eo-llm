@@ -1,40 +1,40 @@
 # CI/CD
 
-Generated projects come with GitHub Actions and GitLab CI pre-wired.
+Generated projects keep one CI/CD platform: GitHub Actions or GitLab CI,
+selected by `ci_platform` during scaffolding.
 
 ---
 
 ## GitHub Actions
 
-### ci.yml — Test matrix
+### ci.yml — build, test, docs, and PyPI
 
-Runs on every push and pull request across Python 3.10, 3.11, and 3.12:
+The Python matrix is derived from `python_requires`: `>=3.10` tests 3.10-3.12,
+`>=3.11` tests 3.11-3.12, and `>=3.12` tests only 3.12.
 
 ```yaml
-on: [push, pull_request]
+on:
+  push:
+    branches: [main]
+    tags: ["v*"]
+  pull_request:
+    branches: [main]
 
 jobs:
-  test:
-    strategy:
-      matrix:
-        python-version: ["3.10", "3.11", "3.12"]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: astral-sh/setup-uv@v4
-      - run: uv sync --dev
-      - run: uv run ruff check src/ tests/
-      - run: uv run mypy src/
-      - run: uv run pytest
+  build:        # lint + typecheck; builds dist on tags
+  test-dev:     # non-tag pushes and PRs
+  test-release: # tags only
+  deploy-docs:  # main and tags
+  deploy-pypi:  # tags only, uses trusted publishing
 ```
 
-### publish.yml — PyPI via OIDC
-
-Triggers on `v*` tags. Uses [OIDC trusted publisher](https://docs.pypi.org/trusted-publishers/) — no hardcoded tokens:
+PyPI publish uses [OIDC trusted publisher](https://docs.pypi.org/trusted-publishers/)
+on `v*` tags. There are no hardcoded tokens:
 
 ```bash
 # Publish a new version
 just bump minor         # bumps pyproject.toml, commits, tags
-git push --follow-tags  # triggers publish.yml
+git push --follow-tags  # triggers ci.yml release jobs
 ```
 
 Set up trusted publishing once on PyPI:
@@ -44,11 +44,11 @@ Set up trusted publishing once on PyPI:
 
 ## GitLab CI
 
-Three stages: `lint → test → publish`.
+Three stages: `build → test → deploy`.
 
 - Lint: ruff + mypy
-- Test: parallel matrix across Python 3.10 / 3.11 / 3.12
-- Publish: triggered on tags, runs `uv build && uv publish`
+- Test: development jobs for branches, release jobs for tags
+- Publish: tag-triggered GitLab package publish plus optional manual PyPI.org publish
 - Coverage report uploaded as Cobertura artifact
 
 ---

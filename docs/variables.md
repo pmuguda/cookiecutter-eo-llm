@@ -8,9 +8,9 @@ All variables are defined in `cookiecutter.json`. Each maps to a Jinja2 expressi
 
 | Variable | Default | Example | Used in |
 |----------|---------|---------|---------|
-| `full_name` | `Pavan Muguda Sanjeevamurthy` | `Ada Lovelace` | `pyproject.toml`, `CLAUDE.md`, `AGENTS.md` |
-| `email` | `your@email.com` | `ada@example.com` | `pyproject.toml`, `.llm/context.md` |
-| `github_username` | `PavanMuguda` | `alovelace` | `pyproject.toml`, README badges, CI URLs |
+| `full_name` | `Chuck Norris` | `Ada Lovelace` | `pyproject.toml`, `CLAUDE.md`, `AGENTS.md` |
+| `email` | `chuck@example.com` | `ada@example.com` | `pyproject.toml`, `.llm/context.md` |
+| `repository_owner` | `chucknorris` | `alovelace` | `pyproject.toml`, README badges, CI URLs |
 
 ---
 
@@ -55,15 +55,31 @@ All variables are defined in `cookiecutter.json`. Each maps to a Jinja2 expressi
 
 ---
 
+## CI platform
+
+| Variable | Default | Options | Effect |
+|----------|---------|---------|--------|
+| `ci_platform` | `github` | `github` · `gitlab` | Keeps only the selected CI/CD platform |
+
+The selected value also controls repository URLs and README pipeline badges.
+
+---
+
+## Test scheme
+
+| Variable | Default | Effect |
+|----------|---------|--------|
+| `test_scheme` | `full` | unit tests + approval tests + hypothesis |
+| | `unit_and_approval` | unit tests + approval tests, no hypothesis |
+| | `unit` | unit tests only, no approval tests or hypothesis |
+
+---
+
 ## Feature flags
 
 Each flag is `y` or `n`. The post-gen hook removes the corresponding files when `n`.
 
 | Variable | Default | Removes when `n` |
 |----------|---------|-----------------|
-| `include_approval_tests` | `y` | `tests/approval/` |
-| `include_hypothesis` | `y` | `hypothesis` from `pyproject.toml` dev deps |
 | `include_mkdocs` | `y` | `docs/` + mkdocs deps from `pyproject.toml` |
-| `include_github_actions` | `y` | `.github/` |
-| `include_gitlab_ci` | `y` | `.gitlab-ci.yml` |
 | `open_source` | `y` | (reserved for future use) |

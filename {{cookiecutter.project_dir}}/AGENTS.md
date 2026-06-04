@@ -21,7 +21,7 @@ You need to understand:
 - **Project**: {{cookiecutter.project_name}}
 - **Description**: {{cookiecutter.project_short_description}}
 - **Author**: {{cookiecutter.full_name}} <{{cookiecutter.email}}>
-- **Repo**: https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}
+- **Repo**: {% if cookiecutter.ci_platform == "github" %}https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}{% else %}https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}{% endif %}
 - **Python**: {{cookiecutter.python_requires}}
 - **License**: {{cookiecutter.license}}
 - **Version**: {{cookiecutter.version}}
@@ -33,16 +33,25 @@ You need to understand:
 - Types: mypy strict
 - Test: pytest + hypothesis + pytest-approvaltests-geo
 - Docs: mkdocs-material
-- EO: numpy, xarray, rasterio, pyproj, shapely, pydantic, typer, pyyaml
+- Runtime: pydantic, typer, pyyaml
+- Optional EO/SAR libraries: add numpy, xarray, rasterio, pyproj, shapely, or scipy only when needed
 
 ### Architecture
 
 - One package = one workflow — imported directly in main.py, no registry
-- Abstract Workflow base in workflows/base.py
+- Abstract Workflow base in workflow/base.py
 - Concrete workflow: subclass SourceModel / ComputeParamsModel / DestinationModel,
   subclass Workflow, implement run() and validate()
 - Plain YAML config: name / source / compute_params / destination — no custom tags
 - main.py: WorkflowConfigModel.from_yaml() → Workflow → validate → run
+
+### Useful LLM skills
+
+- Python package maintenance: tests, typing, packaging, and CLI wiring
+- EO/SAR workflow design: source / compute / destination boundaries
+- Geospatial review: CRS checks, path handling, and raster/vector assumptions
+- Documentation upkeep: update docs and knowledge_base with code changes
+- CI/CD review: keep the selected platform workflow aligned with project commands
 
 ## Commands
 

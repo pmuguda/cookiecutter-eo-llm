@@ -11,9 +11,12 @@
 [![License](https://img.shields.io/github/license/pmuguda/cookiecutter-eo-llm)](LICENSE)
 [![Buy me a coffee](https://img.shields.io/badge/buy%20me%20a%20coffee-ko--fi-FF5E5B?logo=ko-fi&logoColor=white)](https://ko-fi.com/pavan_muguda)
 
-Cookiecutter template for **Earth Observation / SAR Python packages** with
-token-efficient, LLM-agnostic context files (CLAUDE.md, AGENTS.md) generated
-from a single `.llm/` source of truth at scaffold time.
+A production-minded EO/SAR Python package template with TDD workflows and
+LLM-ready context for Claude Code and Codex.
+
+It gives you a typed, tested workflow scaffold from day one: plain YAML config,
+a single concrete workflow, strict Python tooling, living architecture docs, and
+LLM context files generated from one `.llm/` source of truth.
 
 ---
 
@@ -29,7 +32,7 @@ Then:
 cd my-eo-package
 just setup
 just test
-just run config/example_workflow.yaml
+just run config/config_my_eo_package.yml
 ```
 
 → [Full documentation](https://pmuguda.github.io/cookiecutter-eo-llm/)
@@ -41,11 +44,11 @@ just run config/example_workflow.yaml
 | Feature | Detail |
 |---------|--------|
 | `src/` layout | `project_dir` (kebab) for PyPI · `project_slug` (snake) for imports |
-| Workflow pattern | Abstract `Workflow(ABC)` · YAML-tag dispatch · Pydantic v2 config |
-| LLM context | CLAUDE.md + AGENTS.md from a single `.llm/` source (≤200 lines each) |
+| Workflow pattern | Abstract `Workflow(ABC)` · one workflow per package · Pydantic v2 config |
+| LLM context | CLAUDE.md + AGENTS.md + `.llm/skills.md` from a single `.llm/` source |
 | Living docs | `knowledge_base/` — architecture, workflows, decisions, changelog |
 | Full test suite | unit · integration · approval stubs · hypothesis |
-| CI/CD | GitHub Actions matrix (py3.10/3.11/3.12) + GitLab CI |
+| CI/CD | Choose GitHub Actions or GitLab CI at scaffold time |
 | Developer UX | Justfile · ruff · mypy strict · pre-commit · bump-my-version |
 
 ---
@@ -55,12 +58,11 @@ just run config/example_workflow.yaml
 | Variable | Default | Notes |
 |----------|---------|-------|
 | `project_name` | `My EO Package` | Title case — drives `project_dir` and `project_slug` |
+| `repository_owner` | `chucknorris` | GitHub username, GitLab username, or GitLab group |
 | `primary_llm` | `both` | `both` · `claude` · `codex` |
-| `include_approval_tests` | `y` | Removes `tests/approval/` when `n` |
-| `include_hypothesis` | `y` | Strips hypothesis from pyproject.toml when `n` |
+| `ci_platform` | `github` | `github` · `gitlab` |
+| `test_scheme` | `full` | `unit` · `unit_and_approval` · `full` |
 | `include_mkdocs` | `y` | Removes `docs/` when `n` |
-| `include_github_actions` | `y` | Removes `.github/` when `n` |
-| `include_gitlab_ci` | `y` | Removes `.gitlab-ci.yml` when `n` |
 
 → [Full variable reference](https://pmuguda.github.io/cookiecutter-eo-llm/variables/)
 
@@ -80,6 +82,25 @@ Render locally:
 ```bash
 uvx cookiecutter . --no-input -o /tmp/eo-test
 ```
+
+---
+
+## Why it matters
+
+EO/SAR projects often start as notebooks and grow into fragile scripts. This
+template gives that work a package boundary early: one workflow class, one config
+file, typed source/compute/destination sections, repeatable tests, and docs that
+tell both humans and LLM assistants how the project is supposed to evolve.
+
+The template intentionally keeps heavy EO libraries optional. Add numpy, xarray,
+rasterio, pyproj, shapely, or GDAL only when your workflow needs them.
+
+---
+
+## Credits
+
+Built on excellent open-source tooling: Cookiecutter, uv, hatchling, ruff, mypy,
+pytest, Pydantic, Typer, PyYAML, MkDocs, GitHub Actions, and GitLab CI.
 
 ---
 

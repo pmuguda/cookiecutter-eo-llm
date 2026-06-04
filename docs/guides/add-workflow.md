@@ -35,7 +35,7 @@ from pathlib import Path
 from my_eo_package.config.models import (
     SourceModel, ComputeParamsModel, DestinationModel, WorkflowConfigModel,
 )
-from my_eo_package.workflows.coherence import CoherenceWorkflow
+from my_eo_package.workflow.coherence import CoherenceWorkflow
 
 
 def make_config() -> WorkflowConfigModel:
@@ -71,16 +71,16 @@ just test-unit
 
 ## Step 2 — Implement the workflow
 
-Rename `workflows/example.py` → `workflows/coherence.py` and replace:
+Rename `workflow/example.py` → `workflow/coherence.py` and replace:
 
 ```python
-# src/my_eo_package/workflows/coherence.py
+# src/my_eo_package/workflow/coherence.py
 from pathlib import Path
 from my_eo_package.config.models import (
     SourceModel, ComputeParamsModel, DestinationModel, WorkflowConfigModel,
 )
 from my_eo_package.logger import get_logger
-from my_eo_package.workflows.base import Workflow
+from my_eo_package.workflow.base import Workflow
 
 _log = get_logger(__name__)
 
@@ -136,19 +136,21 @@ One line changes — the import:
 
 ```python
 # main.py  (before)
-from my_eo_package.workflows.example import ExampleWorkflow as Workflow
+from my_eo_package.workflow.example import ExampleWorkflow as Workflow
 
 # main.py  (after)
-from my_eo_package.workflows.coherence import CoherenceWorkflow as Workflow
+from my_eo_package.workflow.coherence import CoherenceWorkflow as Workflow
 ```
 
 Everything else in `main.py` stays the same.
+The CLI reads the YAML path and builds `WorkflowConfigModel`; `run()` receives
+that Pydantic object.
 
 ---
 
 ## Step 4 — Update the config file and knowledge base
 
-Update `config/example_workflow.yaml`:
+Update `config/config_my_eo_package.yml`:
 
 ```yaml
 name: coherence-run
@@ -175,7 +177,7 @@ Update `knowledge_base/workflows.md`:
 Run the workflow:
 
 ```bash
-just run config/example_workflow.yaml
+just run config/config_my_eo_package.yml
 ```
 
 ---

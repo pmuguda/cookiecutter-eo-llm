@@ -17,6 +17,7 @@ EXPECTED_PATHS = [
     ".llm/stack.md",
     ".llm/commands.md",
     ".llm/boundaries.md",
+    ".llm/skills.md",
     "knowledge_base/architecture.md",
     "knowledge_base/workflows.md",
     "knowledge_base/decisions.md",
@@ -33,7 +34,7 @@ EXPECTED_PATHS = [
     "src/my_eo_package/config/models.py",
     "tests/conftest.py",
     "tests/helpers/config_builder.py",
-    "tests/resources/example_workflow.yaml",
+    "tests/resources/config_my_eo_package.yml",
     "tests/resources/invalid_workflow.yaml",
     "tests/unit/test_logger.py",
     "tests/unit/test_main.py",
@@ -49,7 +50,6 @@ EXPECTED_PATHS = [
     "docs/index.md",
     "docs/api/index.md",
     ".github/workflows/ci.yml",
-    ".gitlab-ci.yml",
 ]
 
 
@@ -76,10 +76,10 @@ def test_agents_md_under_200_lines(rendered: Path) -> None:
     assert len(lines) <= 200, f"AGENTS.md has {len(lines)} lines (limit 200)"
 
 
-def test_llm_directory_has_four_files(rendered: Path) -> None:
+def test_llm_directory_has_expected_files(rendered: Path) -> None:
     llm_dir = rendered / ".llm"
     files = {f.name for f in llm_dir.iterdir() if f.is_file()}
-    assert files == {"context.md", "stack.md", "commands.md", "boundaries.md"}
+    assert files == {"context.md", "stack.md", "commands.md", "boundaries.md", "skills.md"}
 
 
 def test_no_llm_coauthor_in_pyproject(rendered: Path) -> None:
@@ -119,19 +119,28 @@ def test_github_ci_deploy_pypi_uses_dist_artifact(rendered: Path) -> None:
     assert "uv publish dist/*" in content
 
 
-def test_gitlab_ci_has_three_stages(rendered: Path) -> None:
+def test_gitlab_ci_has_three_stages(tmp_path: Path) -> None:
+    from tests.helpers.render import render_template
+
+    rendered = render_template(tmp_path, extra_context={"ci_platform": "gitlab"})
     content = (rendered / ".gitlab-ci.yml").read_text()
     for stage in ("build", "test", "deploy"):
         assert stage in content, f"Missing stage: {stage}"
 
 
-def test_gitlab_ci_has_test_dev_and_test_release(rendered: Path) -> None:
+def test_gitlab_ci_has_test_dev_and_test_release(tmp_path: Path) -> None:
+    from tests.helpers.render import render_template
+
+    rendered = render_template(tmp_path, extra_context={"ci_platform": "gitlab"})
     content = (rendered / ".gitlab-ci.yml").read_text()
     assert "test-dev:" in content
     assert "test-release:" in content
 
 
-def test_gitlab_ci_deploy_uses_build_artifact(rendered: Path) -> None:
+def test_gitlab_ci_deploy_uses_build_artifact(tmp_path: Path) -> None:
+    from tests.helpers.render import render_template
+
+    rendered = render_template(tmp_path, extra_context={"ci_platform": "gitlab"})
     content = (rendered / ".gitlab-ci.yml").read_text()
     assert "artifacts: true" in content
     assert "dist/*" in content
@@ -150,12 +159,4 @@ def test_ci_platform_gitlab_keeps_gitlab_removes_github(tmp_path: Path) -> None:
 
     rendered = render_template(tmp_path, extra_context={"ci_platform": "gitlab"})
     assert not (rendered / ".github").exists()
-    assert (rendered / ".gitlab-ci.yml").exists()
-
-
-def test_ci_platform_both_keeps_both(tmp_path: Path) -> None:
-    from tests.helpers.render import render_template
-
-    rendered = render_template(tmp_path, extra_context={"ci_platform": "both"})
-    assert (rendered / ".github" / "workflows" / "ci.yml").exists()
     assert (rendered / ".gitlab-ci.yml").exists()

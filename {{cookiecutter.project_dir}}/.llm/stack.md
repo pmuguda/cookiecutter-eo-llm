@@ -8,17 +8,20 @@
 - Versioning: bump-my-version via `just bump <part>`
 - CI: GitHub Actions + GitLab CI
 
-## EO / SAR stack
+## Runtime stack
+- pydantic>=2.7                  — config validation
+- typer                          — CLI
+- pyyaml                         — plain YAML loading, no custom tags
+
+## Optional EO / SAR libraries
+Add domain libraries only when the workflow needs them:
 - numpy, xarray, dask            — array processing
 - rasterio, rioxarray            — raster I/O
 - pyproj, shapely, geopandas     — CRS and vector ops
-- pydantic>=2.7                  — config validation
-- typer                          — CLI
-- pyyaml                          — plain YAML loading, no custom tags
 - scipy                          — signal processing
 
 ## Architecture
-- Workflow base class (abstract) in workflows/base.py
+- Workflow base class (abstract) in workflow/base.py
 - One workflow per package — imported directly in main.py, no registry
 - Concrete workflow: subclass SourceModel / ComputeParamsModel / DestinationModel
 - YAML configs in config/ — one file per workflow run

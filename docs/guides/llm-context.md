@@ -7,7 +7,7 @@ Both are rendered from the same `.llm/` source of truth at scaffold time.
 
 ## The .llm/ directory
 
-Four small files that define everything an LLM assistant needs to know:
+Five small files that define everything an LLM assistant needs to know:
 
 | File | Content | Hard limit |
 |------|---------|-----------|
@@ -15,6 +15,27 @@ Four small files that define everything an LLM assistant needs to know:
 | `stack.md` | Toolchain, EO/SAR libraries, architecture summary, conventions | — |
 | `commands.md` | Every `just` command with a one-line description | — |
 | `boundaries.md` | Three sections: Always / Ask first / Never | — |
+| `skills.md` | Useful assistant capabilities for the package: tests, typing, EO/SAR workflow design, docs, CI/CD | — |
+
+## How this helps development
+
+The generated package is designed for repeated collaboration with LLM coding
+assistants. The context files keep the assistant grounded in project-specific
+rules before it writes code:
+
+- `AGENTS.md` and `CLAUDE.md` tell the assistant to read `knowledge_base/` first.
+- `.llm/boundaries.md` makes project rules explicit: TDD, typing, CRS checks,
+  docs updates, no direct pushes to main, and no LLM attribution in commits.
+- `.llm/stack.md` separates required runtime dependencies from optional EO/SAR
+  libraries so assistants do not add raster/geospatial packages casually.
+- `.llm/skills.md` names the kind of expertise useful for the project, which helps
+  assistants focus on workflow design, geospatial review, CI/CD, and documentation.
+- The 200-line limit prevents context files from becoming a second documentation
+  site. Deep detail belongs in `knowledge_base/` and `docs/`.
+
+The result is a tighter loop: tests guide behavior, `.llm/` guides assistant
+behavior, and `knowledge_base/` preserves the architectural decisions behind the
+code.
 
 ---
 

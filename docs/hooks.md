@@ -29,21 +29,30 @@ Deletes `CLAUDE.md` when `primary_llm == "codex"`.
 The developer only needs the AGENTS.md spec; the CLAUDE.md file is removed.
 
 #### `remove_approval_tests(project_dir)`
-Removes `tests/approval/` when `include_approval_tests == "n"`.
+Removes `tests/approval/` when `test_scheme == "unit"`.
 
 #### `remove_hypothesis(pyproject_path)`
-Strips the `hypothesis` line from `pyproject.toml` dev deps when
-`include_hypothesis == "n"`. All other deps are preserved.
+Strips the `hypothesis` line from `pyproject.toml` dev deps when the selected
+test scheme is `unit` or `unit_and_approval`. All other deps are preserved.
+
+#### `configure_test_scheme(project_dir, pyproject_path, scheme)`
+Applies the selected test scheme:
+
+| Scheme | Result |
+|--------|--------|
+| `unit` | unit tests only; removes approval tests and hypothesis |
+| `unit_and_approval` | keeps approval tests; removes hypothesis |
+| `full` | keeps unit tests, approval tests, and hypothesis |
 
 #### `remove_mkdocs(project_dir, pyproject_path)`
 Removes `docs/` and all `mkdocs*` lines from `pyproject.toml` when
 `include_mkdocs == "n"`.
 
 #### `remove_github_actions(project_dir)`
-Removes `.github/` when `include_github_actions == "n"`.
+Removes `.github/` when `ci_platform == "gitlab"`.
 
 #### `remove_gitlab_ci(project_dir)`
-Removes `.gitlab-ci.yml` when `include_gitlab_ci == "n"`.
+Removes `.gitlab-ci.yml` when `ci_platform == "github"`.
 
 #### `init_git(project_dir)`
 Runs `git init && git add . && git commit` with message:

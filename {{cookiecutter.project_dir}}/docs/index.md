@@ -2,4 +2,4 @@
 
 {{cookiecutter.project_short_description}}
 
-See the [README](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}) to get started.
+See the [README]({% if cookiecutter.ci_platform == "github" %}https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}{% else %}https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}{% endif %}) to get started.

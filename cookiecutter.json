@@ -1,7 +1,7 @@
 {
   "full_name": "Chuck Norris",
   "email": "chuck@example.com",
-  "github_username": "chucknorris",
+  "repository_owner": "chucknorris",
   "project_name": "My EO Package",
   "project_dir": "{{ cookiecutter.project_name.lower().replace(' ', '-').replace('_', '-') }}",
   "project_slug": "{{ cookiecutter.project_name.lower().replace(' ', '_').replace('-', '_') }}",
@@ -11,7 +11,7 @@
   "license": ["MIT", "Apache-2.0", "GPL-3.0", "BSD-3-Clause", "Proprietary"],
   "primary_llm": ["both", "claude", "codex"],
   "include_mkdocs": ["y", "n"],
-  "ci_platform": ["github", "gitlab", "both"],
+  "ci_platform": ["github", "gitlab"],
   "test_scheme": ["unit", "unit_and_approval", "full"],
   "open_source": ["y", "n"]
 }

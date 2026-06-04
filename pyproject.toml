@@ -1,7 +1,7 @@
 [project]
 name = "cookiecutter-eo-llm"
 version = "0.1.0"
-description = "Cookiecutter template for EO/SAR Python packages with token-efficient LLM-agnostic context files"
+description = "Production-minded EO/SAR Python package template with TDD workflows and LLM-ready context"
 readme = "README.md"
 requires-python = ">=3.10"
 keywords = [

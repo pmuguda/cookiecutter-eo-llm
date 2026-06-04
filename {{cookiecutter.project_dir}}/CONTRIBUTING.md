@@ -16,7 +16,7 @@ Then refactor. Always small steps — never implement without a red test.
 This package is built around **one workflow**. `ExampleWorkflow` is the scaffold
 placeholder — replace it with your real implementation:
 
-1. Rename `workflows/example.py` and its classes to match your domain
+1. Rename `workflow/example.py` and its classes to match your domain
 2. Define `MySource(SourceModel)`, `MyComputeParams(ComputeParamsModel)`,
    `MyDestination(DestinationModel)` with typed fields
 3. Implement `run()` and `validate()`
@@ -28,6 +28,8 @@ placeholder — replace it with your real implementation:
 
 Every PR that changes architecture or adds a workflow must update
 the relevant `knowledge_base/` file. PRs without this update will not be merged.
+When code behavior changes, update the matching docs in the same PR so the
+README, `docs/`, `.llm/`, and `knowledge_base/` stay aligned.
 
 ## Code style
 

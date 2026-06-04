@@ -2,7 +2,11 @@
 
 [![PyPI](https://img.shields.io/pypi/v/{{cookiecutter.project_dir}})](https://pypi.org/project/{{cookiecutter.project_dir}}/)
 [![License](https://img.shields.io/badge/license-{{cookiecutter.license}}-blue)](LICENSE)
-[![CI](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{cookiecutter.github_username}}/{{cookiecutter.project_dir}}/actions)
+{% if cookiecutter.ci_platform == "github" -%}
+[![CI](https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}/actions/workflows/ci.yml/badge.svg)](https://github.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}/actions)
+{% else -%}
+[![Pipeline](https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}/badges/main/pipeline.svg)](https://gitlab.com/{{cookiecutter.repository_owner}}/{{cookiecutter.project_dir}}/-/pipelines)
+{% endif -%}
 [![Python](https://img.shields.io/pypi/pyversions/{{cookiecutter.project_dir}})](https://pypi.org/project/{{cookiecutter.project_dir}}/)
 
 {{cookiecutter.project_short_description}}
@@ -22,35 +26,42 @@ uv add {{cookiecutter.project_dir}}
 Or from Python:
 
 ```python
-from {{cookiecutter.project_slug}}.main import run
 from pathlib import Path
 
-run(Path("config/config_{{cookiecutter.project_slug}}.yml"))
+from {{cookiecutter.project_slug}}.config.models import WorkflowConfigModel
+from {{cookiecutter.project_slug}}.main import run
+
+config = WorkflowConfigModel.from_yaml(Path("config/config_{{cookiecutter.project_slug}}.yml"))
+run(config)
 ```
 
 ## Configuration
 
-Workflows are defined in YAML using tagged constructors:
+This package is built around one workflow. The CLI loads a plain YAML file into
+`WorkflowConfigModel`, then passes that Pydantic object to `run(config)`.
 
 ```yaml
-workflow: !workflow
-  name: example
-  type: ExampleWorkflow
-  parameters:
-    input_path: data/input.tif
-    output_path: data/output.tif
-    crs: EPSG:4326
+name: {{cookiecutter.project_slug}}-run
+source:
+  input_path: data/input.tif
+  crs: EPSG:32632
+compute_params: {}
+destination:
+  output_path: data/output.tif
+  overwrite: false
 ```
 
-Each `type` maps to a `Workflow` subclass. The YAML tag `!workflow` auto-instantiates
-the correct class via `register_yaml_tags()` in `config/models.py`.
+No custom YAML tags. No registry. The concrete workflow owns its typed source,
+compute, and destination models.
 
-## Adding a new workflow
+## Implementing your workflow
 
-1. Subclass `Workflow` in `src/{{cookiecutter.project_slug}}/workflows/`
+1. Rename `src/{{cookiecutter.project_slug}}/workflow/example.py`
 2. Implement `run(self) -> None` and `validate(self) -> None`
-3. Register a YAML tag in `src/{{cookiecutter.project_slug}}/config/models.py`
-4. Add tests in `tests/unit/` and update `knowledge_base/workflows.md`
+3. Update the single workflow import in `src/{{cookiecutter.project_slug}}/main.py`
+4. Update `config/config_{{cookiecutter.project_slug}}.yml`
+5. Add tests in `tests/unit/`
+6. Update `knowledge_base/workflows.md` and docs when behavior changes
 
 ## Development setup
 

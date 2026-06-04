@@ -32,24 +32,33 @@ To contribute effectively, understand:
 - Versioning: bump-my-version via `just bump <part>`
 - CI: GitHub Actions + GitLab CI
 
-### EO / SAR stack
+### Runtime stack
 
-- numpy, xarray, dask — array processing
-- rasterio, rioxarray — raster I/O
-- pyproj, shapely, geopandas — CRS and vector ops
 - pydantic>=2.7 — config validation
 - typer — CLI
 - pyyaml — plain YAML loading, no custom tags
 
+### Optional EO / SAR libraries
+
+- Add numpy, xarray, rasterio, pyproj, shapely, or scipy only when the workflow needs them
+
 ### Architecture
 
 - One workflow per package — imported directly in main.py
-- Workflow base class (abstract) in workflows/base.py
+- Workflow base class (abstract) in workflow/base.py
 - Concrete workflow: subclass Workflow, subclass SourceModel /
   ComputeParamsModel / DestinationModel, implement run() and validate()
 - Plain YAML config — name / source / compute_params / destination
 - main.py: WorkflowConfigModel.from_yaml() → Workflow → validate → run
 - knowledge_base/ updated whenever architecture changes
+
+### Useful LLM skills
+
+- Python package maintenance: tests, typing, packaging, and CLI wiring
+- EO/SAR workflow design: source / compute / destination boundaries
+- Geospatial review: CRS checks, path handling, and raster/vector assumptions
+- Documentation upkeep: update docs and knowledge_base with code changes
+- CI/CD review: keep the selected platform workflow aligned with project commands
 
 ### Conventions
 

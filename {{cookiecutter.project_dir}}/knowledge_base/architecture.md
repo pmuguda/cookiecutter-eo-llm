@@ -32,7 +32,6 @@ DestinationModel   — empty base: output paths, exporters, output settings
 ```python
 class WorkflowConfigModel(BaseModel):
     name: str
-    type: str
     source: SourceModel
     compute_params: ComputeParamsModel   # optional — defaults to empty
     destination: DestinationModel

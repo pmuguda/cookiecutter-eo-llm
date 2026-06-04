@@ -17,7 +17,8 @@ my-eo-package/                          ← project_dir (kebab-case)
 │   ├── context.md                      ← project identity and metadata
 │   ├── stack.md                        ← toolchain + EO stack + conventions
 │   ├── commands.md                     ← all Justfile commands documented
-│   └── boundaries.md                  ← always / ask-first / never rules
+│   ├── boundaries.md                   ← always / ask-first / never rules
+│   └── skills.md                       ← useful LLM skills for this package
 │
 ├── knowledge_base/                     ← living docs — update as you code
 │   ├── architecture.md                 ← package layout, Workflow pattern
@@ -26,25 +27,25 @@ my-eo-package/                          ← project_dir (kebab-case)
 │   └── changelog_context.md           ← plain-English summary since last release
 │
 ├── config/
-│   └── example_workflow.yaml           ← YAML tag demo
+│   └── config_my_eo_package.yml        ← plain YAML workflow config
 │
 ├── src/
 │   └── my_eo_package/                  ← project_slug (snake_case)
 │       ├── __init__.py                 ← exposes __version__
 │       ├── py.typed                    ← PEP 561 marker
 │       ├── main.py                     ← run() + typer CLI
-│       ├── workflows/
+│       ├── workflow/
 │       │   ├── base.py                 ← abstract Workflow(ABC)
 │       │   └── example.py             ← ExampleWorkflow
 │       └── config/
 │           └── models.py              ← SourceModel / ComputeParamsModel / DestinationModel / WorkflowConfigModel
 │
 ├── tests/
-│   ├── conftest.py                     ← shared xarray fixture
+│   ├── conftest.py                     ← shared pytest fixtures
 │   ├── helpers/
 │   │   └── config_builder.py          ← WorkflowConfig factory functions
 │   ├── resources/
-│   │   ├── example_workflow.yaml
+│   │   ├── config_my_eo_package.yml
 │   │   └── invalid_workflow.yaml
 │   ├── unit/
 │   │   ├── test_main.py
@@ -58,7 +59,7 @@ my-eo-package/                          ← project_dir (kebab-case)
 │       └── approved_files/
 │
 ├── notebooks/
-│   └── 00_exploration.ipynb
+│   └── 00_my_eo_package_exploration.ipynb
 ├── scripts/
 │   └── example_script.py
 ├── docs/
@@ -68,8 +69,7 @@ my-eo-package/                          ← project_dir (kebab-case)
 │
 ├── .github/
 │   └── workflows/
-│       ├── ci.yml                      ← test matrix: py3.10 / 3.11 / 3.12
-│       └── publish.yml                ← OIDC trusted publisher to PyPI
+│       └── ci.yml                      ← build, test, docs, and PyPI publish
 ├── .gitlab-ci.yml
 ├── .pre-commit-config.yaml             ← ruff + mypy hooks
 ├── .gitignore
@@ -114,10 +114,12 @@ See [Config Model Design](guides/config-design.md) for the full rationale.
 
 CLAUDE.md and AGENTS.md are both written from the same `.llm/` files at scaffold time.
 When the project evolves, update `.llm/` — then regenerate or manually sync both context files.
+`skills.md` names the assistant capabilities that are useful for this project,
+such as Python packaging, EO/SAR workflow design, geospatial review, docs, and CI/CD.
 
 ### knowledge_base/ as living docs
 
-These four files are the contract between the developer and any LLM assistant:
+These files are the durable project memory for developers and LLM assistants:
 
 | File | Updated when |
 |------|-------------|

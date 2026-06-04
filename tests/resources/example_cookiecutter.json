@@ -1,7 +1,7 @@
 {
   "full_name": "Chuck Norris",
   "email": "chuck@example.com",
-  "github_username": "chucknorris",
+  "repository_owner": "chucknorris",
   "project_name": "My EO Package",
   "project_dir": "my-eo-package",
   "project_slug": "my_eo_package",
@@ -11,7 +11,7 @@
   "license": "MIT",
   "primary_llm": "both",
   "include_mkdocs": "y",
-  "ci_platform": "both",
+  "ci_platform": "github",
   "test_scheme": "full",
   "open_source": "y"
 }
