@@ -90,6 +90,7 @@ def print_next_steps(project_dir: str, project_slug: str) -> None:
     cd {project_dir}
     just setup        # install deps + pre-commit hooks
     just test         # run full test suite
+    just update-context
     just run config/config_{project_slug}.yml
 
 Update knowledge_base/ as the codebase evolves.

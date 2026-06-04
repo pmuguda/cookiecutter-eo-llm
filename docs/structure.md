@@ -24,7 +24,9 @@ my-eo-package/                          ← project_dir (kebab-case)
 │   ├── architecture.md                 ← package layout, Workflow pattern
 │   ├── workflows.md                    ← one entry per concrete workflow
 │   ├── decisions.md                    ← ADRs: why this lib, why this pattern
-│   └── changelog_context.md           ← plain-English summary since last release
+│   ├── changelog_context.md            ← plain-English summary since last release
+│   ├── code_map.md                     ← low-token structural map for agents
+│   └── current_state.md                ← current project state and first-read order
 │
 ├── config/
 │   └── config_my_eo_package.yml        ← plain YAML workflow config
@@ -61,7 +63,8 @@ my-eo-package/                          ← project_dir (kebab-case)
 ├── notebooks/
 │   └── 00_my_eo_package_exploration.ipynb
 ├── scripts/
-│   └── example_script.py
+│   ├── example_script.py
+│   └── update_code_map.py              ← refreshes code_map/current_state
 ├── docs/
 │   ├── mkdocs.yml
 │   ├── index.md
@@ -127,3 +130,5 @@ These files are the durable project memory for developers and LLM assistants:
 | `workflows.md` | any workflow is added or changed |
 | `decisions.md` | a non-obvious design choice is made |
 | `changelog_context.md` | before a release — reset after tagging |
+| `code_map.md` | after module, config, test, or docs structure changes |
+| `current_state.md` | after meaningful development milestones |

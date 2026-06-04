@@ -37,6 +37,25 @@ The result is a tighter loop: tests guide behavior, `.llm/` guides assistant
 behavior, and `knowledge_base/` preserves the architectural decisions behind the
 code.
 
+## Context economy without extra supply-chain risk
+
+Generated projects include two lightweight context files:
+
+| File | Purpose |
+|------|---------|
+| `knowledge_base/code_map.md` | Cheap structural map of modules, configs, tests, docs, and key commands |
+| `knowledge_base/current_state.md` | Current stage, first-read order, and open implementation work |
+
+Refresh them with:
+
+```bash
+just update-context
+```
+
+The updater is a stdlib-only Python script in `scripts/update_code_map.py`.
+It avoids third-party code-indexing executables while still giving Claude Code,
+Codex, and other agents a low-token starting point for new sessions.
+
 ---
 
 ## CLAUDE.md

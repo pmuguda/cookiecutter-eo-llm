@@ -24,6 +24,7 @@ point to the same architecture.
 | Inconsistent tooling across projects | uv + ruff + mypy strict + pytest everywhere |
 | Notebook-to-package migration is messy | One workflow class + one config file + tests from the start |
 | Heavy geospatial dependencies get added too early | Runtime deps stay small; EO/SAR libraries are added only when needed |
+| New LLM sessions spend tokens rediscovering structure | `code_map.md` and `current_state.md` give agents a cheap first read |
 
 ---
 
@@ -64,6 +65,7 @@ uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm
 - **No comments** — rename and simplify instead
 - **uv only** — no pip, no Poetry
 - **Tokens are gold** — LLM context files stay lean and human-curated
+- **Context economy** — `just update-context` refreshes a local code map without extra tooling
 - **Single source of truth** — `.llm/` drives both CLAUDE.md and AGENTS.md
 - **Docs move with code** — architecture, workflow, and API changes update docs too
 - **Conventional Commits** — feat/fix/chore with SemVer mapping

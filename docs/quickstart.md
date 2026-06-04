@@ -51,6 +51,7 @@ open_source [y]:
 cd sar-coherence-processor
 just setup          # uv sync --dev + pre-commit install
 just test           # full test suite
+just update-context # refresh low-token LLM context
 just run config/config_sar_coherence_processor.yml
 ```
 

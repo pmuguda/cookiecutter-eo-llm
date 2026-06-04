@@ -11,6 +11,7 @@ Never add LLM attribution to commit messages or file headers.
 
 Before writing code, read `knowledge_base/architecture.md` and `knowledge_base/workflows.md`.
 You need to understand:
+- `knowledge_base/current_state.md` and `knowledge_base/code_map.md` before broad repo scanning
 - The SourceModel / ComputeParamsModel / DestinationModel contract
 - How re-validation in `__init__` provides type safety
 - The CRS conventions used in this package
@@ -47,6 +48,7 @@ You need to understand:
 
 ### Useful LLM skills
 
+- Before scanning the repo, read `knowledge_base/current_state.md` and `knowledge_base/code_map.md`
 - Python package maintenance: tests, typing, packaging, and CLI wiring
 - EO/SAR workflow design: source / compute / destination boundaries
 - Geospatial review: CRS checks, path handling, and raster/vector assumptions

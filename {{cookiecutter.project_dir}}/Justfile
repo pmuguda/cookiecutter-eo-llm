@@ -37,6 +37,9 @@ docs:
 docs-build:
     uv run mkdocs build
 
+update-context:
+    python scripts/update_code_map.py
+
 bump part:
     uv run bump-my-version bump {{ "{{" }}part{{ "}}" }}
 
