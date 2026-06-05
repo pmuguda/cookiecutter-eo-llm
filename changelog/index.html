@@ -1052,10 +1052,10 @@ Versioning: <a href="https://semver.org/">Semantic Versioning</a></p>
 <ul>
 <li><code>cookiecutter.json</code> with template variables including <code>primary_llm</code>, <code>include_mkdocs</code>, <code>ci_platform</code>, and <code>test_scheme</code></li>
 <li><code>{{cookiecutter.project_dir}}/</code> template with full <code>src/</code> layout:</li>
-<li>Abstract <code>Workflow</code> base class with <code>run()</code> and <code>validate()</code> contract</li>
+<li>Abstract <code>Workflow</code> base class with <code>run()</code> contract and base workflow logger</li>
 <li><code>ExampleWorkflow</code> concrete implementation</li>
 <li><code>WorkflowConfigModel</code> Pydantic v2 model with <code>from_yaml()</code> and plain YAML loading</li>
-<li><code>typer</code> CLI wired to load a config path and pass <code>WorkflowConfigModel</code> into <code>run(config)</code></li>
+<li><code>typer</code> CLI wired to check a config path and pass <code>WorkflowConfigModel</code> into <code>run_&lt;project_slug&gt;(config)</code></li>
 <li><code>.llm/</code> context files: <code>context.md</code>, <code>stack.md</code>, <code>commands.md</code>, <code>boundaries.md</code>, <code>skills.md</code></li>
 <li><code>CLAUDE.md</code> and <code>AGENTS.md</code> both rendered from <code>.llm/</code> — under 200 lines each</li>
 <li><code>knowledge_base/</code>: <code>architecture.md</code>, <code>workflows.md</code>, <code>decisions.md</code>, <code>changelog_context.md</code></li>
