@@ -35,7 +35,7 @@ my-eo-package/                          ← project_dir (kebab-case)
 │   └── my_eo_package/                  ← project_slug (snake_case)
 │       ├── __init__.py                 ← exposes __version__
 │       ├── py.typed                    ← PEP 561 marker
-│       ├── main.py                     ← run() + typer CLI
+│       ├── main.py                     ← run_<project_slug>() + typer CLI
 │       ├── workflow/
 │       │   ├── base.py                 ← abstract Workflow(ABC)
 │       │   └── example.py             ← ExampleWorkflow

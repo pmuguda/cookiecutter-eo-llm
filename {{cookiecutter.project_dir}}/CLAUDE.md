@@ -48,9 +48,9 @@ To contribute effectively, understand:
 - One workflow per package — imported directly in main.py
 - Workflow base class (abstract) in workflow/base.py
 - Concrete workflow: subclass Workflow, subclass SourceModel /
-  ComputeParamsModel / DestinationModel, implement run() and validate()
+  ComputeParamsModel / DestinationModel, implement run(), and add workflow-specific validation when needed
 - Plain YAML config — name / source / compute_params / destination
-- main.py: WorkflowConfigModel.from_yaml() → Workflow → validate → run
+- main.py: config path check → WorkflowConfigModel.from_yaml() → Workflow → run
 - knowledge_base/ updated whenever architecture changes
 
 ### Useful LLM skills

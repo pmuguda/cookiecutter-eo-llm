@@ -20,7 +20,7 @@ uv add {{cookiecutter.project_dir}}
 ## Quick start
 
 ```bash
-{{cookiecutter.project_dir}} config/config_{{cookiecutter.project_slug}}.yml
+{{cookiecutter.project_dir}} --config-file config/config_{{cookiecutter.project_slug}}.yml
 ```
 
 Or from Python:
@@ -29,16 +29,17 @@ Or from Python:
 from pathlib import Path
 
 from {{cookiecutter.project_slug}}.config.models import WorkflowConfigModel
-from {{cookiecutter.project_slug}}.main import run
+from {{cookiecutter.project_slug}}.main import run_{{cookiecutter.project_slug}}
 
 config = WorkflowConfigModel.from_yaml(Path("config/config_{{cookiecutter.project_slug}}.yml"))
-run(config)
+run_{{cookiecutter.project_slug}}(config)
 ```
 
 ## Configuration
 
-This package is built around one workflow. The CLI loads a plain YAML file into
-`WorkflowConfigModel`, then passes that Pydantic object to `run(config)`.
+This package is built around one workflow. The CLI checks the config file path,
+loads plain YAML into `WorkflowConfigModel`, then passes that Pydantic object to
+`run_{{cookiecutter.project_slug}}(config)`.
 
 ```yaml
 name: {{cookiecutter.project_slug}}-run
@@ -57,7 +58,7 @@ compute, and destination models.
 ## Implementing your workflow
 
 1. Rename `src/{{cookiecutter.project_slug}}/workflow/example.py`
-2. Implement `run(self) -> None` and `validate(self) -> None`
+2. Implement `run(self) -> None`; add workflow-specific validation inside `run()` when needed
 3. Update the single workflow import in `src/{{cookiecutter.project_slug}}/main.py`
 4. Update `config/config_{{cookiecutter.project_slug}}.yml`
 5. Add tests in `tests/unit/`
@@ -86,6 +87,7 @@ just update-context
 | `just test-cov` | Coverage HTML report |
 | `just docs` | Serve docs locally |
 | `just update-context` | Refresh `knowledge_base/code_map.md` and `current_state.md` |
+| `just run config/config_{{cookiecutter.project_slug}}.yml` | Run the workflow config |
 | `just bump patch` | 0.1.0 → 0.1.1 |
 | `just bump minor` | 0.1.0 → 0.2.0 |
 | `just bump major` | 0.1.0 → 1.0.0 |

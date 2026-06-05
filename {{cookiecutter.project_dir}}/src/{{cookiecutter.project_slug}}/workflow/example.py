@@ -6,10 +6,7 @@ from {{cookiecutter.project_slug}}.config.models import (
     SourceModel,
     WorkflowConfigModel,
 )
-from {{cookiecutter.project_slug}}.logger import get_logger
 from {{cookiecutter.project_slug}}.workflow.base import Workflow
-
-_log = get_logger(__name__)
 
 
 class ExampleSource(SourceModel):
@@ -49,7 +46,7 @@ class ExampleWorkflow(Workflow):
 
     def run(self) -> None:
         self.validate()
-        _log.info("source:    %s", self.source.input_path)
-        _log.info("crs:       %s", self.source.crs)
-        _log.info("output:    %s", self.destination.output_path)
-        _log.info("overwrite: %s", self.destination.overwrite)
+        self.log.info("source:    %s", self.source.input_path)
+        self.log.info("crs:       %s", self.source.crs)
+        self.log.info("output:    %s", self.destination.output_path)
+        self.log.info("overwrite: %s", self.destination.overwrite)

@@ -19,7 +19,7 @@ placeholder — replace it with your real implementation:
 1. Rename `workflow/example.py` and its classes to match your domain
 2. Define `MySource(SourceModel)`, `MyComputeParams(ComputeParamsModel)`,
    `MyDestination(DestinationModel)` with typed fields
-3. Implement `run()` and `validate()`
+3. Implement `run()`; add workflow-specific validation inside `run()` when needed
 4. Update the single import in `main.py`
 5. Add unit tests in `tests/unit/`
 6. Update `knowledge_base/workflows.md`

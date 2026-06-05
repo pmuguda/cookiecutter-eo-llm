@@ -50,4 +50,4 @@ publish:
     uv publish
 
 run config:
-    uv run {{cookiecutter.project_dir}} {{ "{{" }}config{{ "}}" }}
+    uv run {{cookiecutter.project_dir}} --config-file {{ "{{" }}config{{ "}}" }}

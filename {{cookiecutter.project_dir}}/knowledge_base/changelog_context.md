@@ -8,4 +8,4 @@ Reset this file on each version bump.
 - Initial scaffold generated from cookiecutter-eo-llm.
 - ExampleWorkflow added as a demonstration of the workflow pattern.
 - WorkflowConfig with Pydantic v2 validation.
-- Typer CLI wired to run() in main.py.
+- Typer CLI wired to `run_{{cookiecutter.project_slug}}(config)` in main.py.

@@ -42,9 +42,9 @@ You need to understand:
 - One package = one workflow — imported directly in main.py, no registry
 - Abstract Workflow base in workflow/base.py
 - Concrete workflow: subclass SourceModel / ComputeParamsModel / DestinationModel,
-  subclass Workflow, implement run() and validate()
+  subclass Workflow, implement run(), and add workflow-specific validation when needed
 - Plain YAML config: name / source / compute_params / destination — no custom tags
-- main.py: WorkflowConfigModel.from_yaml() → Workflow → validate → run
+- main.py: config path check → WorkflowConfigModel.from_yaml() → Workflow → run
 
 ### Useful LLM skills
 

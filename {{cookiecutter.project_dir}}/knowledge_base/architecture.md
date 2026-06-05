@@ -7,7 +7,7 @@ src/{{cookiecutter.project_slug}}/
 ├── __init__.py
 ├── py.typed
 ├── logger.py    — get_logger(name) for consistent logging across modules
-├── main.py      — run(config) entry point + typer CLI
+├── main.py      — run_{{cookiecutter.project_slug}}(config) entry point + typer CLI
 ├── workflow/
 │   ├── base.py      — abstract Workflow base class
 │   └── example.py   — concrete implementation showing the full pattern
@@ -63,11 +63,11 @@ and instantiates it directly — no registry, no dispatch.
 ## Workflow abstract class
 
 `Workflow` in `workflow/base.py` defines the contract:
-- `__init__(self, config: WorkflowConfigModel)` — receives validated config
+- `__init__(self, config: WorkflowConfigModel)` — receives validated config and initializes `self.log`
 - `run(self) -> None` — execute the workflow
-- `validate(self) -> None` — validate inputs before running
 
-Every concrete workflow must implement both methods.
+Every concrete workflow must implement `run()`. Add a workflow-specific
+`validate()` helper only when the workflow needs preflight checks.
 
 ## Concrete workflow pattern
 
@@ -100,7 +100,7 @@ The scaffold contains `ExampleWorkflow` as a placeholder. Replace it:
 
 1. Rename `workflow/example.py` to `workflow/<your_name>.py`
 2. Define `MySource`, `MyComputeParams`, `MyDestination` subclassing the base models
-3. Rename `ExampleWorkflow` → `MyWorkflow`, implement `run()` and `validate()`
+3. Rename `ExampleWorkflow` → `MyWorkflow`, implement `run()`, and add validation helpers as needed
 4. Update the import in `main.py` — one line changes
 5. Add tests in `tests/unit/test_<your_name>_workflow.py`
 6. Update `knowledge_base/workflows.md`

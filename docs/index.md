@@ -33,10 +33,10 @@ point to the same architecture.
 ```
 my-eo-package/
 ├── src/my_eo_package/       ← importable package (snake_case)
-│   ├── logger.py            ← get_logger(__name__) for every module
+│   ├── logger.py            ← get_logger(name) for workflow/runtime logging
 │   ├── workflow/            ← abstract base + concrete implementation
 │   ├── config/              ← SourceModel / ComputeParamsModel / DestinationModel
-│   └── main.py              ← typer CLI + run() entry point
+│   └── main.py              ← typer CLI + run_<project_slug>() entry point
 ├── .llm/                    ← single source of truth for LLM context and skills
 ├── knowledge_base/          ← living architecture docs
 ├── tests/                   ← unit / integration / approval suites

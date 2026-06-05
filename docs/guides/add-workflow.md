@@ -51,14 +51,14 @@ def test_coherence_run_succeeds() -> None:
     CoherenceWorkflow(make_config()).run()
 
 
-def test_coherence_validate_raises_on_missing_crs() -> None:
+def test_coherence_run_raises_on_missing_crs() -> None:
     config = WorkflowConfigModel(
         name="t",
         source=SourceModel(input_stack="a.zarr"),
         destination=DestinationModel(output_path="b.tif"),
     )
     with pytest.raises(ValueError, match="crs"):
-        CoherenceWorkflow(config).validate()
+        CoherenceWorkflow(config).run()
 ```
 
 Run — should fail (red):
@@ -79,10 +79,7 @@ from pathlib import Path
 from my_eo_package.config.models import (
     SourceModel, ComputeParamsModel, DestinationModel, WorkflowConfigModel,
 )
-from my_eo_package.logger import get_logger
 from my_eo_package.workflow.base import Workflow
-
-_log = get_logger(__name__)
 
 
 class CoherenceSource(SourceModel):
@@ -116,10 +113,10 @@ class CoherenceWorkflow(Workflow):
 
     def run(self) -> None:
         self.validate()
-        _log.info("stack:       %s", self.source.input_stack)
-        _log.info("crs:         %s", self.source.crs)
-        _log.info("window_size: %s", self.compute.window_size)
-        _log.info("output:      %s", self.destination.output_path)
+        self.log.info("stack:       %s", self.source.input_stack)
+        self.log.info("crs:         %s", self.source.crs)
+        self.log.info("window_size: %s", self.compute.window_size)
+        self.log.info("output:      %s", self.destination.output_path)
 ```
 
 Run — should pass (green):
@@ -143,8 +140,8 @@ from my_eo_package.workflow.coherence import CoherenceWorkflow as Workflow
 ```
 
 Everything else in `main.py` stays the same.
-The CLI reads the YAML path and builds `WorkflowConfigModel`; `run()` receives
-that Pydantic object.
+The CLI checks the YAML path and builds `WorkflowConfigModel`;
+`run_my_eo_package(config)` receives that Pydantic object.
 
 ---
 

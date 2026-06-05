@@ -15,10 +15,10 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 - `cookiecutter.json` with template variables including `primary_llm`, `include_mkdocs`, `ci_platform`, and `test_scheme`
 - `{{cookiecutter.project_dir}}/` template with full `src/` layout:
-  - Abstract `Workflow` base class with `run()` and `validate()` contract
+  - Abstract `Workflow` base class with `run()` contract and base workflow logger
   - `ExampleWorkflow` concrete implementation
   - `WorkflowConfigModel` Pydantic v2 model with `from_yaml()` and plain YAML loading
-  - `typer` CLI wired to load a config path and pass `WorkflowConfigModel` into `run(config)`
+  - `typer` CLI wired to check a config path and pass `WorkflowConfigModel` into `run_<project_slug>(config)`
 - `.llm/` context files: `context.md`, `stack.md`, `commands.md`, `boundaries.md`, `skills.md`
 - `CLAUDE.md` and `AGENTS.md` both rendered from `.llm/` — under 200 lines each
 - `knowledge_base/`: `architecture.md`, `workflows.md`, `decisions.md`, `changelog_context.md`

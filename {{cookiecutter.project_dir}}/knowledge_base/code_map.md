@@ -18,7 +18,7 @@ scan the repository.
 
 ## Package modules
 
-- `{{cookiecutter.project_slug}}.main` — Typer CLI and `run(config)` entry point
+- `{{cookiecutter.project_slug}}.main` — Typer CLI and `run_{{cookiecutter.project_slug}}(config)` entry point
 - `{{cookiecutter.project_slug}}.config.models` — Pydantic config contracts
 - `{{cookiecutter.project_slug}}.workflow.base` — abstract workflow interface
 - `{{cookiecutter.project_slug}}.workflow.example` — scaffold workflow example
