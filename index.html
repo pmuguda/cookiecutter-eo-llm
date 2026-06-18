@@ -1147,7 +1147,7 @@ your project's rules — all from a single <code>.llm/</code> source of truth.</
 <tbody>
 <tr>
 <td>CLAUDE.md and AGENTS.md drift apart</td>
-<td>Both rendered from the same <code>.llm/</code> source of truth</td>
+<td>Both <strong>generated</strong> from <code>.llm/</code> by <code>just sync-llm</code>; a CI check fails on any drift</td>
 </tr>
 <tr>
 <td>Boilerplate for every new package</td>
@@ -1187,13 +1187,11 @@ your project's rules — all from a single <code>.llm/</code> source of truth.</
     R --&gt; KB["knowledge_base/\nliving architecture docs"]
     R --&gt; CI["CI/CD for selected\nplatform"]
 
-    LLM --&gt; CL["CLAUDE.md ≤200 lines\n(Claude Code)"]
-    LLM --&gt; AG["AGENTS.md ≤200 lines\n(Codex / other agents)"]
-
-    SRC &amp; CL &amp; AG &amp; KB &amp; CI --&gt; H["post_gen_project.py\nhook"]
-    H --&gt; RM["Remove unused\nplatform files"]
+    SRC &amp; LLM &amp; KB &amp; CI --&gt; H["post_gen_project.py hook"]
+    H --&gt; GEN["sync_llm.py --init\ngenerate CLAUDE.md + AGENTS.md\nfrom .llm/"]
+    H --&gt; RM["Remove unused platform /\nLLM / test-scheme files"]
     H --&gt; TS["Configure\ntest scheme"]
-    H --&gt; GI["git init +\ninitial commit"]
+    GEN &amp; RM &amp; TS --&gt; GI["git init +\ninitial commit"]
     GI --&gt; DONE(["✅ your-package/ ready\njust setup &amp;&amp; just test"])</code></pre>
 <p>The post-gen hook runs once and leaves the project in a clean, committed state
 with only the files you asked for.</p>
@@ -1254,7 +1252,7 @@ flags</strong> — the post-gen hook removes any files that don't apply.</p>
 <li><strong>uv only</strong> — no pip, no Poetry</li>
 <li><strong>Tokens are gold</strong> — LLM context files stay lean and human-curated</li>
 <li><strong>Context economy</strong> — <code>just update-context</code> refreshes a local code map without extra tooling</li>
-<li><strong>Single source of truth</strong> — <code>.llm/</code> drives both CLAUDE.md and AGENTS.md</li>
+<li><strong>Single source of truth</strong> — <code>.llm/</code> generates both CLAUDE.md and AGENTS.md (<code>just sync-llm</code>), enforced by a no-drift CI check</li>
 <li><strong>Docs move with code</strong> — architecture, workflow, and API changes update docs too</li>
 <li><strong>Conventional Commits</strong> — feat/fix/chore with SemVer mapping</li>
 </ul>
