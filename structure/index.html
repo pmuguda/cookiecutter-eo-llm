@@ -1205,22 +1205,46 @@ the workflow class directly — no type dispatch, no registry.</p>
 <p>When you scaffold the project, rename <code>ExampleWorkflow</code> to your domain class and
 update the single import in <code>main.py</code>. That is the only change needed.</p>
 <h3 id="config-model-design">Config model design</h3>
-<p>The config splits into three typed sections:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">my-run</span><span class="w">        </span><span class="c1"># label for this run (used in logs)</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="nt">source</span><span class="p">:</span><span class="w">             </span><span class="c1"># inputs — paths, loaders, CRS</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="nt">compute_params</span><span class="p">:</span><span class="w">     </span><span class="c1"># algorithm parameters</span>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="nt">destination</span><span class="p">:</span><span class="w">        </span><span class="c1"># outputs — paths, format, overwrite flag</span>
-</code></pre></div>
-<p>Each section maps to an empty base model (<code>SourceModel</code>, <code>ComputeParamsModel</code>,
-<code>DestinationModel</code>) that the concrete workflow subclasses with typed fields.
-See <a href="../guides/config-design/">Config Model Design</a> for the full rationale.</p>
+<p>Every EO workflow follows the same data shape regardless of algorithm:</p>
+<pre class="mermaid"><code>flowchart LR
+    YAML["config/config_my_eo_package.yml\n───────────────────\nname: my-run\nsource: …\ncompute_params: …\ndestination: …"]
+    YAML --&gt;|"yaml.safe_load\n+ model_validate"| WCM["WorkflowConfigModel"]
+
+    WCM --&gt;|model_validate| SRC["CoherenceSource\n───────────────\ninput_stack: Path\ncrs: str"]
+    WCM --&gt;|model_validate| CP["CoherenceComputeParams\n───────────────────\nwindow_size: int = 5"]
+    WCM --&gt;|model_validate| DST["CoherenceDestination\n───────────────────\noutput_path: Path\noverwrite: bool = False"]
+
+    SRC &amp; CP &amp; DST --&gt; WF["CoherenceWorkflow.__init__\nValidation error raised HERE\nif a field is wrong — before run()"]
+    WF --&gt; RUN["workflow.run()\nself.source.crs → str ✓\nself.compute.window_size → int ✓\nself.destination.output_path → Path ✓"]</code></pre>
+<p>The three empty base models (<code>SourceModel</code>, <code>ComputeParamsModel</code>, <code>DestinationModel</code>)
+define the grouping contract. Each concrete workflow subclasses all three and adds
+its own typed fields. See <a href="../guides/config-design/">Config Model Design</a> for the
+full rationale and the flat-dict alternative compared.</p>
 <h3 id="llm-as-single-source-of-truth">.llm/ as single source of truth</h3>
+<pre class="mermaid"><code>flowchart LR
+    subgraph src [".llm/ — source of truth"]
+        direction TB
+        CTX["context.md\nproject identity"]
+        STK["stack.md\ntoolchain + EO libs"]
+        CMD["commands.md\njust commands"]
+        BND["boundaries.md\nalways / ask-first / never"]
+        SKL["skills.md\nassistant capabilities"]
+    end
+
+    src --&gt;|"rendered at\nscaffold time"| CL["CLAUDE.md\n≤ 200 lines\nauto-loaded by Claude Code"]
+    src --&gt;|"rendered at\nscaffold time"| AG["AGENTS.md\n≤ 200 lines\nfollows AAIF spec"]
+
+    CL --&gt;|"read by"| CC["Claude Code"]
+    AG --&gt;|"read by"| OA["OpenAI Codex\n+ other agents"]</code></pre>
 <p>CLAUDE.md and AGENTS.md are both written from the same <code>.llm/</code> files at scaffold time.
-When the project evolves, update <code>.llm/</code> — then regenerate or manually sync both context files.
-<code>skills.md</code> names the assistant capabilities that are useful for this project,
+When the project evolves, update <code>.llm/</code> — then manually sync the relevant sections
+into CLAUDE.md and AGENTS.md. The test suite enforces the 200-line hard limit on both files.</p>
+<p><code>skills.md</code> names the assistant capabilities that are useful for this project,
 such as Python packaging, EO/SAR workflow design, geospatial review, docs, and CI/CD.</p>
 <h3 id="knowledge_base-as-living-docs">knowledge_base/ as living docs</h3>
-<p>These files are the durable project memory for developers and LLM assistants:</p>
+<p>These files are the durable project memory for developers and LLM assistants.
+Run <code>just update-context</code> to refresh <code>code_map.md</code> and <code>current_state.md</code> after
+any structural change.</p>
 <table>
 <thead>
 <tr>

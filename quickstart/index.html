@@ -530,6 +530,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-happens-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens under the hood
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#run-the-generated-project" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1023,6 +1034,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#what-happens-under-the-hood" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What happens under the hood
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#run-the-generated-project" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1093,7 +1115,7 @@
 <h2 id="generate-a-project">Generate a project</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uvx<span class="w"> </span>cookiecutter<span class="w"> </span>gh:pmuguda/cookiecutter-eo-llm
 </code></pre></div>
-<p>You will be prompted for:</p>
+<p>You will be prompted for eight values:</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>full_name [Chuck Norris]: Ada Lovelace
 <a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>email [chuck@example.com]: ada@example.com
 <a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>repository_owner [chucknorris]: alovelace
@@ -1114,6 +1136,27 @@
 <div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a>uvx<span class="w"> </span>cookiecutter<span class="w"> </span>gh:pmuguda/cookiecutter-eo-llm<span class="w"> </span>--no-input
 </code></pre></div></p>
 </div>
+<hr />
+<h2 id="what-happens-under-the-hood">What happens under the hood</h2>
+<pre class="mermaid"><code>sequenceDiagram
+    participant U as You
+    participant CC as cookiecutter
+    participant H as post_gen_project.py
+    participant G as git
+
+    U-&gt;&gt;CC: uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm
+    CC-&gt;&gt;U: 8 prompts
+    U-&gt;&gt;CC: your answers
+    CC-&gt;&gt;CC: Render all Jinja2 templates&lt;br/&gt;(src/, .llm/, knowledge_base/, CI, tests, …)
+    CC-&gt;&gt;H: run hook in generated project dir
+    H-&gt;&gt;H: remove unused CI platform files
+    H-&gt;&gt;H: configure test scheme (unit / approval / hypothesis)
+    H-&gt;&gt;H: remove CLAUDE.md or AGENTS.md (if primary_llm ≠ both)
+    H-&gt;&gt;H: remove docs/ (if include_mkdocs = n)
+    H-&gt;&gt;G: git init &amp;&amp; git add . &amp;&amp; git commit
+    G--&gt;&gt;U: ✅ sar-coherence-processor/ with initial commit</code></pre>
+<p>The hook is a plain Python script with single-responsibility functions — nothing
+hidden, fully testable. See <a href="../hooks/">Hooks</a> for the detailed breakdown.</p>
 <hr />
 <h2 id="run-the-generated-project">Run the generated project</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nb">cd</span><span class="w"> </span>sar-coherence-processor

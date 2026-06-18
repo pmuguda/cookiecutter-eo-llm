@@ -1319,22 +1319,29 @@ The hook only removes the rendered output file, not the source.</p>
 <tr>
 <th>Variable</th>
 <th>Default</th>
-<th>Removes when <code>n</code></th>
+<th>Effect when <code>n</code></th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>include_mkdocs</code></td>
 <td><code>y</code></td>
-<td><code>docs/</code> + mkdocs deps from <code>pyproject.toml</code></td>
+<td>Removes <code>docs/</code> and strips all <code>mkdocs*</code> lines from <code>pyproject.toml</code></td>
 </tr>
 <tr>
 <td><code>open_source</code></td>
 <td><code>y</code></td>
-<td>(reserved for future use)</td>
+<td>Reserved — no files are removed today; a future release will gate PyPI publish config behind this flag</td>
 </tr>
 </tbody>
 </table>
+<div class="admonition note">
+<p class="admonition-title"><code>open_source</code></p>
+<p>Setting <code>open_source = n</code> currently has no effect on the generated files.
+The variable is present so the template can distinguish internal packages
+from public ones in future releases (e.g. skipping PyPI trusted-publisher
+setup, omitting the Ko-fi badge).</p>
+</div>
 
 
 

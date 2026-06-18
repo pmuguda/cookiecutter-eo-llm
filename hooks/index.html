@@ -679,6 +679,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#how-hooks-read-template-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How hooks read template variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pre_promptpy" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1123,6 +1134,17 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#how-hooks-read-template-variables" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How hooks read template variables
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pre_promptpy" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1326,6 +1348,31 @@
 
 <h1 id="hooks">Hooks</h1>
 <p>Cookiecutter hooks run Python scripts before and after rendering.</p>
+<pre class="mermaid"><code>sequenceDiagram
+    participant CC as cookiecutter
+    participant PR as pre_prompt.py
+    participant R as Jinja2 renderer
+    participant PG as post_gen_project.py
+
+    CC-&gt;&gt;PR: validate python_requires before any rendering
+    PR--&gt;&gt;CC: ok (or exit with error)
+    CC-&gt;&gt;R: render all template files with context
+    R--&gt;&gt;CC: generated project directory
+    CC-&gt;&gt;PG: run in generated project dir (env vars set)
+    PG-&gt;&gt;PG: remove unused files based on chosen options
+    PG-&gt;&gt;PG: git init + initial commit
+    PG--&gt;&gt;CC: done</code></pre>
+<hr />
+<h2 id="how-hooks-read-template-variables">How hooks read template variables</h2>
+<p><code>post_gen_project.py</code> reads your cookiecutter choices via environment variables:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">primary_llm</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;COOKIECUTTER_PRIMARY_LLM&quot;</span><span class="p">,</span> <span class="s2">&quot;both&quot;</span><span class="p">)</span>
+</code></pre></div>
+<p>Cookiecutter (2.2+) automatically sets <code>COOKIECUTTER_&lt;VARIABLE_NAME_UPPERCASE&gt;</code>
+in the environment before running each hook. This makes the hook a plain Python
+script — no Jinja2 templating inside the hook itself — which means every function
+can be unit-tested in isolation by simply setting the env var and calling the function.</p>
+<p>The test helper <code>tests/helpers/render.py</code> replicates the same env var injection
+so that approval tests match exactly what a real <code>uvx cookiecutter</code> run produces.</p>
 <hr />
 <h2 id="pre_promptpy">pre_prompt.py</h2>
 <p>Validates <code>python_requires</code> before the template renders. Exits with an error
@@ -1380,7 +1427,7 @@ test scheme is <code>unit</code> or <code>unit_and_approval</code>. All other de
 <p>Removes <code>.gitlab-ci.yml</code> when <code>ci_platform == "github"</code>.</p>
 <h4 id="init_gitproject_dir"><code>init_git(project_dir)</code></h4>
 <p>Runs <code>git init &amp;&amp; git add . &amp;&amp; git commit</code> with message:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>chore: initial scaffold from cookiecutter-eo-llm
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>chore: initial scaffold from cookiecutter-eo-llm
 </code></pre></div>
 <p>No LLM co-author footers are added.</p>
 <h4 id="print_next_stepsproject_dir-project_slug"><code>print_next_steps(project_dir, project_slug)</code></h4>
@@ -1393,7 +1440,7 @@ calls the above functions in order. No conditional logic lives in <code>main()</
 <p>Hook functions are tested in isolation in <code>tests/test_hooks.py</code>.
 Each test creates a minimal fake project directory and asserts the
 expected file system state after the function runs.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_hooks.py<span class="w"> </span>-v
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>uv<span class="w"> </span>run<span class="w"> </span>pytest<span class="w"> </span>tests/test_hooks.py<span class="w"> </span>-v
 </code></pre></div>
 
 

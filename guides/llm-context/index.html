@@ -833,21 +833,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-this-helps-development" class="md-nav__link">
+  <a href="#from-source-to-rendered-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How this helps development
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#context-economy-without-extra-supply-chain-risk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Context economy without extra supply-chain risk
+        From source to rendered files
       
     </span>
   </a>
@@ -859,6 +848,17 @@
     <span class="md-ellipsis">
       
         Session lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-200-line-limit-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the 200-line limit matters
       
     </span>
   </a>
@@ -899,10 +899,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#keeping-context-lean" class="md-nav__link">
+  <a href="#context-economy-without-supply-chain-risk" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Keeping context lean
+        Context economy without supply-chain risk
       
     </span>
   </a>
@@ -1056,21 +1056,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#how-this-helps-development" class="md-nav__link">
+  <a href="#from-source-to-rendered-files" class="md-nav__link">
     <span class="md-ellipsis">
       
-        How this helps development
-      
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#context-economy-without-extra-supply-chain-risk" class="md-nav__link">
-    <span class="md-ellipsis">
-      
-        Context economy without extra supply-chain risk
+        From source to rendered files
       
     </span>
   </a>
@@ -1082,6 +1071,17 @@
     <span class="md-ellipsis">
       
         Session lifecycle
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-the-200-line-limit-matters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why the 200-line limit matters
       
     </span>
   </a>
@@ -1122,10 +1122,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#keeping-context-lean" class="md-nav__link">
+  <a href="#context-economy-without-supply-chain-risk" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Keeping context lean
+        Context economy without supply-chain risk
       
     </span>
   </a>
@@ -1170,7 +1170,8 @@
 
 <h1 id="llm-context-files">LLM Context Files</h1>
 <p>The template generates token-efficient context files for Claude Code and OpenAI Codex.
-Both are rendered from the same <code>.llm/</code> source of truth at scaffold time.</p>
+Both are rendered from the same <code>.llm/</code> source of truth at scaffold time — they never
+drift because they have one origin.</p>
 <hr />
 <h2 id="the-llm-directory">The .llm/ directory</h2>
 <p>Five small files that define everything an LLM assistant needs to know:</p>
@@ -1179,57 +1180,172 @@ Both are rendered from the same <code>.llm/</code> source of truth at scaffold t
 <tr>
 <th>File</th>
 <th>Content</th>
-<th>Hard limit</th>
+<th>Purpose</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>context.md</code></td>
 <td>Project identity: name, author, repo, Python version, license</td>
-<td>—</td>
+<td>who + what</td>
 </tr>
 <tr>
 <td><code>stack.md</code></td>
 <td>Toolchain, EO/SAR libraries, architecture summary, conventions</td>
-<td>—</td>
+<td>how it's built</td>
 </tr>
 <tr>
 <td><code>commands.md</code></td>
 <td>Every <code>just</code> command with a one-line description</td>
-<td>—</td>
+<td>what to run</td>
 </tr>
 <tr>
 <td><code>boundaries.md</code></td>
 <td>Three sections: Always / Ask first / Never</td>
-<td>—</td>
+<td>what's allowed</td>
 </tr>
 <tr>
 <td><code>skills.md</code></td>
-<td>Useful assistant capabilities for the package: tests, typing, EO/SAR workflow design, docs, CI/CD</td>
-<td>—</td>
+<td>Useful assistant capabilities for the package</td>
+<td>where to focus</td>
 </tr>
 </tbody>
 </table>
-<h2 id="how-this-helps-development">How this helps development</h2>
-<p>The generated package is designed for repeated collaboration with LLM coding
-assistants. The context files keep the assistant grounded in project-specific
-rules before it writes code:</p>
+<hr />
+<h2 id="from-source-to-rendered-files">From source to rendered files</h2>
+<pre class="mermaid"><code>flowchart TD
+    subgraph src [".llm/ — source of truth (edited by hand)"]
+        direction LR
+        CTX[context.md] --- STK[stack.md]
+        STK --- CMD[commands.md]
+        CMD --- BND[boundaries.md]
+        BND --- SKL[skills.md]
+    end
+
+    src --&gt;|"scaffold renders\nall five files into"| CL["CLAUDE.md\n≤ 200 lines\nDevelopment rules · Stack\nCommands · Boundaries"]
+    src --&gt;|"scaffold renders\nall five files into"| AG["AGENTS.md\n≤ 200 lines\nRole · Project knowledge\nCommands · Code style\nBoundaries · Git workflow"]
+
+    CL --&gt;|"auto-loaded on\nproject open"| CC["Claude Code\nclaude CLI / IDE extension"]
+    AG --&gt;|"read by AAIF-aware\nagents on session start"| OA["OpenAI Codex\n+ any AGENTS.md tool"]
+
+    CC &amp; OA --&gt; KB["knowledge_base/\narchitecture.md\ncurrent_state.md\ncode_map.md\n…"]</code></pre>
+<div class="admonition important">
+<p class="admonition-title">Update <code>.llm/</code>, then sync the rendered files</p>
+<p>Cookiecutter writes CLAUDE.md and AGENTS.md once at scaffold time.
+As your project evolves, edit <code>.llm/</code> first, then copy the changed
+sections into CLAUDE.md and AGENTS.md by hand.
+The test suite will catch any file that exceeds 200 lines.</p>
+</div>
+<hr />
+<h2 id="session-lifecycle">Session lifecycle</h2>
+<pre class="mermaid"><code>flowchart TD
+    START([Start LLM session]) --&gt; READ_CTX
+
+    READ_CTX["Read CLAUDE.md or AGENTS.md\n(auto-loaded or first instruction)"]
+    READ_CTX --&gt; READ_STATE["Read knowledge_base/current_state.md\nWhat stage is the project at?\nWhat's the first-read order?"]
+    READ_STATE --&gt; READ_MAP["Read knowledge_base/code_map.md\nLow-token structural map:\nmodules · configs · tests · docs"]
+
+    READ_MAP --&gt; TDD["Write a failing test\njust test-unit  →  red"]
+    TDD --&gt; IMPL["Implement minimum code\nto make the test pass"]
+    IMPL --&gt; REFACTOR["Refactor\n(SOLID, no comments, type hints)"]
+    REFACTOR --&gt; CHK{Architecture\nor API changed?}
+
+    CHK --&gt;|yes| KB["Update knowledge_base/\narchitecture.md / workflows.md\ndecisions.md as needed"]
+    CHK --&gt;|no| VERIFY
+    KB --&gt; VERIFY
+
+    VERIFY["just check  ← ruff + mypy strict\njust test   ← full suite green"]
+    VERIFY --&gt; CTX_UPD["just update-context\nRefresh code_map.md + current_state.md\nso the next session starts fast"]
+    CTX_UPD --&gt; COMMIT["git commit\nConventional Commits format\nNo LLM co-author footers"]
+    COMMIT --&gt; DONE([End session])</code></pre>
+<p><code>just update-context</code> is lightweight — it runs a stdlib-only script that walks
+the source tree and rewrites <code>knowledge_base/code_map.md</code> and
+<code>knowledge_base/current_state.md</code>. No third-party code indexers, no upload.</p>
+<hr />
+<h2 id="why-the-200-line-limit-matters">Why the 200-line limit matters</h2>
+<p>Context files have a token cost on every API request. Keeping them under 200 lines means:</p>
 <ul>
-<li><code>AGENTS.md</code> and <code>CLAUDE.md</code> tell the assistant to read <code>knowledge_base/</code> first.</li>
-<li><code>.llm/boundaries.md</code> makes project rules explicit: TDD, typing, CRS checks,
-  docs updates, no direct pushes to main, and no LLM attribution in commits.</li>
-<li><code>.llm/stack.md</code> separates required runtime dependencies from optional EO/SAR
-  libraries so assistants do not add raster/geospatial packages casually.</li>
-<li><code>.llm/skills.md</code> names the kind of expertise useful for the project, which helps
-  assistants focus on workflow design, geospatial review, CI/CD, and documentation.</li>
-<li>The 200-line limit prevents context files from becoming a second documentation
-  site. Deep detail belongs in <code>knowledge_base/</code> and <code>docs/</code>.</li>
+<li><strong>Cheaper sessions</strong> — fewer tokens consumed before any code is written</li>
+<li><strong>Faster orientation</strong> — assistants read the whole file, not excerpts</li>
+<li><strong>Forced curation</strong> — you can't defer the decision "does this belong in context?"</li>
 </ul>
-<p>The result is a tighter loop: tests guide behavior, <code>.llm/</code> guides assistant
-behavior, and <code>knowledge_base/</code> preserves the architectural decisions behind the
-code.</p>
-<h2 id="context-economy-without-extra-supply-chain-risk">Context economy without extra supply-chain risk</h2>
-<p>Generated projects include two lightweight context files:</p>
+<p>The limit is enforced automatically by <code>test_claude_md_under_200_lines</code> and
+<code>test_agents_md_under_200_lines</code> in <code>tests/test_structure.py</code>. A CI failure
+tells you immediately when a context file grows too large.</p>
+<p>Keep context files lean by:</p>
+<ul>
+<li>Describing patterns, not implementations</li>
+<li>Linking to <code>knowledge_base/</code> for deep detail</li>
+<li>Deleting stale information immediately</li>
+<li>Never auto-generating content — write every line by hand</li>
+</ul>
+<hr />
+<h2 id="claudemd">CLAUDE.md</h2>
+<p>Used by <a href="https://docs.anthropic.com/en/docs/claude-code/overview">Claude Code</a>.
+Loaded automatically when you open a project in Claude Code.</p>
+<p><strong>Structure:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="gh"># Project name</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>Short description.
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="gu">## Required knowledge   ← what to read before touching code</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="gu">## Development rules    ← project-specific TDD/SOLID rules</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="gu">## Stack                ← from .llm/stack.md</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="gu">## Commands             ← from .llm/commands.md</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="gu">## Boundaries           ← from .llm/boundaries.md</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>---
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>Source of truth: .llm/  |  Keep this file under 200 lines
+</code></pre></div>
+<p>Hard limit: <strong>200 lines</strong>. Enforced by <code>test_claude_md_under_200_lines</code>.</p>
+<hr />
+<h2 id="agentsmd">AGENTS.md</h2>
+<p>Follows the <a href="https://github.com/agentprotocol/aaif">AAIF AGENTS.md specification</a>.
+Used by OpenAI Codex and other AGENTS.md-aware tools.</p>
+<p><strong>Structure:</strong></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gh"># AGENTS.md — Project name</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="gu">## Role          ← brief instruction to the agent</span>
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="gu">## Project knowledge   ← from .llm/context.md + .llm/stack.md</span>
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gu">## Commands      ← from .llm/commands.md</span>
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="gu">## Code style    ← ruff/mypy/naming conventions</span>
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="gu">## Boundaries    ← from .llm/boundaries.md</span>
+<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="gu">## Git workflow  ← branch naming + Conventional Commits rules</span>
+</code></pre></div>
+<p>Hard limit: <strong>200 lines</strong>. Enforced by <code>test_agents_md_under_200_lines</code>.</p>
+<hr />
+<h2 id="primary_llm-flag">primary_llm flag</h2>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Generated files</th>
+<th>Post-gen hook removes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>both</code> (default)</td>
+<td>CLAUDE.md + AGENTS.md</td>
+<td>nothing</td>
+</tr>
+<tr>
+<td><code>claude</code></td>
+<td>CLAUDE.md + AGENTS.md</td>
+<td>AGENTS.md</td>
+</tr>
+<tr>
+<td><code>codex</code></td>
+<td>CLAUDE.md + AGENTS.md</td>
+<td>CLAUDE.md</td>
+</tr>
+</tbody>
+</table>
+<p>The <code>.llm/</code> directory is <strong>always</strong> present regardless of <code>primary_llm</code> —
+it is the source of truth, not the rendered output.</p>
+<hr />
+<h2 id="context-economy-without-supply-chain-risk">Context economy without supply-chain risk</h2>
+<p>Generated projects include two lightweight context files refreshed by
+<code>just update-context</code>:</p>
 <table>
 <thead>
 <tr>
@@ -1240,7 +1356,7 @@ code.</p>
 <tbody>
 <tr>
 <td><code>knowledge_base/code_map.md</code></td>
-<td>Cheap structural map of modules, configs, tests, docs, and key commands</td>
+<td>Structural map of modules, configs, tests, docs, and key commands</td>
 </tr>
 <tr>
 <td><code>knowledge_base/current_state.md</code></td>
@@ -1248,94 +1364,9 @@ code.</p>
 </tr>
 </tbody>
 </table>
-<p>Refresh them with:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>just<span class="w"> </span>update-context
-</code></pre></div>
-<p>The updater is a stdlib-only Python script in <code>scripts/update_code_map.py</code>.
-It avoids third-party code-indexing executables while still giving Claude Code,
-Codex, and other agents a low-token starting point for new sessions.</p>
-<h2 id="session-lifecycle">Session lifecycle</h2>
-<p>Use the context files as a start-and-finish loop:</p>
-<ol>
-<li>Start a Claude Code or Codex session.</li>
-<li>Read <code>AGENTS.md</code> or <code>CLAUDE.md</code>.</li>
-<li>Read <code>knowledge_base/current_state.md</code> and <code>knowledge_base/code_map.md</code>.</li>
-<li>Make changes TDD-style: test, implement, refactor.</li>
-<li>Update curated docs when meaning changes: <code>knowledge_base/</code>, <code>docs/</code>, <code>.llm/</code>,
-   <code>AGENTS.md</code>, or <code>CLAUDE.md</code>.</li>
-<li>Run <code>just update-context</code> near the end of the session.</li>
-<li>Run tests/checks before committing.</li>
-</ol>
-<p><code>just update-context</code> is an end-of-session refresh. It should run after source,
-test, config, docs, or workflow structure changes so the next LLM session starts
-from an up-to-date compact map. It does not replace the curated docs; it only
-refreshes the cheap orientation layer.</p>
-<hr />
-<h2 id="claudemd">CLAUDE.md</h2>
-<p>Used by <a href="https://docs.anthropic.com/en/docs/claude-code/overview">Claude Code</a>.
-Loaded automatically when you open a project in Claude Code.</p>
-<p><strong>Structure:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="gh"># Project name</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>Short description.
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="gu">## Development rules   ← project-specific TDD/SOLID rules</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="gu">## Stack               ← from .llm/stack.md</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a><span class="gu">## Commands            ← from .llm/commands.md</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="gu">## Boundaries          ← from .llm/boundaries.md</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>
-<a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>---
-<a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>Source of truth: .llm/  |  Keep this file under 200 lines
-</code></pre></div>
-<p>Hard limit: <strong>200 lines</strong>. Enforced by <code>test_claude_md_under_200_lines</code> in <code>tests/test_structure.py</code>.</p>
-<hr />
-<h2 id="agentsmd">AGENTS.md</h2>
-<p>Follows the <a href="https://github.com/agentprotocol/aaif">AAIF AGENTS.md specification</a>.
-Used by OpenAI Codex and other AGENTS.md-aware tools.</p>
-<p><strong>Structure:</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="gh"># AGENTS.md — Project name</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="gu">## Role          ← brief instruction to the agent</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="gu">## Project knowledge   ← from .llm/context.md + .llm/stack.md</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="gu">## Commands      ← from .llm/commands.md</span>
-<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="gu">## Code style    ← ruff/mypy/naming conventions</span>
-<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="gu">## Boundaries    ← from .llm/boundaries.md</span>
-<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="gu">## Git workflow  ← branch naming + Conventional Commits rules</span>
-</code></pre></div>
-<p>Hard limit: <strong>200 lines</strong>. Enforced by <code>test_agents_md_under_200_lines</code>.</p>
-<hr />
-<h2 id="primary_llm-flag">primary_llm flag</h2>
-<table>
-<thead>
-<tr>
-<th>Value</th>
-<th>Result</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>both</code> (default)</td>
-<td>CLAUDE.md + AGENTS.md generated</td>
-</tr>
-<tr>
-<td><code>claude</code></td>
-<td>AGENTS.md removed by post-gen hook</td>
-</tr>
-<tr>
-<td><code>codex</code></td>
-<td>CLAUDE.md removed by post-gen hook</td>
-</tr>
-</tbody>
-</table>
-<p>The <code>.llm/</code> directory is <strong>always</strong> present — it is the source of truth.</p>
-<hr />
-<h2 id="keeping-context-lean">Keeping context lean</h2>
-<p>Context files have a token cost on every request. Keep them under 200 lines by:</p>
-<ul>
-<li>Describing patterns, not implementations</li>
-<li>Linking to <code>knowledge_base/</code> for deep detail</li>
-<li>Deleting stale information immediately</li>
-<li>Never auto-generating content — write every line by hand</li>
-</ul>
+<p>The updater is <code>scripts/update_code_map.py</code> — a stdlib-only Python script with
+no third-party code-indexing executables. It gives Claude Code, Codex, and other
+agents a low-token starting point for new sessions without adding supply-chain risk.</p>
 <hr />
 <h2 id="updating-after-scaffold">Updating after scaffold</h2>
 <p>As the codebase evolves, update <code>.llm/</code> and then sync CLAUDE.md and AGENTS.md manually.

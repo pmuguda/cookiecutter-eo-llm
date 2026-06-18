@@ -433,6 +433,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-you-get" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -448,6 +459,17 @@
     <span class="md-ellipsis">
       
         Quick install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-configure-at-scaffold-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you configure at scaffold time
       
     </span>
   </a>
@@ -1005,6 +1027,17 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-it-works" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        How it works
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#what-you-get" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1020,6 +1053,17 @@
     <span class="md-ellipsis">
       
         Quick install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#what-you-configure-at-scaffold-time" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What you configure at scaffold time
       
     </span>
   </a>
@@ -1076,20 +1120,28 @@
 <h1 id="cookiecutter-eo-llm">cookiecutter-eo-llm</h1>
 <p><strong>A production-minded EO/SAR Python package template with TDD workflows and
 LLM-ready context for Claude Code and Codex.</strong></p>
-<p>It scaffolds typed YAML config, strict Python tooling, living project docs, and
-token-efficient LLM context generated from a single source of truth.</p>
+<p>One command gives you a typed, tested, LLM-aware Python package: a concrete
+workflow class, a plain YAML config model, a living knowledge base, and
+token-efficient context files that keep AI assistants grounded in
+your project's rules — all from a single <code>.llm/</code> source of truth.</p>
 <hr />
 <h2 id="why-this-template">Why this template?</h2>
-<p>EO/SAR work often begins as an analysis notebook, then slowly turns into a
-workflow that other people need to run, test, review, and maintain. This template
-sets up that package boundary early: one workflow class, one plain YAML config,
-typed source/compute/destination models, tests, docs, and LLM guidance that all
-point to the same architecture.</p>
+<p>EO/SAR work follows a predictable trajectory:</p>
+<pre class="mermaid"><code>flowchart LR
+    A([Notebook\nanalysis]) --&gt;|"copy-paste\ngrows"| B([Ad-hoc\nscripts])
+    B --&gt;|"no tests\nno types"| C([Fragile\npipeline])
+    C --&gt;|"LLM sessions\nrediscover structure"| D([Wasted\ncontext budget])
+
+    style A fill:#1e1e2e,stroke:#6c7086,color:#cdd6f4
+    style B fill:#1e1e2e,stroke:#f38ba8,color:#cdd6f4
+    style C fill:#1e1e2e,stroke:#f38ba8,color:#cdd6f4
+    style D fill:#1e1e2e,stroke:#f38ba8,color:#cdd6f4</code></pre>
+<p>This template interrupts that trajectory at step one.</p>
 <table>
 <thead>
 <tr>
 <th>Problem</th>
-<th>Solution</th>
+<th>How the template solves it</th>
 </tr>
 </thead>
 <tbody>
@@ -1111,11 +1163,11 @@ point to the same architecture.</p>
 </tr>
 <tr>
 <td>Notebook-to-package migration is messy</td>
-<td>One workflow class + one config file + tests from the start</td>
+<td>One workflow class + one config file + tests from day 1</td>
 </tr>
 <tr>
-<td>Heavy geospatial dependencies get added too early</td>
-<td>Runtime deps stay small; EO/SAR libraries are added only when needed</td>
+<td>Heavy geospatial dependencies added too early</td>
+<td>Runtime deps stay small; EO libraries added only when needed</td>
 </tr>
 <tr>
 <td>New LLM sessions spend tokens rediscovering structure</td>
@@ -1124,19 +1176,41 @@ point to the same architecture.</p>
 </tbody>
 </table>
 <hr />
+<h2 id="how-it-works">How it works</h2>
+<pre class="mermaid"><code>flowchart TD
+    CC["uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm"]
+    CC --&gt; P[Answer 8 prompts]
+    P --&gt; R{Render templates}
+
+    R --&gt; SRC["src/ — typed workflow\n+ config models"]
+    R --&gt; LLM[".llm/ — source of truth\nfor all LLM context"]
+    R --&gt; KB["knowledge_base/\nliving architecture docs"]
+    R --&gt; CI["CI/CD for selected\nplatform"]
+
+    LLM --&gt; CL["CLAUDE.md ≤200 lines\n(Claude Code)"]
+    LLM --&gt; AG["AGENTS.md ≤200 lines\n(Codex / other agents)"]
+
+    SRC &amp; CL &amp; AG &amp; KB &amp; CI --&gt; H["post_gen_project.py\nhook"]
+    H --&gt; RM["Remove unused\nplatform files"]
+    H --&gt; TS["Configure\ntest scheme"]
+    H --&gt; GI["git init +\ninitial commit"]
+    GI --&gt; DONE(["✅ your-package/ ready\njust setup &amp;&amp; just test"])</code></pre>
+<p>The post-gen hook runs once and leaves the project in a clean, committed state
+with only the files you asked for.</p>
+<hr />
 <h2 id="what-you-get">What you get</h2>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>my-eo-package/
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>├── src/my_eo_package/       ← importable package (snake_case)
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── logger.py            ← get_logger(name) for workflow/runtime logging
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>│   ├── logger.py            ← get_logger(name) for consistent logging
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>│   ├── workflow/            ← abstract base + concrete implementation
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>│   ├── config/              ← SourceModel / ComputeParamsModel / DestinationModel
 <a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>│   └── main.py              ← typer CLI + run_&lt;project_slug&gt;() entry point
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── .llm/                    ← single source of truth for LLM context and skills
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>├── .llm/                    ← single source of truth for LLM context
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>├── knowledge_base/          ← living architecture docs
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>├── tests/                   ← unit / integration / approval suites
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>├── CLAUDE.md                ← rendered from .llm/
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>├── AGENTS.md                ← rendered from .llm/
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>├── Justfile                 ← all dev commands
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>├── CLAUDE.md                ← rendered from .llm/ (≤200 lines)
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>├── AGENTS.md                ← rendered from .llm/ (≤200 lines)
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>├── Justfile                 ← all dev commands in one place
 <a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>└── pyproject.toml           ← hatchling + uv, fully wired
 </code></pre></div>
 <hr />
@@ -1144,6 +1218,33 @@ point to the same architecture.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>uvx<span class="w"> </span>cookiecutter<span class="w"> </span>gh:pmuguda/cookiecutter-eo-llm
 </code></pre></div>
 <p>→ <a href="quickstart/">Full quickstart guide</a></p>
+<hr />
+<h2 id="what-you-configure-at-scaffold-time">What you configure at scaffold time</h2>
+<p>Eight prompts control the entire project shape. Six of them are <strong>feature
+flags</strong> — the post-gen hook removes any files that don't apply.</p>
+<pre class="mermaid"><code>flowchart LR
+    subgraph llm ["primary_llm"]
+        LB([both]) --&gt; CLMD[CLAUDE.md\n+ AGENTS.md]
+        LC([claude]) --&gt; CLMD2[CLAUDE.md only]
+        LD([codex]) --&gt; AGMD[AGENTS.md only]
+    end
+
+    subgraph ci ["ci_platform"]
+        CG([github]) --&gt; GHA[.github/workflows/]
+        CGL([gitlab]) --&gt; GLC[.gitlab-ci.yml]
+    end
+
+    subgraph ts ["test_scheme"]
+        TF([full]) --&gt; TALL[unit + approval\n+ hypothesis]
+        TU([unit_and_approval]) --&gt; TUA[unit + approval]
+        TUN([unit]) --&gt; TUO[unit only]
+    end
+
+    subgraph mk ["include_mkdocs"]
+        MY([y]) --&gt; MKYES[docs/ included]
+        MN([n]) --&gt; MKNO[docs/ removed]
+    end</code></pre>
+<p>→ <a href="variables/">Full variable reference</a></p>
 <hr />
 <h2 id="core-principles">Core principles</h2>
 <ul>
