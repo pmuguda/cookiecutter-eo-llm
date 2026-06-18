@@ -1231,14 +1231,16 @@ full rationale and the flat-dict alternative compared.</p>
         SKL["skills.md\nassistant capabilities"]
     end
 
-    src --&gt;|"rendered at\nscaffold time"| CL["CLAUDE.md\n≤ 200 lines\nauto-loaded by Claude Code"]
-    src --&gt;|"rendered at\nscaffold time"| AG["AGENTS.md\n≤ 200 lines\nfollows AAIF spec"]
+    src --&gt;|"scripts/sync_llm.py\n(just sync-llm)"| CL["CLAUDE.md\n≤ 200 lines\nauto-loaded by Claude Code"]
+    src --&gt;|"scripts/sync_llm.py\n(just sync-llm)"| AG["AGENTS.md\n≤ 200 lines\nfollows AAIF spec"]
 
     CL --&gt;|"read by"| CC["Claude Code"]
     AG --&gt;|"read by"| OA["OpenAI Codex\n+ other agents"]</code></pre>
-<p>CLAUDE.md and AGENTS.md are both written from the same <code>.llm/</code> files at scaffold time.
-When the project evolves, update <code>.llm/</code> — then manually sync the relevant sections
-into CLAUDE.md and AGENTS.md. The test suite enforces the 200-line hard limit on both files.</p>
+<p>CLAUDE.md and AGENTS.md are <strong>generated</strong> from the same <code>.llm/</code> files by
+<code>scripts/sync_llm.py</code>. When the project evolves, edit <code>.llm/</code> and run
+<code>just sync-llm</code> — both files rebuild identically. <code>just sync-llm-check</code> runs in
+CI and fails if they drift, so the single-source-of-truth guarantee is enforced.
+The test suite also holds both files to the 200-line hard limit.</p>
 <p><code>skills.md</code> names the assistant capabilities that are useful for this project,
 such as Python packaging, EO/SAR workflow design, geospatial review, docs, and CI/CD.</p>
 <h3 id="knowledge_base-as-living-docs">knowledge_base/ as living docs</h3>

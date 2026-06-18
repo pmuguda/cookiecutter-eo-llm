@@ -913,6 +913,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="[Unreleased]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -928,7 +956,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -986,6 +1014,34 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="[Unreleased]">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#added" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Added
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#changed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changed
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -1001,7 +1057,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#added" class="md-nav__link">
+  <a href="#added_1" class="md-nav__link">
     <span class="md-ellipsis">
       
         Added
@@ -1047,8 +1103,28 @@
 Versioning: <a href="https://semver.org/">Semantic Versioning</a></p>
 <hr />
 <h2 id="unreleased">[Unreleased]</h2>
-<h2 id="010-2026-06-04">[0.1.0] — 2026-06-04</h2>
 <h3 id="added">Added</h3>
+<ul>
+<li><code>scripts/sync_llm.py</code> — generates <code>CLAUDE.md</code> and <code>AGENTS.md</code> from <code>.llm/</code>,
+  making <code>.llm/</code> a real (not aspirational) single source of truth</li>
+<li><code>just sync-llm</code> / <code>just sync-llm-check</code> commands</li>
+<li>No-drift enforcement: <code>sync_llm.py --check</code> runs in the generated project's
+  test suite and in the template's own suite, so CLAUDE.md/AGENTS.md can no
+  longer silently diverge from <code>.llm/</code></li>
+<li><code>generate_llm_context()</code> post-gen hook step that builds both context files</li>
+</ul>
+<h3 id="changed">Changed</h3>
+<ul>
+<li><code>CLAUDE.md</code> and <code>AGENTS.md</code> are now generated artifacts; the hand-written
+  templates were removed</li>
+<li><code>.llm/commands.md</code> corrected (config filename) and completed (<code>update-context</code>,
+  <code>sync-llm</code>, <code>test-integration</code>)</li>
+<li><code>update_code_map.py</code> no longer overwrites human-curated <code>current_state.md</code>
+  (seeds it once if missing); <code>code_map.md</code> is still regenerated each run</li>
+<li><code>just update-context</code> now runs via <code>uv run python</code> for interpreter consistency</li>
+</ul>
+<h2 id="010-2026-06-04">[0.1.0] — 2026-06-04</h2>
+<h3 id="added_1">Added</h3>
 <ul>
 <li><code>cookiecutter.json</code> with template variables including <code>primary_llm</code>, <code>include_mkdocs</code>, <code>ci_platform</code>, and <code>test_scheme</code></li>
 <li><code>{{cookiecutter.project_dir}}/</code> template with full <code>src/</code> layout:</li>

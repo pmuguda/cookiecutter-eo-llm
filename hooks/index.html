@@ -725,6 +725,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#generate_llm_contextproject_dir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_llm_context(project_dir)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#remove_agents_mdproject_dir" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1180,6 +1191,17 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
+  <a href="#generate_llm_contextproject_dir" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        generate_llm_context(project_dir)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
   <a href="#remove_agents_mdproject_dir" class="md-nav__link">
     <span class="md-ellipsis">
       
@@ -1383,6 +1405,12 @@ if an unsupported Python version string is supplied.</p>
 <p>Runs in the freshly rendered project directory. Each concern is its own
 single-responsibility function — no logic lives in <code>main()</code>.</p>
 <h3 id="functions">Functions</h3>
+<h4 id="generate_llm_contextproject_dir"><code>generate_llm_context(project_dir)</code></h4>
+<p>Runs <code>scripts/sync_llm.py --init</code> to build <code>CLAUDE.md</code> and <code>AGENTS.md</code> from the
+rendered <code>.llm/</code> files. This is why the template ships <strong>no</strong> hand-written
+CLAUDE.md/AGENTS.md — they are generated, so <code>.llm/</code> is the only source of their
+content. Runs before the <code>primary_llm</code> removal below, so the unwanted file is
+generated and then deleted.</p>
 <h4 id="remove_agents_mdproject_dir"><code>remove_agents_md(project_dir)</code></h4>
 <p>Deletes <code>AGENTS.md</code> when <code>primary_llm == "claude"</code>.
 The developer only needs Claude Code context; the OpenAI AGENTS spec is removed.</p>

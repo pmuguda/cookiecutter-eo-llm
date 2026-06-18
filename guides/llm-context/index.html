@@ -1222,19 +1222,20 @@ drift because they have one origin.</p>
         BND --- SKL[skills.md]
     end
 
-    src --&gt;|"scaffold renders\nall five files into"| CL["CLAUDE.md\n≤ 200 lines\nDevelopment rules · Stack\nCommands · Boundaries"]
-    src --&gt;|"scaffold renders\nall five files into"| AG["AGENTS.md\n≤ 200 lines\nRole · Project knowledge\nCommands · Code style\nBoundaries · Git workflow"]
+    src --&gt;|"scripts/sync_llm.py\n(just sync-llm)"| CL["CLAUDE.md\n≤ 200 lines\nDevelopment rules · Stack\nCommands · Boundaries"]
+    src --&gt;|"scripts/sync_llm.py\n(just sync-llm)"| AG["AGENTS.md\n≤ 200 lines\nRole · Project knowledge\nCommands · Code style\nBoundaries · Git workflow"]
 
     CL --&gt;|"auto-loaded on\nproject open"| CC["Claude Code\nclaude CLI / IDE extension"]
     AG --&gt;|"read by AAIF-aware\nagents on session start"| OA["OpenAI Codex\n+ any AGENTS.md tool"]
 
     CC &amp; OA --&gt; KB["knowledge_base/\narchitecture.md\ncurrent_state.md\ncode_map.md\n…"]</code></pre>
 <div class="admonition important">
-<p class="admonition-title">Update <code>.llm/</code>, then sync the rendered files</p>
-<p>Cookiecutter writes CLAUDE.md and AGENTS.md once at scaffold time.
-As your project evolves, edit <code>.llm/</code> first, then copy the changed
-sections into CLAUDE.md and AGENTS.md by hand.
-The test suite will catch any file that exceeds 200 lines.</p>
+<p class="admonition-title">Edit <code>.llm/</code>, then run <code>just sync-llm</code></p>
+<p>CLAUDE.md and AGENTS.md are <strong>generated</strong> from <code>.llm/</code> — never edited by hand.
+The scaffold builds them once; afterwards, edit <code>.llm/</code> and run
+<code>just sync-llm</code> to rebuild both identically. A test (<code>just sync-llm-check</code>,
+wired into the suite) <strong>fails CI if they ever drift</strong>, so the
+"single source of truth" guarantee is enforced, not aspirational.</p>
 </div>
 <hr />
 <h2 id="session-lifecycle">Session lifecycle</h2>
@@ -1369,11 +1370,19 @@ no third-party code-indexing executables. It gives Claude Code, Codex, and other
 agents a low-token starting point for new sessions without adding supply-chain risk.</p>
 <hr />
 <h2 id="updating-after-scaffold">Updating after scaffold</h2>
-<p>As the codebase evolves, update <code>.llm/</code> and then sync CLAUDE.md and AGENTS.md manually.
-A future release will add a <code>just sync-llm</code> command to automate this.</p>
-<p>For now: when you update <code>.llm/stack.md</code> or <code>.llm/boundaries.md</code>, copy the relevant
-sections into CLAUDE.md and AGENTS.md. The test suite will catch any files that exceed
-200 lines.</p>
+<pre class="mermaid"><code>flowchart LR
+    E["Edit a .llm/ file\ne.g. stack.md or boundaries.md"] --&gt; S["just sync-llm"]
+    S --&gt; CL["CLAUDE.md rebuilt"]
+    S --&gt; AG["AGENTS.md rebuilt"]
+    CL &amp; AG --&gt; C{"just sync-llm-check\n(runs in CI)"}
+    C --&gt;|"in sync"| OK([✓ commit])
+    C --&gt;|"drifted"| FAIL([✗ CI fails —\nrun just sync-llm])</code></pre>
+<p><code>scripts/sync_llm.py</code> is the generator. It reads the five <code>.llm/</code> files, slots
+their content into the fixed document structure (the cross-project framing —
+development rules, code style, git workflow — lives in the generator), and writes
+CLAUDE.md and AGENTS.md. It only rewrites files that already exist, so a project
+scaffolded with <code>primary_llm = claude</code> or <code>codex</code> keeps just the one it asked for.</p>
+<p>The 200-line limit is still enforced separately by <code>tests/test_structure.py</code>.</p>
 
 
 
