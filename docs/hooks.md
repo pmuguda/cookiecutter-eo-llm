@@ -55,6 +55,13 @@ single-responsibility function — no logic lives in `main()`.
 
 ### Functions
 
+#### `generate_llm_context(project_dir)`
+Runs `scripts/sync_llm.py --init` to build `CLAUDE.md` and `AGENTS.md` from the
+rendered `.llm/` files. This is why the template ships **no** hand-written
+CLAUDE.md/AGENTS.md — they are generated, so `.llm/` is the only source of their
+content. Runs before the `primary_llm` removal below, so the unwanted file is
+generated and then deleted.
+
 #### `remove_agents_md(project_dir)`
 Deletes `AGENTS.md` when `primary_llm == "claude"`.
 The developer only needs Claude Code context; the OpenAI AGENTS spec is removed.

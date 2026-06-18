@@ -59,6 +59,7 @@ sequenceDiagram
     U->>CC: your answers
     CC->>CC: Render all Jinja2 templates<br/>(src/, .llm/, knowledge_base/, CI, tests, …)
     CC->>H: run hook in generated project dir
+    H->>H: generate CLAUDE.md + AGENTS.md from .llm/ (sync_llm.py --init)
     H->>H: remove unused CI platform files
     H->>H: configure test scheme (unit / approval / hypothesis)
     H->>H: remove CLAUDE.md or AGENTS.md (if primary_llm ≠ both)

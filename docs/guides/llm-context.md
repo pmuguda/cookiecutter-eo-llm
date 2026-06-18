@@ -32,8 +32,8 @@ flowchart TD
         BND --- SKL[skills.md]
     end
 
-    src -->|"scaffold renders\nall five files into"| CL["CLAUDE.md\n≤ 200 lines\nDevelopment rules · Stack\nCommands · Boundaries"]
-    src -->|"scaffold renders\nall five files into"| AG["AGENTS.md\n≤ 200 lines\nRole · Project knowledge\nCommands · Code style\nBoundaries · Git workflow"]
+    src -->|"scripts/sync_llm.py\n(just sync-llm)"| CL["CLAUDE.md\n≤ 200 lines\nDevelopment rules · Stack\nCommands · Boundaries"]
+    src -->|"scripts/sync_llm.py\n(just sync-llm)"| AG["AGENTS.md\n≤ 200 lines\nRole · Project knowledge\nCommands · Code style\nBoundaries · Git workflow"]
 
     CL -->|"auto-loaded on\nproject open"| CC["Claude Code\nclaude CLI / IDE extension"]
     AG -->|"read by AAIF-aware\nagents on session start"| OA["OpenAI Codex\n+ any AGENTS.md tool"]
@@ -41,11 +41,12 @@ flowchart TD
     CC & OA --> KB["knowledge_base/\narchitecture.md\ncurrent_state.md\ncode_map.md\n…"]
 ```
 
-!!! important "Update `.llm/`, then sync the rendered files"
-    Cookiecutter writes CLAUDE.md and AGENTS.md once at scaffold time.
-    As your project evolves, edit `.llm/` first, then copy the changed
-    sections into CLAUDE.md and AGENTS.md by hand.
-    The test suite will catch any file that exceeds 200 lines.
+!!! important "Edit `.llm/`, then run `just sync-llm`"
+    CLAUDE.md and AGENTS.md are **generated** from `.llm/` — never edited by hand.
+    The scaffold builds them once; afterwards, edit `.llm/` and run
+    `just sync-llm` to rebuild both identically. A test (`just sync-llm-check`,
+    wired into the suite) **fails CI if they ever drift**, so the
+    "single source of truth" guarantee is enforced, not aspirational.
 
 ---
 
@@ -179,9 +180,20 @@ agents a low-token starting point for new sessions without adding supply-chain r
 
 ## Updating after scaffold
 
-As the codebase evolves, update `.llm/` and then sync CLAUDE.md and AGENTS.md manually.
-A future release will add a `just sync-llm` command to automate this.
+```mermaid
+flowchart LR
+    E["Edit a .llm/ file\ne.g. stack.md or boundaries.md"] --> S["just sync-llm"]
+    S --> CL["CLAUDE.md rebuilt"]
+    S --> AG["AGENTS.md rebuilt"]
+    CL & AG --> C{"just sync-llm-check\n(runs in CI)"}
+    C -->|"in sync"| OK([✓ commit])
+    C -->|"drifted"| FAIL([✗ CI fails —\nrun just sync-llm])
+```
 
-For now: when you update `.llm/stack.md` or `.llm/boundaries.md`, copy the relevant
-sections into CLAUDE.md and AGENTS.md. The test suite will catch any files that exceed
-200 lines.
+`scripts/sync_llm.py` is the generator. It reads the five `.llm/` files, slots
+their content into the fixed document structure (the cross-project framing —
+development rules, code style, git workflow — lives in the generator), and writes
+CLAUDE.md and AGENTS.md. It only rewrites files that already exist, so a project
+scaffolded with `primary_llm = claude` or `codex` keeps just the one it asked for.
+
+The 200-line limit is still enforced separately by `tests/test_structure.py`.

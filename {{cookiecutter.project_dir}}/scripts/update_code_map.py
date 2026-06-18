@@ -22,10 +22,10 @@ def module_name(path: Path) -> str:
 def public_symbols(path: Path) -> list[str]:
     tree = ast.parse(path.read_text())
     symbols: list[str] = []
+    definitions = (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)
     for node in tree.body:
-        if isinstance(node, (ast.ClassDef, ast.FunctionDef, ast.AsyncFunctionDef)):
-            if not node.name.startswith("_"):
-                symbols.append(node.name)
+        if isinstance(node, definitions) and not node.name.startswith("_"):
+            symbols.append(node.name)
     return symbols
 
 
@@ -55,7 +55,8 @@ def write_code_map() -> None:
         "just update-context",
         "```",
         "",
-        "This file gives humans and LLM assistants a cheap structural map before they scan the repository.",
+        "This file gives humans and LLM assistants a cheap structural map"
+        " before they scan the repository.",
         "",
         "## Package modules",
         "",
@@ -85,6 +86,9 @@ def write_code_map() -> None:
 
 
 def write_current_state() -> None:
+    target = KNOWLEDGE_BASE / "current_state.md"
+    if target.exists():
+        return
     now = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M UTC")
     content = [
         "# Current state",
@@ -114,20 +118,21 @@ def write_current_state() -> None:
         "- Rename `ExampleWorkflow` to the real workflow.",
         "- Update `config/config_{{cookiecutter.project_slug}}.yml`.",
         "- Add domain-specific tests before implementing behavior.",
-        "- Update `knowledge_base/`, `docs/`, `AGENTS.md`, and `CLAUDE.md` when architecture changes.",
+        "- Update `knowledge_base/`, `docs/`, `AGENTS.md`, and `CLAUDE.md`"
+        " when architecture changes.",
         "",
         "## Last context refresh",
         "",
         f"- {now}",
         "",
     ]
-    (KNOWLEDGE_BASE / "current_state.md").write_text("\n".join(content))
+    target.write_text("\n".join(content))
 
 
 def main() -> None:
     write_code_map()
     write_current_state()
-    print("Updated knowledge_base/code_map.md and knowledge_base/current_state.md")
+    print("Refreshed knowledge_base/code_map.md (current_state.md is human-curated)")
 
 
 if __name__ == "__main__":

@@ -1,7 +1,15 @@
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
+
+
+def generate_llm_context(project_dir: Path) -> None:
+    subprocess.run(
+        [sys.executable, "scripts/sync_llm.py", "--init"],
+        cwd=project_dir, check=True, capture_output=True,
+    )
 
 
 def remove_agents_md(project_dir: Path) -> None:
@@ -100,6 +108,8 @@ Update knowledge_base/ as the codebase evolves.
 def main() -> None:
     project_dir = Path.cwd()
     pyproject_path = project_dir / "pyproject.toml"
+
+    generate_llm_context(project_dir)
 
     primary_llm = os.environ.get("COOKIECUTTER_PRIMARY_LLM", "both")
     if primary_llm == "claude":

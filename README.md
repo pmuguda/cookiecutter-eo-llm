@@ -79,7 +79,7 @@ quickly without a third-party indexing dependency.
 git clone https://github.com/pmuguda/cookiecutter-eo-llm
 cd cookiecutter-eo-llm
 uv sync --dev
-uv run pytest          # 69 tests
+uv run pytest          # 90 tests
 ```
 
 Render locally:

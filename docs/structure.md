@@ -133,16 +133,18 @@ flowchart LR
         SKL["skills.md\nassistant capabilities"]
     end
 
-    src -->|"rendered at\nscaffold time"| CL["CLAUDE.md\n≤ 200 lines\nauto-loaded by Claude Code"]
-    src -->|"rendered at\nscaffold time"| AG["AGENTS.md\n≤ 200 lines\nfollows AAIF spec"]
+    src -->|"scripts/sync_llm.py\n(just sync-llm)"| CL["CLAUDE.md\n≤ 200 lines\nauto-loaded by Claude Code"]
+    src -->|"scripts/sync_llm.py\n(just sync-llm)"| AG["AGENTS.md\n≤ 200 lines\nfollows AAIF spec"]
 
     CL -->|"read by"| CC["Claude Code"]
     AG -->|"read by"| OA["OpenAI Codex\n+ other agents"]
 ```
 
-CLAUDE.md and AGENTS.md are both written from the same `.llm/` files at scaffold time.
-When the project evolves, update `.llm/` — then manually sync the relevant sections
-into CLAUDE.md and AGENTS.md. The test suite enforces the 200-line hard limit on both files.
+CLAUDE.md and AGENTS.md are **generated** from the same `.llm/` files by
+`scripts/sync_llm.py`. When the project evolves, edit `.llm/` and run
+`just sync-llm` — both files rebuild identically. `just sync-llm-check` runs in
+CI and fails if they drift, so the single-source-of-truth guarantee is enforced.
+The test suite also holds both files to the 200-line hard limit.
 
 `skills.md` names the assistant capabilities that are useful for this project,
 such as Python packaging, EO/SAR workflow design, geospatial review, docs, and CI/CD.

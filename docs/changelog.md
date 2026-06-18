@@ -9,6 +9,26 @@ Versioning: [Semantic Versioning](https://semver.org/)
 
 ## [Unreleased]
 
+### Added
+
+- `scripts/sync_llm.py` — generates `CLAUDE.md` and `AGENTS.md` from `.llm/`,
+  making `.llm/` a real (not aspirational) single source of truth
+- `just sync-llm` / `just sync-llm-check` commands
+- No-drift enforcement: `sync_llm.py --check` runs in the generated project's
+  test suite and in the template's own suite, so CLAUDE.md/AGENTS.md can no
+  longer silently diverge from `.llm/`
+- `generate_llm_context()` post-gen hook step that builds both context files
+
+### Changed
+
+- `CLAUDE.md` and `AGENTS.md` are now generated artifacts; the hand-written
+  templates were removed
+- `.llm/commands.md` corrected (config filename) and completed (`update-context`,
+  `sync-llm`, `test-integration`)
+- `update_code_map.py` no longer overwrites human-curated `current_state.md`
+  (seeds it once if missing); `code_map.md` is still regenerated each run
+- `just update-context` now runs via `uv run python` for interpreter consistency
+
 ## [0.1.0] — 2026-06-04
 
 ### Added

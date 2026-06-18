@@ -43,12 +43,14 @@ EXPECTED_PATHS = [
     "tests/unit/test_base_workflow.py",
     "tests/unit/test_example_workflow.py",
     "tests/unit/test_config_models.py",
+    "tests/unit/test_llm_sync.py",
     "tests/integration/.gitkeep",
     "tests/approval/test_approval.py",
     "tests/approval/approved_files/.gitkeep",
     "notebooks/00_my_eo_package_exploration.ipynb",
     "scripts/example_script.py",
     "scripts/update_code_map.py",
+    "scripts/sync_llm.py",
     "docs/mkdocs.yml",
     "docs/index.md",
     "docs/api/index.md",
@@ -77,6 +79,19 @@ def test_claude_md_under_200_lines(rendered: Path) -> None:
 def test_agents_md_under_200_lines(rendered: Path) -> None:
     lines = (rendered / "AGENTS.md").read_text().splitlines()
     assert len(lines) <= 200, f"AGENTS.md has {len(lines)} lines (limit 200)"
+
+
+def test_rendered_claude_agents_in_sync_with_llm(rendered: Path) -> None:
+    import subprocess
+    import sys
+
+    result = subprocess.run(
+        [sys.executable, "scripts/sync_llm.py", "--check"],
+        cwd=rendered,
+        capture_output=True,
+        text=True,
+    )
+    assert result.returncode == 0, result.stdout + result.stderr
 
 
 def test_llm_directory_has_expected_files(rendered: Path) -> None:

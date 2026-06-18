@@ -13,5 +13,6 @@
   "include_mkdocs": ["y", "n"],
   "ci_platform": ["github", "gitlab"],
   "test_scheme": ["unit", "unit_and_approval", "full"],
-  "open_source": ["y", "n"]
+  "open_source": ["y", "n"],
+  "_copy_without_render": ["scripts/sync_llm.py"]
 }

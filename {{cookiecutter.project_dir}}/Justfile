@@ -38,7 +38,13 @@ docs-build:
     uv run mkdocs build
 
 update-context:
-    python scripts/update_code_map.py
+    uv run python scripts/update_code_map.py
+
+sync-llm:
+    uv run python scripts/sync_llm.py
+
+sync-llm-check:
+    uv run python scripts/sync_llm.py --check
 
 bump part:
     uv run bump-my-version bump {{ "{{" }}part{{ "}}" }}

@@ -24,5 +24,5 @@
 - Reproject without specifying target CRS explicitly
 - Write comments — simplify the code instead
 - Break the abstract Workflow interface contract
-- Add "Co-authored-by: Claude", "Co-authored-by: Copilot", or any
-  LLM attribution to commit messages, file headers, or docstrings
+- Add LLM co-author trailers (Claude, Copilot, or any assistant) to
+  commit messages, file headers, or docstrings
