@@ -30,7 +30,7 @@ This template interrupts that trajectory at step one.
 
 | Problem | How the template solves it |
 |---------|---------------------------|
-| CLAUDE.md and AGENTS.md drift apart | Both rendered from the same `.llm/` source of truth |
+| CLAUDE.md and AGENTS.md drift apart | Both **generated** from `.llm/` by `just sync-llm`; a CI check fails on any drift |
 | Boilerplate for every new package | One command scaffolds a fully wired project |
 | LLM context files bloat quickly | Hard 200-line limit enforced by tests |
 | Inconsistent tooling across projects | uv + ruff + mypy strict + pytest everywhere |
@@ -53,13 +53,11 @@ flowchart TD
     R --> KB["knowledge_base/\nliving architecture docs"]
     R --> CI["CI/CD for selected\nplatform"]
 
-    LLM --> CL["CLAUDE.md ≤200 lines\n(Claude Code)"]
-    LLM --> AG["AGENTS.md ≤200 lines\n(Codex / other agents)"]
-
-    SRC & CL & AG & KB & CI --> H["post_gen_project.py\nhook"]
-    H --> RM["Remove unused\nplatform files"]
+    SRC & LLM & KB & CI --> H["post_gen_project.py hook"]
+    H --> GEN["sync_llm.py --init\ngenerate CLAUDE.md + AGENTS.md\nfrom .llm/"]
+    H --> RM["Remove unused platform /\nLLM / test-scheme files"]
     H --> TS["Configure\ntest scheme"]
-    H --> GI["git init +\ninitial commit"]
+    GEN & RM & TS --> GI["git init +\ninitial commit"]
     GI --> DONE(["✅ your-package/ ready\njust setup && just test"])
 ```
 
@@ -140,7 +138,7 @@ flowchart LR
 - **uv only** — no pip, no Poetry
 - **Tokens are gold** — LLM context files stay lean and human-curated
 - **Context economy** — `just update-context` refreshes a local code map without extra tooling
-- **Single source of truth** — `.llm/` drives both CLAUDE.md and AGENTS.md
+- **Single source of truth** — `.llm/` generates both CLAUDE.md and AGENTS.md (`just sync-llm`), enforced by a no-drift CI check
 - **Docs move with code** — architecture, workflow, and API changes update docs too
 - **Conventional Commits** — feat/fix/chore with SemVer mapping
 

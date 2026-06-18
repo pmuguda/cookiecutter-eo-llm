@@ -45,15 +45,18 @@ just run config/config_my_eo_package.yml
 |---------|--------|
 | `src/` layout | `project_dir` (kebab) for PyPI · `project_slug` (snake) for imports |
 | Workflow pattern | Abstract `Workflow(ABC)` · one workflow per package · Pydantic v2 config |
-| LLM context | CLAUDE.md + AGENTS.md + `.llm/skills.md` from a single `.llm/` source |
+| LLM context | CLAUDE.md + AGENTS.md **generated** from `.llm/` · drift fails CI |
 | Living docs | `knowledge_base/` — architecture, workflows, decisions, changelog, code map, current state |
 | Full test suite | unit · integration · approval stubs · hypothesis |
 | CI/CD | Choose GitHub Actions or GitLab CI at scaffold time |
 | Developer UX | Justfile · ruff · mypy strict · pre-commit · bump-my-version |
 
-`just update-context` refreshes `knowledge_base/code_map.md` and
-`knowledge_base/current_state.md` so new Claude Code/Codex sessions can orient
-quickly without a third-party indexing dependency.
+`just sync-llm` rebuilds CLAUDE.md and AGENTS.md from the single `.llm/` source,
+and `just sync-llm-check` (wired into the test suite) fails if they ever drift —
+so the "single source of truth" is enforced, not a convention.
+
+`just update-context` refreshes `knowledge_base/code_map.md` so new Claude
+Code/Codex sessions can orient quickly without a third-party indexing dependency.
 
 ---
 
