@@ -1,7 +1,8 @@
 # LLM Context Files
 
 The template generates token-efficient context files for Claude Code and OpenAI Codex.
-Both are rendered from the same `.llm/` source of truth at scaffold time.
+Both are rendered from the same `.llm/` source of truth at scaffold time — they never
+drift because they have one origin.
 
 ---
 
@@ -9,70 +10,94 @@ Both are rendered from the same `.llm/` source of truth at scaffold time.
 
 Five small files that define everything an LLM assistant needs to know:
 
-| File | Content | Hard limit |
-|------|---------|-----------|
-| `context.md` | Project identity: name, author, repo, Python version, license | — |
-| `stack.md` | Toolchain, EO/SAR libraries, architecture summary, conventions | — |
-| `commands.md` | Every `just` command with a one-line description | — |
-| `boundaries.md` | Three sections: Always / Ask first / Never | — |
-| `skills.md` | Useful assistant capabilities for the package: tests, typing, EO/SAR workflow design, docs, CI/CD | — |
+| File | Content | Purpose |
+|------|---------|---------|
+| `context.md` | Project identity: name, author, repo, Python version, license | who + what |
+| `stack.md` | Toolchain, EO/SAR libraries, architecture summary, conventions | how it's built |
+| `commands.md` | Every `just` command with a one-line description | what to run |
+| `boundaries.md` | Three sections: Always / Ask first / Never | what's allowed |
+| `skills.md` | Useful assistant capabilities for the package | where to focus |
 
-## How this helps development
+---
 
-The generated package is designed for repeated collaboration with LLM coding
-assistants. The context files keep the assistant grounded in project-specific
-rules before it writes code:
+## From source to rendered files
 
-- `AGENTS.md` and `CLAUDE.md` tell the assistant to read `knowledge_base/` first.
-- `.llm/boundaries.md` makes project rules explicit: TDD, typing, CRS checks,
-  docs updates, no direct pushes to main, and no LLM attribution in commits.
-- `.llm/stack.md` separates required runtime dependencies from optional EO/SAR
-  libraries so assistants do not add raster/geospatial packages casually.
-- `.llm/skills.md` names the kind of expertise useful for the project, which helps
-  assistants focus on workflow design, geospatial review, CI/CD, and documentation.
-- The 200-line limit prevents context files from becoming a second documentation
-  site. Deep detail belongs in `knowledge_base/` and `docs/`.
+```mermaid
+flowchart TD
+    subgraph src [".llm/ — source of truth (edited by hand)"]
+        direction LR
+        CTX[context.md] --- STK[stack.md]
+        STK --- CMD[commands.md]
+        CMD --- BND[boundaries.md]
+        BND --- SKL[skills.md]
+    end
 
-The result is a tighter loop: tests guide behavior, `.llm/` guides assistant
-behavior, and `knowledge_base/` preserves the architectural decisions behind the
-code.
+    src -->|"scaffold renders\nall five files into"| CL["CLAUDE.md\n≤ 200 lines\nDevelopment rules · Stack\nCommands · Boundaries"]
+    src -->|"scaffold renders\nall five files into"| AG["AGENTS.md\n≤ 200 lines\nRole · Project knowledge\nCommands · Code style\nBoundaries · Git workflow"]
 
-## Context economy without extra supply-chain risk
+    CL -->|"auto-loaded on\nproject open"| CC["Claude Code\nclaude CLI / IDE extension"]
+    AG -->|"read by AAIF-aware\nagents on session start"| OA["OpenAI Codex\n+ any AGENTS.md tool"]
 
-Generated projects include two lightweight context files:
-
-| File | Purpose |
-|------|---------|
-| `knowledge_base/code_map.md` | Cheap structural map of modules, configs, tests, docs, and key commands |
-| `knowledge_base/current_state.md` | Current stage, first-read order, and open implementation work |
-
-Refresh them with:
-
-```bash
-just update-context
+    CC & OA --> KB["knowledge_base/\narchitecture.md\ncurrent_state.md\ncode_map.md\n…"]
 ```
 
-The updater is a stdlib-only Python script in `scripts/update_code_map.py`.
-It avoids third-party code-indexing executables while still giving Claude Code,
-Codex, and other agents a low-token starting point for new sessions.
+!!! important "Update `.llm/`, then sync the rendered files"
+    Cookiecutter writes CLAUDE.md and AGENTS.md once at scaffold time.
+    As your project evolves, edit `.llm/` first, then copy the changed
+    sections into CLAUDE.md and AGENTS.md by hand.
+    The test suite will catch any file that exceeds 200 lines.
+
+---
 
 ## Session lifecycle
 
-Use the context files as a start-and-finish loop:
+```mermaid
+flowchart TD
+    START([Start LLM session]) --> READ_CTX
 
-1. Start a Claude Code or Codex session.
-2. Read `AGENTS.md` or `CLAUDE.md`.
-3. Read `knowledge_base/current_state.md` and `knowledge_base/code_map.md`.
-4. Make changes TDD-style: test, implement, refactor.
-5. Update curated docs when meaning changes: `knowledge_base/`, `docs/`, `.llm/`,
-   `AGENTS.md`, or `CLAUDE.md`.
-6. Run `just update-context` near the end of the session.
-7. Run tests/checks before committing.
+    READ_CTX["Read CLAUDE.md or AGENTS.md\n(auto-loaded or first instruction)"]
+    READ_CTX --> READ_STATE["Read knowledge_base/current_state.md\nWhat stage is the project at?\nWhat's the first-read order?"]
+    READ_STATE --> READ_MAP["Read knowledge_base/code_map.md\nLow-token structural map:\nmodules · configs · tests · docs"]
 
-`just update-context` is an end-of-session refresh. It should run after source,
-test, config, docs, or workflow structure changes so the next LLM session starts
-from an up-to-date compact map. It does not replace the curated docs; it only
-refreshes the cheap orientation layer.
+    READ_MAP --> TDD["Write a failing test\njust test-unit  →  red"]
+    TDD --> IMPL["Implement minimum code\nto make the test pass"]
+    IMPL --> REFACTOR["Refactor\n(SOLID, no comments, type hints)"]
+    REFACTOR --> CHK{Architecture\nor API changed?}
+
+    CHK -->|yes| KB["Update knowledge_base/\narchitecture.md / workflows.md\ndecisions.md as needed"]
+    CHK -->|no| VERIFY
+    KB --> VERIFY
+
+    VERIFY["just check  ← ruff + mypy strict\njust test   ← full suite green"]
+    VERIFY --> CTX_UPD["just update-context\nRefresh code_map.md + current_state.md\nso the next session starts fast"]
+    CTX_UPD --> COMMIT["git commit\nConventional Commits format\nNo LLM co-author footers"]
+    COMMIT --> DONE([End session])
+```
+
+`just update-context` is lightweight — it runs a stdlib-only script that walks
+the source tree and rewrites `knowledge_base/code_map.md` and
+`knowledge_base/current_state.md`. No third-party code indexers, no upload.
+
+---
+
+## Why the 200-line limit matters
+
+Context files have a token cost on every API request. Keeping them under 200 lines means:
+
+- **Cheaper sessions** — fewer tokens consumed before any code is written
+- **Faster orientation** — assistants read the whole file, not excerpts
+- **Forced curation** — you can't defer the decision "does this belong in context?"
+
+The limit is enforced automatically by `test_claude_md_under_200_lines` and
+`test_agents_md_under_200_lines` in `tests/test_structure.py`. A CI failure
+tells you immediately when a context file grows too large.
+
+Keep context files lean by:
+
+- Describing patterns, not implementations
+- Linking to `knowledge_base/` for deep detail
+- Deleting stale information immediately
+- Never auto-generating content — write every line by hand
 
 ---
 
@@ -87,16 +112,17 @@ Loaded automatically when you open a project in Claude Code.
 # Project name
 Short description.
 
-## Development rules   ← project-specific TDD/SOLID rules
-## Stack               ← from .llm/stack.md
-## Commands            ← from .llm/commands.md
-## Boundaries          ← from .llm/boundaries.md
+## Required knowledge   ← what to read before touching code
+## Development rules    ← project-specific TDD/SOLID rules
+## Stack                ← from .llm/stack.md
+## Commands             ← from .llm/commands.md
+## Boundaries           ← from .llm/boundaries.md
 
 ---
 Source of truth: .llm/  |  Keep this file under 200 lines
 ```
 
-Hard limit: **200 lines**. Enforced by `test_claude_md_under_200_lines` in `tests/test_structure.py`.
+Hard limit: **200 lines**. Enforced by `test_claude_md_under_200_lines`.
 
 ---
 
@@ -124,24 +150,30 @@ Hard limit: **200 lines**. Enforced by `test_agents_md_under_200_lines`.
 
 ## primary_llm flag
 
-| Value | Result |
-|-------|--------|
-| `both` (default) | CLAUDE.md + AGENTS.md generated |
-| `claude` | AGENTS.md removed by post-gen hook |
-| `codex` | CLAUDE.md removed by post-gen hook |
+| Value | Generated files | Post-gen hook removes |
+|-------|----------------|----------------------|
+| `both` (default) | CLAUDE.md + AGENTS.md | nothing |
+| `claude` | CLAUDE.md + AGENTS.md | AGENTS.md |
+| `codex` | CLAUDE.md + AGENTS.md | CLAUDE.md |
 
-The `.llm/` directory is **always** present — it is the source of truth.
+The `.llm/` directory is **always** present regardless of `primary_llm` —
+it is the source of truth, not the rendered output.
 
 ---
 
-## Keeping context lean
+## Context economy without supply-chain risk
 
-Context files have a token cost on every request. Keep them under 200 lines by:
+Generated projects include two lightweight context files refreshed by
+`just update-context`:
 
-- Describing patterns, not implementations
-- Linking to `knowledge_base/` for deep detail
-- Deleting stale information immediately
-- Never auto-generating content — write every line by hand
+| File | Purpose |
+|------|---------|
+| `knowledge_base/code_map.md` | Structural map of modules, configs, tests, docs, and key commands |
+| `knowledge_base/current_state.md` | Current stage, first-read order, and open implementation work |
+
+The updater is `scripts/update_code_map.py` — a stdlib-only Python script with
+no third-party code-indexing executables. It gives Claude Code, Codex, and other
+agents a low-token starting point for new sessions without adding supply-chain risk.
 
 ---
 

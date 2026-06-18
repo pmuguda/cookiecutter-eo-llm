@@ -63,10 +63,11 @@ quickly without a third-party indexing dependency.
 |----------|---------|-------|
 | `project_name` | `My EO Package` | Title case — drives `project_dir` and `project_slug` |
 | `repository_owner` | `chucknorris` | GitHub username, GitLab username, or GitLab group |
-| `primary_llm` | `both` | `both` · `claude` · `codex` |
-| `ci_platform` | `github` | `github` · `gitlab` |
+| `primary_llm` | `both` | `both` · `claude` · `codex` — controls which LLM context files are kept |
+| `ci_platform` | `github` | `github` · `gitlab` — removes the unused platform's files |
 | `test_scheme` | `full` | `unit` · `unit_and_approval` · `full` |
 | `include_mkdocs` | `y` | Removes `docs/` when `n` |
+| `open_source` | `y` | Reserved — will gate PyPI publish config in a future release |
 
 → [Full variable reference](https://pmuguda.github.io/cookiecutter-eo-llm/variables/)
 
@@ -91,10 +92,17 @@ uvx cookiecutter . --no-input -o /tmp/eo-test
 
 ## Why it matters
 
-EO/SAR projects often start as notebooks and grow into fragile scripts. This
-template gives that work a package boundary early: one workflow class, one config
-file, typed source/compute/destination sections, repeatable tests, and docs that
-tell both humans and LLM assistants how the project is supposed to evolve.
+EO/SAR projects often start as notebooks and grow into fragile scripts that
+LLM assistants can't reliably navigate because there's no documented structure,
+no tests, and no consistent entry point.
+
+This template sets up a package boundary before that drift happens:
+
+- One workflow class, one config file, typed source / compute / destination sections
+- Tests and type coverage from the first commit
+- `.llm/` context files that keep Claude Code and Codex grounded in your project's rules
+- `knowledge_base/` that preserves architectural decisions across sessions
+- `just update-context` that refreshes a compact code map without third-party tools
 
 The template intentionally keeps heavy EO libraries optional. Add numpy, xarray,
 rasterio, pyproj, shapely, or GDAL only when your workflow needs them.

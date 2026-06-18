@@ -79,7 +79,13 @@ The selected value also controls repository URLs and README pipeline badges.
 
 Each flag is `y` or `n`. The post-gen hook removes the corresponding files when `n`.
 
-| Variable | Default | Removes when `n` |
+| Variable | Default | Effect when `n` |
 |----------|---------|-----------------|
-| `include_mkdocs` | `y` | `docs/` + mkdocs deps from `pyproject.toml` |
-| `open_source` | `y` | (reserved for future use) |
+| `include_mkdocs` | `y` | Removes `docs/` and strips all `mkdocs*` lines from `pyproject.toml` |
+| `open_source` | `y` | Reserved — no files are removed today; a future release will gate PyPI publish config behind this flag |
+
+!!! note "`open_source`"
+    Setting `open_source = n` currently has no effect on the generated files.
+    The variable is present so the template can distinguish internal packages
+    from public ones in future releases (e.g. skipping PyPI trusted-publisher
+    setup, omitting the Ko-fi badge).

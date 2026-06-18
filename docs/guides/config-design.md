@@ -3,6 +3,33 @@
 Why the config is structured the way it is — and why it's better than
 the obvious alternative.
 
+## The pattern at a glance
+
+Every EO workflow maps to the same three-stage shape:
+
+```mermaid
+flowchart LR
+    SRC["source\n──────────\nInput paths\nLoaders\nCRS"] -->|read| PROC["compute_params\n──────────────\nAlgorithm knobs\nWindow sizes\nTransform options"]
+    PROC -->|write| DST["destination\n──────────────\nOutput paths\nFormat\nOverwrite flag"]
+```
+
+Plain YAML makes this shape explicit:
+
+```yaml
+name: coherence-run
+source:
+  input_stack: data/slc.zarr
+  crs: EPSG:32632
+compute_params:
+  window_size: 5
+destination:
+  output_path: data/coherence.tif
+  overwrite: false
+```
+
+Everything below explains why this three-section model beats the obvious
+alternatives — and how Pydantic v2 makes it fully typed with zero boilerplate.
+
 ---
 
 ## The obvious alternative: a flat dict

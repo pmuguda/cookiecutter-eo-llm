@@ -19,7 +19,7 @@ curl -LsSf https://astral.sh/uv/install.sh | sh
 uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm
 ```
 
-You will be prompted for:
+You will be prompted for eight values:
 
 ```
 full_name [Chuck Norris]: Ada Lovelace
@@ -42,6 +42,33 @@ open_source [y]:
     ```bash
     uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm --no-input
     ```
+
+---
+
+## What happens under the hood
+
+```mermaid
+sequenceDiagram
+    participant U as You
+    participant CC as cookiecutter
+    participant H as post_gen_project.py
+    participant G as git
+
+    U->>CC: uvx cookiecutter gh:pmuguda/cookiecutter-eo-llm
+    CC->>U: 8 prompts
+    U->>CC: your answers
+    CC->>CC: Render all Jinja2 templates<br/>(src/, .llm/, knowledge_base/, CI, tests, …)
+    CC->>H: run hook in generated project dir
+    H->>H: remove unused CI platform files
+    H->>H: configure test scheme (unit / approval / hypothesis)
+    H->>H: remove CLAUDE.md or AGENTS.md (if primary_llm ≠ both)
+    H->>H: remove docs/ (if include_mkdocs = n)
+    H->>G: git init && git add . && git commit
+    G-->>U: ✅ sar-coherence-processor/ with initial commit
+```
+
+The hook is a plain Python script with single-responsibility functions — nothing
+hidden, fully testable. See [Hooks](hooks.md) for the detailed breakdown.
 
 ---
 

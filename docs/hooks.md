@@ -2,6 +2,41 @@
 
 Cookiecutter hooks run Python scripts before and after rendering.
 
+```mermaid
+sequenceDiagram
+    participant CC as cookiecutter
+    participant PR as pre_prompt.py
+    participant R as Jinja2 renderer
+    participant PG as post_gen_project.py
+
+    CC->>PR: validate python_requires before any rendering
+    PR-->>CC: ok (or exit with error)
+    CC->>R: render all template files with context
+    R-->>CC: generated project directory
+    CC->>PG: run in generated project dir (env vars set)
+    PG->>PG: remove unused files based on chosen options
+    PG->>PG: git init + initial commit
+    PG-->>CC: done
+```
+
+---
+
+## How hooks read template variables
+
+`post_gen_project.py` reads your cookiecutter choices via environment variables:
+
+```python
+primary_llm = os.environ.get("COOKIECUTTER_PRIMARY_LLM", "both")
+```
+
+Cookiecutter (2.2+) automatically sets `COOKIECUTTER_<VARIABLE_NAME_UPPERCASE>`
+in the environment before running each hook. This makes the hook a plain Python
+script — no Jinja2 templating inside the hook itself — which means every function
+can be unit-tested in isolation by simply setting the env var and calling the function.
+
+The test helper `tests/helpers/render.py` replicates the same env var injection
+so that approval tests match exactly what a real `uvx cookiecutter` run produces.
+
 ---
 
 ## pre_prompt.py
