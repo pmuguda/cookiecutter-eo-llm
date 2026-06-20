@@ -10,12 +10,25 @@ theme:
   name: material
   custom_dir: docs/overrides
   palette:
-    scheme: slate
-    primary: black
-    accent: deep purple
+    # DARK (default) — near-black instrument console
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: black
+      accent: amber
+      toggle:
+        icon: material/weather-night
+        name: Switch to paper mode
+    # PAPER — warm cream
+    - media: "(prefers-color-scheme: light)"
+      scheme: default
+      primary: white
+      accent: amber
+      toggle:
+        icon: material/weather-sunny
+        name: Switch to dark mode
   font:
-    text: Inter
-    code: JetBrains Mono
+    text: IBM Plex Sans
+    code: IBM Plex Mono
   logo: assets/icon.svg
   favicon: assets/icon.svg
   features:

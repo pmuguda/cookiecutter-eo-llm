@@ -20,10 +20,10 @@ flowchart LR
     B -->|"no tests\nno types"| C([Fragile\npipeline])
     C -->|"LLM sessions\nrediscover structure"| D([Wasted\ncontext budget])
 
-    style A fill:#1e1e2e,stroke:#6c7086,color:#cdd6f4
-    style B fill:#1e1e2e,stroke:#f38ba8,color:#cdd6f4
-    style C fill:#1e1e2e,stroke:#f38ba8,color:#cdd6f4
-    style D fill:#1e1e2e,stroke:#f38ba8,color:#cdd6f4
+    style A fill:#0f0f0f,stroke:#d0973d,color:#e0e0e3
+    style B fill:#0f0f0f,stroke:#e07a4f,color:#e0e0e3
+    style C fill:#0f0f0f,stroke:#e07a4f,color:#e0e0e3
+    style D fill:#0f0f0f,stroke:#e07a4f,color:#e0e0e3
 ```
 
 This template interrupts that trajectory at step one.

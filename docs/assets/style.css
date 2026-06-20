@@ -1,133 +1,395 @@
-/* ── Signature gradient ────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════════════════
+   SAR Console — MkDocs Material theme skin
+   Near-black instrument console · IBM Plex type · gold + white on black ·
+   sharp 0–2px corners · hairline borders · white-glow hovers · DARK / PAPER.
+   Tokens mirror the shared pmuguda "SAR Console" design system.
+   ════════════════════════════════════════════════════════════════════════════ */
+
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Condensed:wght@600;700&display=swap");
+
+/* ── Design tokens ─────────────────────────────────────────────────────────── */
 :root {
-  --gradient: linear-gradient(135deg, #4F46E5 0%, #9333EA 50%, #F43F5E 100%);
-  --bg:       #0d1117;
-  --surface:  #161b22;
-  --border:   #30363d;
-  --text:     #e6edf3;
-  --muted:    #8b949e;
-  --accent:   #9333EA;
+  --font-mono: "IBM Plex Mono", ui-monospace, monospace;
+  --font-sans: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+  --font-cond: "IBM Plex Sans Condensed", "IBM Plex Sans", sans-serif;
+
+  --accent:      #d0973d;               /* GOLD / amber — the one accent */
+  --accent-soft: rgba(208, 151, 61, .10);
+  --accent-line: rgba(208, 151, 61, .38);
+  --glow:        0 0 20px rgba(255, 255, 255, .20);
+  --glow-2:      0 0 35px rgba(255, 255, 255, .35);
+
+  --r:   2px;   /* default radius — sharp */
+  --r-0: 0px;   /* fully square: chrome, tags, toggles */
+  --t:   .3s ease;
 }
 
-/* ── Dark background matching tools ───────────────────────────────────────── */
+/* Material radius globals → sharp everywhere */
+:root {
+  --md-typeset-table-border: 1px;
+}
+
+/* ════════════════════════════════════════════════════════════════════════════
+   DARK (slate) — near-black instrument panel
+   ════════════════════════════════════════════════════════════════════════════ */
 [data-md-color-scheme="slate"] {
-  --md-default-bg-color:        #0d1117;
-  --md-default-fg-color:        #e6edf3;
-  --md-default-fg-color--light: #8b949e;
-  --md-code-bg-color:           #161b22;
-  --md-code-fg-color:           #e6edf3;
-  --md-typeset-a-color:         #00C9FF;
-  --md-accent-fg-color:         #3fb950;
-  --md-primary-fg-color:        #0d1117;
-  --md-primary-bg-color:        #e6edf3;
+  --bg:    #050505;
+  --bg-2:  #0f0f0f;
+  --bg-3:  #191919;
+  --border:   rgba(255, 255, 255, .10);
+  --border-h: rgba(255, 255, 255, .30);
+
+  --md-default-bg-color:           #050505;
+  --md-default-bg-color--light:    rgba(255, 255, 255, .07);
+  --md-default-bg-color--lighter:  rgba(255, 255, 255, .03);
+
+  --md-default-fg-color:           #e0e0e3;
+  --md-default-fg-color--light:    #a0a0a3;
+  --md-default-fg-color--lighter:  #8a8a8e;
+  --md-default-fg-color--lightest: rgba(255, 255, 255, .10);
+
+  --md-primary-fg-color:        #050505;   /* header / nav bg */
+  --md-primary-fg-color--light: #0f0f0f;
+  --md-primary-fg-color--dark:  #050505;
+  --md-primary-bg-color:        #e0e0e3;   /* header text */
+  --md-primary-bg-color--light: #a0a0a3;
+
+  --md-accent-fg-color:         #d0973d;   /* gold — active / hover */
+  --md-accent-fg-color--transparent: var(--accent-soft);
+  --md-accent-bg-color:         #050505;
+
+  --md-typeset-a-color:         #d0973d;   /* links = gold */
+
+  --md-code-bg-color:           #0f0f0f;
+  --md-code-fg-color:           #e0e0e3;
+  --md-code-hl-color:           var(--accent-soft);
+
+  --md-footer-bg-color:         #0f0f0f;
+  --md-footer-bg-color--dark:   #050505;
+  --md-footer-fg-color:         #e0e0e3;
+  --md-footer-fg-color--light:  #8a8a8e;
+  --md-footer-fg-color--lighter:#5a5a5e;
 }
 
-/* ── Gradient text helper ─────────────────────────────────────────────────── */
-.gradient-text {
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* ════════════════════════════════════════════════════════════════════════════
+   PAPER (default) — warm cream, not cool gray
+   ════════════════════════════════════════════════════════════════════════════ */
+[data-md-color-scheme="default"] {
+  --bg:    #f2efe8;
+  --bg-2:  #faf8f3;
+  --bg-3:  #e7e3da;
+  --border:   #cbc5b9;
+  --border-h: #a59e90;
+
+  --accent:      #b06a26;
+  --accent-soft: rgba(176, 106, 38, .10);
+  --accent-line: rgba(176, 106, 38, .40);
+  --glow:        0 0 20px rgba(0, 0, 0, .10);
+  --glow-2:      0 18px 50px -28px rgba(0, 0, 0, .35);
+
+  --md-default-bg-color:           #f2efe8;
+  --md-default-bg-color--light:    rgba(0, 0, 0, .05);
+  --md-default-bg-color--lighter:  rgba(0, 0, 0, .02);
+
+  --md-default-fg-color:           #353941;
+  --md-default-fg-color--light:    #5f636c;
+  --md-default-fg-color--lighter:  #82868f;
+  --md-default-fg-color--lightest: rgba(0, 0, 0, .12);
+
+  --md-primary-fg-color:        #faf8f3;
+  --md-primary-fg-color--light: #f2efe8;
+  --md-primary-fg-color--dark:  #e7e3da;
+  --md-primary-bg-color:        #353941;
+  --md-primary-bg-color--light: #5f636c;
+
+  --md-accent-fg-color:         #b06a26;
+  --md-accent-fg-color--transparent: var(--accent-soft);
+
+  --md-typeset-a-color:         #b06a26;
+
+  --md-code-bg-color:           #e7e3da;
+  --md-code-fg-color:           #353941;
+
+  --md-footer-bg-color:         #faf8f3;
+  --md-footer-bg-color--dark:   #f2efe8;
+  --md-footer-fg-color:         #353941;
+  --md-footer-fg-color--light:  #82868f;
+}
+
+/* ── Typography voice ──────────────────────────────────────────────────────── */
+body, input, .md-typeset { font-feature-settings: "kern", "liga"; }
+
+/* Console chrome speaks mono: header, nav, tabs, labels, TOC, code. */
+.md-header__topic,
+.md-tabs__link,
+.md-nav__title,
+.md-nav__link,
+.md-ellipsis,
+.md-search__input,
+.md-typeset kbd,
+.md-footer-meta { font-family: var(--font-mono); }
+
+/* Headings keep the condensed/instrument feel; body stays Sans for reading. */
+.md-typeset h1,
+.md-typeset h2,
+.md-typeset h3 {
+  font-family: var(--font-cond);
   font-weight: 700;
-  text-decoration: none !important;
+  letter-spacing: -.01em;
 }
-.gradient-text:hover { opacity: .85; }
+.md-typeset h1 { color: var(--md-default-fg-color); }
 
-/* ── Site title gradient ──────────────────────────────────────────────────── */
-.md-header__title {
-  background: var(--gradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  font-weight: 800;
+/* Section overlines / small labels feel like telemetry. */
+.md-nav--primary .md-nav__title,
+.md-tabs__link {
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-size: .68rem;
 }
 
-/* ── Ko-fi footer link ────────────────────────────────────────────────────── */
-.kofi-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  background: var(--gradient);
-  color: #000 !important;
+/* Numbers / coords read as tabular. */
+.md-typeset table td,
+.md-typeset code { font-variant-numeric: tabular-nums; }
+
+/* ── Header / tabs — hairline-bordered console bar ─────────────────────────── */
+.md-header {
+  border-bottom: 1px solid var(--border);
+  box-shadow: none;
+}
+.md-header[data-md-state="shadow"] { box-shadow: 0 0 .4rem rgba(0, 0, 0, .35); }
+.md-tabs { border-bottom: 1px solid var(--border); }
+.md-tabs__link { opacity: .72; transition: color var(--t), opacity var(--t); }
+.md-tabs__link:hover,
+.md-tabs__link--active { opacity: 1; color: var(--accent); }
+
+/* Wordmark — condensed, with a gold bracket accent. */
+.md-header__title .md-ellipsis {
+  font-family: var(--font-cond);
   font-weight: 700;
-  font-size: .75rem;
-  text-decoration: none !important;
-  transition: opacity .15s, transform .1s;
-  white-space: nowrap;
+  letter-spacing: .01em;
 }
-.kofi-link:hover {
-  opacity: .88;
-  transform: translateY(-1px);
+.md-header__title--active .md-ellipsis { font-family: var(--font-mono); }
+
+/* ── Links ─────────────────────────────────────────────────────────────────── */
+.md-typeset a { text-decoration: none; transition: color var(--t); }
+.md-typeset a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ── Sidebar nav — active = gold, hover = gold ─────────────────────────────── */
+.md-nav__link:hover,
+.md-nav__link--active,
+.md-nav__link--active:focus { color: var(--accent) !important; }
+.md-nav__item .md-nav__link--active { font-weight: 600; }
+
+/* ── Sharp corners + hairline borders on every surface ─────────────────────── */
+.md-typeset pre > code,
+.md-typeset .highlight,
+.md-typeset .admonition,
+.md-typeset details,
+.md-typeset .tabbed-set,
+.md-typeset table:not([class]),
+.md-search__form,
+.md-search__output {
+  border-radius: var(--r);
+}
+.md-typeset pre > code,
+.md-typeset .highlight > pre {
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+}
+.md-typeset code {
+  border: 1px solid var(--border);
+  border-radius: var(--r-0);
+  padding: .1em .4em;
 }
 
-/* ── Ko-fi button (inline in pages) ──────────────────────────────────────── */
-.kofi-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 10px;
-  background: var(--gradient);
-  color: #000 !important;
-  font-weight: 700;
-  font-size: .875rem;
-  text-decoration: none !important;
-  transition: opacity .15s, transform .1s;
+/* ── Tables — instrument grid ──────────────────────────────────────────────── */
+.md-typeset table:not([class]) {
+  border: 1px solid var(--border);
+  font-size: .76rem;
 }
-.kofi-btn:hover {
-  opacity: .88;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 20px rgba(0, 201, 255, .25);
+.md-typeset table:not([class]) th {
+  background: var(--bg-2);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .68rem;
+  font-weight: 600;
+  color: var(--md-default-fg-color--light);
+  border-bottom: 1px solid var(--border);
+}
+.md-typeset table:not([class]) td { border-top: 1px solid var(--border); }
+.md-typeset table:not([class]) tr:hover { background: var(--accent-soft); }
+
+/* ── Admonitions / details — gold title bar, hairline edge ─────────────────── */
+.md-typeset .admonition,
+.md-typeset details {
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  box-shadow: none;
+  font-size: .76rem;
+}
+.md-typeset .admonition-title,
+.md-typeset summary {
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--border);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  font-size: .7rem;
+}
+.md-typeset .admonition-title::before,
+.md-typeset summary::before { background-color: var(--accent); }
+
+/* ── Buttons — white = primary action, gold = outline ──────────────────────── */
+.md-typeset .md-button {
+  border-radius: var(--r-0);
+  border: 1px solid var(--md-default-fg-color);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  font-size: .76rem;
+  transition: box-shadow var(--t), background var(--t), color var(--t), border-color var(--t);
+}
+.md-typeset .md-button--primary {
+  background: var(--md-default-fg-color);
+  color: var(--md-default-bg-color);
+  border-color: var(--md-default-fg-color);
+}
+.md-typeset .md-button--primary:hover {
+  background: var(--md-default-fg-color);
+  color: var(--md-default-bg-color);
+  box-shadow: var(--glow-2);
+}
+.md-typeset .md-button:not(.md-button--primary):hover {
+  background: transparent;
+  color: var(--accent);
+  border-color: var(--accent);
+  box-shadow: var(--glow);
 }
 
-/* ── Footer layout ────────────────────────────────────────────────────────── */
-.md-footer { background: #161b22; border-top: 1px solid #30363d; }
-.md-footer-meta { background: #0d1117; }
-.md-footer__inner { padding: 1rem; }
+/* ── Search ────────────────────────────────────────────────────────────────── */
+.md-search__form {
+  border: 1px solid var(--border);
+  background: var(--bg-2);
+  box-shadow: none;
+}
+.md-search__form:hover,
+[data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+  border-color: var(--border-h);
+  background: var(--bg-2);
+}
+.md-search-result__link:hover,
+.md-search-result__link[data-md-state="active"] { background: var(--accent-soft); }
 
-/* ── Copyright area ───────────────────────────────────────────────────────── */
+/* ── Code-copy + inline highlight glow ─────────────────────────────────────── */
+.md-clipboard:hover { color: var(--accent); }
+.md-typeset .highlight .gp,
+.md-typeset .highlight .go { color: var(--md-default-fg-color--lighter); }
+
+/* ── Footer sign-off — mono, gold separators ───────────────────────────────── */
+.md-footer-meta { border-top: 1px solid var(--border); }
 .md-copyright {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
   gap: .5rem;
-  font-size: .7rem;
-  color: #8b949e;
+  font-family: var(--font-mono);
+  font-size: .68rem;
+  color: var(--md-default-fg-color--lighter);
 }
+.md-social__link:hover { color: var(--accent); }
 
-/* ── Social icons — gradient on hover ────────────────────────────────────── */
-.md-social__link svg path { transition: fill .15s; }
-.md-social__link:hover svg { color: #00C9FF; }
-
-/* ── Header / nav bar ─────────────────────────────────────────────────────── */
-.md-header { background: #161b22; border-bottom: 1px solid #30363d; }
-.md-tabs   { background: #0d1117; border-bottom: 1px solid #30363d; }
-.md-tabs__link--active,
-.md-tabs__link:hover { color: #3fb950; }
-
-/* ── Admonition accent ────────────────────────────────────────────────────── */
-.md-typeset .admonition,
-.md-typeset details {
-  border-color: #30363d;
-  background: #161b22;
-}
-
-/* ── Code blocks ──────────────────────────────────────────────────────────── */
-.md-typeset pre > code { border: 1px solid #30363d; }
-
-/* ── Inline gradient badge (for use in md) ────────────────────────────────── */
-.badge-gradient {
-  display: inline-block;
-  padding: 2px 10px;
-  border-radius: 12px;
-  background: var(--gradient);
-  color: #000;
+/* gradient-text helper (referenced in copyright) → now solid gold wordmark */
+.gradient-text {
+  color: var(--accent);
   font-weight: 700;
-  font-size: .75rem;
+  text-decoration: none !important;
+}
+.gradient-text:hover { opacity: .85; }
+
+/* Ko-fi footer chip — square, gold border, white-glow hover (no drop shadow) */
+.kofi-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: var(--r-0);
+  border: 1px solid var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--accent) !important;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: .68rem;
+  letter-spacing: .04em;
+  text-decoration: none !important;
+  transition: box-shadow var(--t), border-color var(--t);
+  white-space: nowrap;
+}
+.kofi-link:hover { border-color: var(--accent); box-shadow: var(--glow); }
+
+/* Inline ko-fi / gradient badges used in pages → gold pill */
+.kofi-btn,
+.badge-gradient {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--r-0);
+  border: 1px solid var(--accent-line);
+  background: var(--accent-soft);
+  color: var(--accent) !important;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: .76rem;
+  letter-spacing: .04em;
+  text-decoration: none !important;
+  transition: box-shadow var(--t), border-color var(--t);
+}
+.kofi-btn:hover { border-color: var(--accent); box-shadow: var(--glow); }
+
+/* ── Status chip helper (LIVE / ONGOING) ───────────────────────────────────── */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--accent-line);
+  border-radius: var(--r-0);
+  font-family: var(--font-mono);
+  font-size: .64rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.chip--live::before {
+  content: "";
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+  animation: chip-blip 1.6s ease-in-out infinite;
+}
+@keyframes chip-blip { 0%, 100% { opacity: 1; } 50% { opacity: .25; } }
+
+/* ── Focus rings — gold, visible ───────────────────────────────────────────── */
+.md-typeset a:focus-visible,
+.md-button:focus-visible,
+.md-nav__link:focus-visible,
+.md-search__input:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
 }
 
-/* ── Nav sidebar active item ─────────────────────────────────────────────── */
-.md-nav__link--active { color: #3fb950 !important; }
-.md-nav__link:hover   { color: #00C9FF; }
+/* ── Mermaid — instrument palette for un-styled nodes ──────────────────────── */
+.md-typeset .mermaid {
+  --md-mermaid-node-bg-color:     var(--bg-2);
+  --md-mermaid-node-fg-color:     var(--md-default-fg-color);
+  --md-mermaid-edge-color:        var(--border-h);
+  --md-mermaid-label-bg-color:    var(--bg);
+  --md-mermaid-label-fg-color:    var(--md-default-fg-color);
+}
+
+/* ── Motion guard ──────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
